@@ -3,36 +3,42 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@android:color/darker_gray"
     android:orientation="vertical">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
-        android:id="@+id/notiy_logo"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        app:civ_border_color="@android:color/white"
-        app:civ_border_width="2dp"
+        android:id="@+id/notify_logo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+
         android:src="@mipmap/logo" />
 
-    <TextView
-        android:id="@+id/notiy_title"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:padding="10dp"
-        android:gravity="center"
-        android:text="0%"
-        android:textColor="@android:color/black"
-        android:layout_toRightOf="@+id/notiy_logo" />
+   <LinearLayout
+       android:layout_alignBottom="@+id/notify_logo"
+       android:layout_toRightOf="@+id/notify_logo"
+       android:layout_width="match_parent"
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
+       android:orientation="vertical"
+       android:layout_height="wrap_content">
+       <TextView
+           android:id="@+id/notiy_title"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginLeft="15dp"
 
-        android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:layout_below="@+id/notiy_logo"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="5dp" />
+           android:text="0%"
+           android:textColor="@android:color/black"
+           android:layout_toRightOf="@+id/notiy_logo" />
+
+       <ProgressBar
+           android:layout_marginLeft="5dp"
+           android:gravity="bottom"
+           android:id="@+id/notify_progressBar"
+           style="?android:attr/progressBarStyleHorizontal"
+           android:layout_width="match_parent"
+           android:layout_height="20dp"
+           />
+   </LinearLayout>
 </RelativeLayout>

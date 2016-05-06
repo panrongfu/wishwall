@@ -141,14 +141,15 @@ public class MoreFragment extends Fragment implements  OnClickListener{
 	private void versionUpdate() {
 
          final NotificationManager manager = (NotificationManager)getActivity().getSystemService(Activity.NOTIFICATION_SERVICE);
-         final Notification notif =new Notification();
-         notif.icon = R.mipmap.logo;
-         notif.tickerText = "更新";
-         notif.contentView = new RemoteViews(getActivity().getPackageName(), R.layout.update_notify_layout);
+         final Notification notify =new Notification();
+         notify.icon = R.mipmap.logo;
+         notify.tickerText = "更新";
+        // notify.setDefaults(Notification.DEFAULT_SOUND)
+         notify.contentView = new RemoteViews(getActivity().getPackageName(), R.layout.update_notify_layout);
          Intent intent = new Intent(getActivity(),MainActivity.class);
          PendingIntent pIntent = PendingIntent.getActivity(getActivity(),0,intent,0);
-         notif.contentIntent =pIntent;
-         manager.notify(0,notif);
+         notify.contentIntent =pIntent;
+         manager.notify(0,notify);
 
         if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
             String savePath =  Environment.getExternalStorageDirectory()+"/wishwall/wishwall.apk";
@@ -161,9 +162,9 @@ public class MoreFragment extends Fragment implements  OnClickListener{
                 @Override
                 protected void progress(BaseDownloadTask task, int soFarBytes, int totalBytes) {
                     float index = soFarBytes*1.0f/totalBytes*100;
-                    notif.contentView.setTextViewText(R.id.notiy_title,index+"%");
-                    notif.contentView.setProgressBar(R.id.progressBar,soFarBytes,totalBytes,false);
-                    manager.notify(0,notif);
+                    notify.contentView.setTextViewText(R.id.notiy_title,index+"%");
+                    notify.contentView.setProgressBar(R.id.notify_progressBar,soFarBytes,totalBytes,false);
+                    manager.notify(0,notify);
                 }
 
                 @Override
