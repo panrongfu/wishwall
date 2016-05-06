@@ -4,6 +4,8 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 
+import com.liulishuo.filedownloader.FileDownloader;
+
 import net.wishwall.rong.RongCloudEvent;
 import net.wishwall.rong.message.AgreedFriendRequestMessage;
 import net.wishwall.rong.message.provider.ContactNotificationMessageProvider;
@@ -26,6 +28,7 @@ public class App extends Application {
     public static final String uploadBucket = "wishwall";
     public static final String endpoint = "http://oss-cn-shenzhen.aliyuncs.com";
     public static final String baseUrl = "http://10.1.1.179:3000/";
+    public static final String downloadUrl ="http://10.1.1.179:4000/download/wishWall.apk";
     public static final String ContactNtf = "RC:ContactNtf";
     public static final String TxtMsg = "RC:TxtMsg";
     public static final String  packageName = "net.wishwall";
@@ -40,6 +43,7 @@ public class App extends Application {
 
         ShareSDK.initSDK(this);
         ShareSDK.registerService(Socialization.class);
+        FileDownloader.init(this);
         /**
          * 注意：
          * IMKit SDK调用第一步 初始化

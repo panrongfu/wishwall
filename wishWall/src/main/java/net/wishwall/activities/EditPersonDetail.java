@@ -43,7 +43,7 @@ import net.wishwall.service.ApiClient;
 import net.wishwall.utils.ImageTools;
 import net.wishwall.utils.SaveBitmap2File;
 import net.wishwall.utils.SpUtil;
-import net.wishwall.views.CustomDatePickerDialog;
+import net.wishwall.views.CustomDialogFragment;
 import net.wishwall.views.CustomProgressDialog;
 import net.wishwall.views.CustomToast;
 
@@ -202,8 +202,8 @@ public class EditPersonDetail extends BaseActivity
                 }
                 ft.addToBackStack(null);
                 // Create and show the dialog.
-                CustomDatePickerDialog newFragment = CustomDatePickerDialog.newInstance("dialog");
-                newFragment.setOnSelectFinishListener(new CustomDatePickerDialog.OnSelectFinishListener() {
+                CustomDialogFragment newFragment = CustomDialogFragment.newInstance("dialog",R.layout.date_picker_dialog);
+                newFragment.setOnSelectFinishListener(new CustomDialogFragment.OnSelectFinishListener() {
                     @Override
                     public void finish(DatePicker dp) {
                          bornYear = String.valueOf(dp.getYear());

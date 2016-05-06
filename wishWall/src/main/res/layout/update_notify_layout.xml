@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:id="@+id/notiy_logo"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        app:civ_border_color="@android:color/white"
+        app:civ_border_width="2dp"
+        android:src="@mipmap/logo" />
+
+    <TextView
+        android:id="@+id/notiy_title"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:padding="10dp"
+        android:gravity="center"
+        android:text="0%"
+        android:textColor="@android:color/black"
+        android:layout_toRightOf="@+id/notiy_logo" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:layout_below="@+id/notiy_logo"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="5dp" />
+</RelativeLayout>
