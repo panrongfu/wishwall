@@ -1,9 +1,9 @@
 package net.wishwall.activities;
 
 import android.os.Bundle;
-import android.support.design.widget.TextInputEditText;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import net.wishwall.R;
@@ -21,7 +21,8 @@ import retrofit2.Response;
  * @email pan@ipushan.com
  */
 public class FeedBackActivity extends BaseActivity implements View.OnClickListener{
-    TextInputEditText mEditText;
+
+    EditText mEditText;
     TextView back;
     TextView send;
     @Override
@@ -32,7 +33,7 @@ public class FeedBackActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void initViewUI() {
-        mEditText = (TextInputEditText) findViewById(R.id.user_advise);
+        mEditText = (EditText) findViewById(R.id.user_advise);
         back =(TextView)findViewById(R.id.feedback_back);
         send =(TextView)findViewById(R.id.feedback_send);
         back.setOnClickListener(this);
@@ -45,7 +46,7 @@ public class FeedBackActivity extends BaseActivity implements View.OnClickListen
             case R.id.feedback_back:
                 finish();
                 break;
-            case R.id.user_advise:
+            case R.id.feedback_send:
                 sendAdvise();
                 break;
         }
@@ -69,7 +70,7 @@ public class FeedBackActivity extends BaseActivity implements View.OnClickListen
             public void onResponse(Call<ResultDTO> call, Response<ResultDTO> response) {
                 ResultDTO body = response.body();
                 if(body.getCode() == 200){
-                    CustomToast.showMsg(FeedBackActivity.this,"意见反馈成功,谢谢亲的宝贵建议");
+                    CustomToast.showMsg(FeedBackActivity.this,"意见反馈成功,谢谢你的宝贵建议");
                 }else {
                     CustomToast.showMsg(FeedBackActivity.this,"出错了,再试一次");
                 }

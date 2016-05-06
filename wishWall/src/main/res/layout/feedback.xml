@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/window_background"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -15,8 +16,8 @@
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:drawableLeft="@mipmap/back"
-            android:background="@drawable/textview_bg"
-            android:paddingLeft="24dp" />
+            android:paddingLeft="24dp"
+            android:textColor="@color/textview_bg" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -27,35 +28,38 @@
             android:textColor="@color/font_color"
             android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/feedback_send"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/textview_bg"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="@string/send"
-            android:textColor="@color/font_color"
-            android:textSize="20sp" />
     </RelativeLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="300dp">
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@android:color/white"
+        android:minHeight="300dp">
 
-        <android.support.design.widget.TextInputEditText
+        <EditText
             android:id="@+id/user_advise"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@null"
+            android:gravity="top"
             android:hint="@string/advise"
-            android:layout_gravity="top"
-            android:paddingLeft="15dp"
             android:textColor="@color/gray_deep"
-            android:textColorHint="@color/gray_light"
-            android:textSize="17sp" />
-    </android.support.design.widget.TextInputLayout>
+            android:textSize="20sp"
+            android:padding="10dp" />
+
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:id="@+id/feedback_send"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/login_btn"
+        android:gravity="center"
+        android:text="提交"
+        android:textColor="@color/font_color"
+        android:textSize="20sp" />
 
 </LinearLayout>

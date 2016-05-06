@@ -13,7 +13,9 @@ import android.widget.TextView;
 
 import net.wishwall.Constants;
 import net.wishwall.R;
+import net.wishwall.activities.AboutWishwall;
 import net.wishwall.activities.ActivityCollector;
+import net.wishwall.activities.FeedBackActivity;
 import net.wishwall.activities.MainActivity;
 import net.wishwall.activities.PersonDetail;
 import net.wishwall.utils.SpUtil;
@@ -80,7 +82,9 @@ public class MoreFragment extends Fragment implements  OnClickListener{
 				break;
 			//关于
 			case R.id.more_about_wishwall:
-
+				Intent about =  new Intent(getActivity(), AboutWishwall.class);
+				startActivity(about);
+				getActivity().overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
 				break;
 
 			//版本更新
@@ -89,7 +93,9 @@ public class MoreFragment extends Fragment implements  OnClickListener{
 				break;
 			//意见反馈
 			case R.id.more_idea_feedback:
-
+				Intent feedback =  new Intent(getActivity(), FeedBackActivity.class);
+				startActivity(feedback);
+				getActivity().overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
 				break;
 			//退出
 			case R.id.more_exit_wishwall:

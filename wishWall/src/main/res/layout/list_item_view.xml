@@ -13,7 +13,7 @@
         android:includeFontPadding="false"
         android:paddingLeft="10dip"
         android:singleLine="true"
-        android:textColor="@drawable/textview_bg"
+        android:textColor="@color/textview_bg"
         android:textSize="16.0sp" />
 
     <View

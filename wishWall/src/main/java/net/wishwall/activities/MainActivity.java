@@ -295,7 +295,6 @@ public class MainActivity extends AppCompatActivity
     private void showFragment(Fragment fragment) {
         this.getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
         invalidateOptionsMenu();
-            CustomToast.showMsg(this,index+">>>>>>>>>>>>>");
         toolbar.setVisibility(View.VISIBLE);
         if(fragment instanceof MsgFragment){
             toolbarTitle.setText("信息");
