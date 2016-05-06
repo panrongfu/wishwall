@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/IMKit/IMKit.iml" filepath="$PROJECT_DIR$/IMKit/IMKit.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MyApplication.iml" filepath="$PROJECT_DIR$/MyApplication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/oss-android-sdk/oss-android-sdk.iml" filepath="$PROJECT_DIR$/oss-android-sdk/oss-android-sdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/teamwork/teamwork.iml" filepath="$PROJECT_DIR$/teamwork/teamwork.iml" />
+      <module fileurl="file://$PROJECT_DIR$/winxinWish/winxinWish.iml" filepath="$PROJECT_DIR$/winxinWish/winxinWish.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wishWall/wishWall.iml" filepath="$PROJECT_DIR$/wishWall/wishWall.iml" />
+    </modules>
+  </component>
+</project>

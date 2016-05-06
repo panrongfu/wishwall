@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_work"
+            android:icon="@drawable/ic_dashboard"
+            android:title="@string/working"/>
+        <item
+            android:id="@+id/nav_report"
+            android:icon="@drawable/ic_event"
+            android:title="@string/report"/>
+        <item
+            android:id="@+id/nav_cooperate"
+            android:icon="@drawable/ic_headset"
+            android:title="@string/cooperate"/>
+    </group>
+
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/nav_setting"
+                android:icon="@drawable/ic_dashboard"
+                android:title="@string/setting"/>
+        </menu>
+    </item>
+
+</menu>

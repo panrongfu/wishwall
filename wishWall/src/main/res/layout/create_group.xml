@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/colorPrimary" >
+
+        <TextView
+            android:id="@+id/group_back"
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:paddingLeft="24dp"
+            android:drawableLeft="@mipmap/back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/create_group"
+            android:textColor="@color/font_color"
+            android:textSize="20dp" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <net.wishwall.views.CircleImageView
+            android:layout_centerVertical="true"
+            android:id="@+id/group_icon"
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_user"
+            app:border_width="2dp"
+            app:border_color="@color/font_color"/>
+
+        <LinearLayout
+            android:layout_margin="5dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/group_icon"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ed_group_name"
+                android:hint="@string/input_group_name"
+                android:textColorHint="@color/gray_light"
+                android:textColor="@color/gray_deep"
+                android:textSize="17dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"/>
+
+            <EditText
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ed_group_des"
+                android:hint="@string/input_group_des"
+                android:textColorHint="@color/gray_light"
+                android:textColor="@color/gray_deep"
+                android:textSize="17dp"/>
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/create_group"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/login_btn"
+        android:gravity="center"
+        android:text="@string/password_confirm"
+        android:textColor="@color/font_color"
+        android:textSize="20sp" />
+
+
+</LinearLayout>

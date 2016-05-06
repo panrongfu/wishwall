@@ -1,0 +1,47 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="net.wishwall.MainActivity">
+    <item
+        android:id="@+id/menu_search"
+        android:orderInCategory="100"
+        android:visible="false"
+        android:icon="@mipmap/search"
+        android:title="@string/menu_settings"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/menu_add"
+        android:orderInCategory="100"
+        android:visible="false"
+        android:icon="@mipmap/menu_more"
+        android:title="@string/menu_settings"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_add_conversation"
+        android:orderInCategory="100"
+        android:icon="@mipmap/de_ic_add"
+        android:title="settings"
+        android:visible="false"
+        app:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/add_item1"
+                android:icon="@mipmap/de_btn_main_chat"
+                android:title="@string/add_chat" />
+            <item
+                android:id="@+id/add_item2"
+                android:icon="@mipmap/de_btn_main_groups"
+                android:title="@string/add_select_group" />
+            <item
+                android:id="@+id/add_item3"
+                android:icon="@mipmap/de_btn_main_groups"
+                android:title="@string/create_group"/>
+            <item
+                android:id="@+id/add_item4"
+                android:icon="@mipmap/de_btn_main_contacts"
+                android:title="@string/add_contacts" />
+        </menu>
+    </item>
+
+</menu>
