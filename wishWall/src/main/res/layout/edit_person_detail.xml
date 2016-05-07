@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/edit_person_info_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/window_background"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/relativelayout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/me_change_detail_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:drawableLeft="@mipmap/back"
+            android:padding="17dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/change_person_detail"
+            android:textColor="@color/font_color"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/me_change_detail_save"
+            android:layout_width="75dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:gravity="center"
+            android:text="@string/save_detail"
+            android:textColor="@color/font_color"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:scrollbars="none">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:background="@color/font_color"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:background="@null"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/me_change_detail_image"
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="10dp"
+                    android:src="@mipmap/ic_user"
+                    app:border_color="@color/font_color"
+                    app:border_width="1dp" />
+
+                <RelativeLayout
+                    android:id="@+id/layout_me_pingjia"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/font_color">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:text="@string/me_person_detail_name"
+                        android:textColor="@color/gray_deep"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/change_detail_name"
+                        android:layout_width="125dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:background="@null"
+                        android:gravity="right|center"
+                        android:hint="@string/me_input_detail_name"
+                        android:paddingRight="5dp"
+                        android:textColor="@color/gray_deep"
+                        android:textColorHint="@color/gray_light"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:background="@color/gray_light" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/font_color">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:text="@string/me_person_detail_sex"
+                        android:textColor="@color/gray_deep"
+                        android:textSize="15sp" />
+
+                    <RadioGroup
+                        android:id="@+id/change_sex_group"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="15dp"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/sex_man"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="@string/man"
+                            android:textColor="@color/gray_light"
+                            android:textSize="15sp" />
+
+                        <RadioButton
+                            android:id="@+id/sex_girl"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="@string/girl"
+                            android:textColor="@color/gray_light"
+                            android:textSize="15sp" />
+                    </RadioGroup>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:background="@color/gray_light" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/font_color">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:text="@string/me_person_detail_phone"
+                        android:textColor="@color/gray_deep"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/change_detail_phone"
+                        android:layout_width="145dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:gravity="right|center"
+                        android:background="@null"
+                        android:hint="@string/me_input_detail_phone"
+                        android:textColor="@color/gray_deep"
+                        android:textColorHint="@color/gray_light"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:background="@color/gray_light" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/font_color">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:text="@string/me_person_detail_qq"
+                        android:textColor="@color/gray_deep"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/change_detail_qq"
+                        android:layout_width="125dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:background="@null"
+                        android:digits="1234567890"
+                        android:gravity="right|center"
+                        android:hint="@string/me_input_detail_qq"
+                        android:paddingRight="5dp"
+                        android:singleLine="true"
+                        android:textColor="@color/gray_deep"
+                        android:textColorHint="@color/gray_light"
+                        android:textSize="15dp" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:background="@color/gray_light" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/font_color">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:text="@string/me_person_detail_weixin"
+                        android:textColor="@color/gray_deep"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/change_detail_weixin"
+                        android:layout_width="135dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:background="@null"
+                        android:gravity="right|center"
+                        android:hint="@string/me_input_detail_weixin"
+                        android:paddingRight="5dp"
+                        android:textColor="@color/gray_deep"
+                        android:textColorHint="@color/gray_light"
+                        android:textSize="15dp" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:background="@color/gray_light" />
+
+                <RelativeLayout
+                    android:id="@+id/layout_change_detail_born"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/rectangle_item_bg">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:text="@string/me_person_detail_born"
+                        android:textColor="@color/gray_deep"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/change_detail_born"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:background="@null"
+                        android:drawableRight="@mipmap/forward"
+                        android:gravity="right|center"
+                        android:hint="@string/me_input_detail_born"
+                        android:paddingRight="5dp"
+                        android:textColor="@color/gray_deep"
+                        android:textColorHint="@color/gray_light"
+                        android:textSize="15dp" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:background="@color/gray_light" />
+
+                <RelativeLayout
+                    android:id="@+id/layout_change_detail_loacl"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/rectangle_item_bg">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:text="@string/me_person_detail_local"
+                        android:textColor="@color/gray_deep"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/change_detail_local"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:drawableRight="@mipmap/forward"
+                        android:gravity="center"
+                        android:hint="@string/me_person_detail_local"
+                        android:paddingRight="5dp"
+                        android:textColor="@color/gray_deep"
+                        android:textColorHint="@color/gray_light"
+                        android:textSize="15dp" />
+                </RelativeLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>

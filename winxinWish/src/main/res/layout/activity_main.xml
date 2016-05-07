@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/bg"
+    tools:context="com.example.winxinwish.MainActivity">
+
+   <ImageView
+       android:id="@+id/id_image"
+       android:layout_width="250dp"
+       android:layout_height="250dp"
+       android:layout_marginTop="80dp"
+       android:background="#e10a0a"
+       android:src="@mipmap/default_bg"
+       android:padding="3dp"
+       android:layout_centerHorizontal="true"/>
+    <EditText
+        android:id="@+id/id_word"
+        android:layout_below="@+id/id_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/word"
+        android:hint="写下你的心愿"
+        android:textSize="20sp"
+        android:textColor="#d9cbcb"
+        android:gravity="center"
+        />
+    <Button
+        android:id="@+id/id_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/id_word"
+        android:background="@mipmap/share"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp"
+        />
+</RelativeLayout>

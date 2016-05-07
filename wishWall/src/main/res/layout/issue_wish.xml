@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pareent_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/window_background"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary" >
+
+        <TextView
+            android:id="@+id/wish_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="20dp"
+            android:drawableRight="@mipmap/back"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/wish"
+            android:textColor="@color/font_color"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/wish_send"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="@string/send"
+            android:textColor="@drawable/text_button_bg"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/wish_content"
+        android:padding="5dp"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:layout_margin="8dp"
+        android:gravity="left|top"
+        android:hint="@string/wish_your"
+        android:textColor="@color/gray_deep"
+        android:textColorHint="@color/gray_light"
+        android:background="@null" >
+    </EditText>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/wish_pic_list"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_marginLeft="5dp">
+    </android.support.v7.widget.RecyclerView>
+</LinearLayout>

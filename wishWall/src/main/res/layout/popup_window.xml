@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/layout_me_org_set_icon"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_above="@+id/org_me_icon_set_cancel"
+            android:background="@drawable/popup_window_bg"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/me_icon_set_from_sdcard"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_above="@+id/division"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/popup_window_item_bg"
+                android:gravity="center"
+                android:text="@string/icon_set_from_sdcard"
+                android:textColor="@color/gray_deep"
+                android:textSize="15sp" />
+
+            <View
+                android:id="@+id/division"
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_centerInParent="true"
+                android:background="@color/gray_light" />
+
+            <TextView
+                android:id="@+id/me_icon_set_from_takephotos"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_below="@+id/division"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/popup_window_item_bg"
+                android:gravity="center"
+                android:text="@string/icon_set_from_takephotos"
+                android:textColor="@color/gray_deep"
+                android:textSize="15sp" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/org_me_icon_set_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/popup_window_item_bg"
+            android:gravity="center"
+            android:text="@string/icon_set_cancel"
+            android:textColor="@color/gray_deep"
+            android:textSize="15sp" />
+    </RelativeLayout>
+</FrameLayout>

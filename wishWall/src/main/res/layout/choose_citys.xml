@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/window_background"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/colorPrimary" >
+
+        <TextView
+            android:id="@+id/choose_city_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:padding="17dp"
+            android:drawableLeft="@mipmap/back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/choose_citys"
+            android:textColor="@color/font_color"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/window_background"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@string/system_gps"
+            android:textColor="@color/gray_deep"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/gps_local"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="10dp"
+            android:drawableLeft="@mipmap/choose_gps"
+            android:gravity="center|left"
+            android:textColor="@color/gray_deep"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/font_color"
+        android:gravity="left|center"
+        android:paddingLeft="10dp"
+        android:text="@string/hot_citys"
+        android:textColor="@color/gray_deep"
+        android:textSize="16sp" />
+
+    <GridView
+        android:id="@+id/choose_hotcity_gv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/window_background"
+        android:divider="#CCCCCC"
+        android:dividerHeight="1dip"
+        android:gravity="center"
+        android:listSelector="#00000000"
+        android:numColumns="5"
+        android:verticalSpacing="10dip" >
+    </GridView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/gray_white"
+        android:gravity="left|center"
+        android:paddingLeft="10dp"
+        android:text="@string/citys_list"
+        android:textColor="@color/gray_deep"
+        android:textSize="16sp" />
+
+    <ExpandableListView
+        android:id="@+id/choose_city_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/window_background"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@null"
+        android:groupIndicator="@null"
+        android:transcriptMode="normal" />
+
+</LinearLayout>

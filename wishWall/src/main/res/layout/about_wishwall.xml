@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/about_back"
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:textColor="@color/textview_bg"
+            android:drawableLeft="@mipmap/back"
+            android:paddingLeft="24dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/about_wishwall"
+            android:textColor="@color/font_color"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+    <net.wishwall.views.RoundImageView
+        android:id="@+id/about_logo"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp"
+        android:src="@mipmap/ic_user"
+        app:borderRadius="10dp"
+        app:type="round" />
+
+    <TextView
+        android:id="@+id/about_version"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/about_logo"
+        android:text="许愿墙1.0"
+        android:gravity="center"
+        android:textColor="@color/gray_deep"
+        android:textSize="20dp" />
+    <TextView
+        android:layout_below="@+id/about_version"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="www.wishingwall.net"/>
+
+</RelativeLayout>

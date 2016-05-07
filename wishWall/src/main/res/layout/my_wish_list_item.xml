@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/card_margin"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="8dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/my_wish_item_img"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"
+                android:src="@mipmap/ic_user"
+                app:border_color="@color/font_color"
+                app:border_width="1dp" />
+            <LinearLayout
+                android:layout_marginLeft="5dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/my_wish_item_img"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/my_wish_item_name"
+                    android:layout_width="wrap_content"
+                    android:text="小潘潘"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_marginTop="2dp"
+                    android:id="@+id/my_wish_item_time"
+                    android:layout_width="wrap_content"
+                    android:text="2016-2-4"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/my_wish_item_content"
+            android:textColor="@color/gray_deep"
+            android:textSize="14sp"
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="我是一个小苹果干哈哈哈哈哈哈我是一个小苹果干哈哈哈哈哈哈我是一个小苹果干哈哈哈哈哈哈我是一个小苹果干哈哈哈哈哈哈"
+            />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/wish_item_img_list"
+            android:layout_width="match_parent"
+            android:layout_margin="5dp"
+            android:layout_height="wrap_content">
+        </android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/wish_item_like_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue"
+            android:visibility="invisible"
+            android:drawableLeft="@mipmap/small_like_blue"
+            android:layout_marginLeft="5dp"
+            android:layout_below="@+id/view" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/wish_item_comm_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/like_list"
+            android:layout_margin="5dp" />
+
+        <LinearLayout
+            android:layout_gravity="center"
+            android:id="@+id/llyout"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/comm_list"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/item_wish_comm_edit"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="8"
+                android:gravity="center_vertical"
+                android:background="@drawable/login_phone"
+                android:drawablePadding="10dp"
+                android:hint="我也来说两句"
+                android:imeOptions="normal"
+                android:paddingLeft="5dp"
+                android:singleLine="true"
+                android:textColorHint="@color/gray_light"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_marginRight="10dp"
+                android:layout_gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/item_wish_like"
+                    android:layout_gravity="center"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/like_selector_bg"
+                    android:padding="5dp" />
+
+                <ImageView
+                    android:id="@+id/item_wish_comm"
+                    android:layout_gravity="center"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@mipmap/comment"
+                    android:padding="5dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

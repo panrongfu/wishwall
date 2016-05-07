@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/conver_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:layout_scrollFlags="scroll|enterAlways|snap"/>
+
+    <net.wishwall.rong.widget.PinnedHeaderListView
+        android:layout_below="@+id/conver_toolbar"
+        android:id="@+id/de_ui_friend_list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fadingEdge="none"
+        android:background="@color/main_backgroud_search"
+        android:fastScrollEnabled="false"
+        android:scrollbars="none" />
+
+    <net.wishwall.rong.widget.SwitchGroup
+        android:id="@+id/de_ui_friend_message"
+        android:layout_width="25dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="?attr/actionBarSize"
+        app:orientation1="vertical"
+        app:pinned_item1="@layout/de_item_pinned"
+        app:pinned_item_array1="@array/de_search_letters" />
+
+</RelativeLayout>
