@@ -1,16 +1,15 @@
 package net.wishwall.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,18 +28,17 @@ import net.wishwall.Constants;
 import net.wishwall.R;
 import net.wishwall.activities.InputPopupWindow;
 import net.wishwall.activities.MainActivity;
+import net.wishwall.activities.PersonDetail;
 import net.wishwall.domain.ResultDTO;
 import net.wishwall.domain.WishsDTO;
 import net.wishwall.service.ApiClient;
 import net.wishwall.utils.DateTimeUtil;
 import net.wishwall.utils.SpUtil;
-import net.wishwall.views.CustomToast;
 import net.wishwall.views.RecyclerViewItemDecoration;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
@@ -54,7 +52,7 @@ import retrofit2.Response;
  */
 public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
 
-    private static List<WishsDTO.ResultBean> wishList;
+    private static List<WishsDTO.ResultBean> mWishList;
     private LayoutInflater mInflater;
     private Context mContext;
     //private static GridLayoutManager gridLayout;
@@ -69,14 +67,14 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
     private static int COMM = 0X01;
     private static int UNLIKE = 0X11;
     private static WishHolder wishHolder;
-    static WishCommAdapter wishCommAdapter;
-    private Handler likeCommHanlder = new Handler(){
+   // private static WishCommAdapter wishCommAdapter;
+    private EditText mEditext;
+    private  Handler likeCommHanlder = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if(msg.what == LIKE || msg.what == UNLIKE){
                 likeWish((WishHolder) msg.obj,msg.arg1);
-                Log.e("handleMessage: ",">>>>>>>>>>>>>" );
             }else if(msg.what == COMM){
                 commWish((WishHolder) msg.obj,msg.arg1);
             }
@@ -84,16 +82,17 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
     };
 
     public void setWishList(List<WishsDTO.ResultBean> wishList) {
-        this.wishList = wishList;
+        this.mWishList = wishList;
     }
 
     public List<WishsDTO.ResultBean> getWishList() {
-        return wishList;
+        return mWishList;
     }
 
     public WishAdapter(Context context){
         mContext = context;
         userSputil = new SpUtil(context, Constants.USER_SPUTIL);
+        mMinputMethodManager = (InputMethodManager) mContext.getSystemService(mContext.INPUT_METHOD_SERVICE);
 
         userId = userSputil.getKeyValue("userId");
         userName = userSputil.getKeyValue("userName");
@@ -111,11 +110,11 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
         // popupWindow.showAsDropDown(v);
         popupWindow.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);
         popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+        mMinputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
         //位于底部，输入法出现时将其顶起，最终显示在输入法的顶部
         popupWindow.showAtLocation(MainActivity.mainActiviyView, Gravity.BOTTOM, 0, 0);
 
-        mMinputMethodManager = (InputMethodManager) mContext.getSystemService(mContext.INPUT_METHOD_SERVICE);
-        mMinputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
@@ -124,11 +123,13 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
         });
         popupWindow.setOnCommSendListener(new InputPopupWindow.OnCommSendListener() {
             @Override
-            public void send(final String text) {
+            public void send(final EditText editText) {
+                mEditext =editText;
+                final String commText = editText.getText().toString();
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        ApiClient.commWish(wishId, text, new Callback<ResultDTO>() {
+                        ApiClient.commWish(wishId, commText, new Callback<ResultDTO>() {
                             @Override
                             public void onResponse(Call<ResultDTO> call, Response<ResultDTO> response) {
                                 ResultDTO body = response.body();
@@ -137,8 +138,8 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
                                     WishsDTO.ResultBean.WishCommBean commBean = new WishsDTO.ResultBean.WishCommBean();
                                     commBean.setUserid(userId);
                                     commBean.setUsername(userName);
-                                    commBean.setContent(text);
-                                    wishList.get(position).getWish_comm().add(commBean);
+                                    commBean.setContent(commText);
+                                    mWishList.get(position).getWish_comm().add(commBean);
                                     //commBean.setIcon();
                                     Message msg = Message.obtain();
                                     msg.what = COMM;
@@ -182,34 +183,48 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
 
         if(position+1 == getItemCount()&& getItemCount()>=10) return;
         //设置头item头像
-        String path = wishList.get(position).getIcon();
+        String path = mWishList.get(position).getIcon();
         if(!TextUtils.isEmpty(path)){
             Picasso.with(mContext).load(path).into(holder.itemImg);
         }
         //设置item的用户名
-        holder.itemNam.setText(wishList.get(position).getUsername());
+        holder.itemNam.setText(mWishList.get(position).getUsername());
         //设置item时间
-        holder.itemTime.setText(DateTimeUtil.yyyyMMddHHmm(wishList.get(position).getTime()));
+        holder.itemTime.setText(DateTimeUtil.yyyyMMddHHmm(mWishList.get(position).getTime()));
         //设置item内容
-        holder.itemContent.setText(wishList.get(position).getContent());
+        holder.itemContent.setText(mWishList.get(position).getContent());
 
-        if(wishList.get(position).getWish_img().size() != 0){
+        if(mWishList.get(position).getWish_img().size() != 0){
             GridLayoutManager gridLayout = new GridLayoutManager(mContext, 4);
             gridLayout.setOrientation(OrientationHelper.VERTICAL);
             holder.itemImgGrid.setLayoutManager(gridLayout);
             holder.itemImgGrid.addItemDecoration(new RecyclerViewItemDecoration(
                     RecyclerViewItemDecoration.MODE_GRID,
                     Color.WHITE,10,5,0));
-            holder.itemImgGrid.setAdapter(new WishItemAdapter(mContext,wishList.get(position).getWish_img()));
+            holder.itemImgGrid.setAdapter(new WishItemAdapter(mContext,mWishList.get(position).getWish_img()));
 
         }
-        if( wishList.get(position).getWish_like().size() != 0 ){
+        if( mWishList.get(position).getWish_like().size() != 0 ){
             likeWish(holder,position);
         }
 
-        if(wishList.get(position).getWish_comm().size() != 0){
+        if(mWishList.get(position).getWish_comm().size() != 0){
             commWish(holder,position);
         }
+        /**
+         * 用户头像点击监听
+         */
+        holder.itemImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String itemUserId = mWishList.get(position).getUserid();
+                String itemUserName = mWishList.get(position).getUsername();
+                Intent intent = new Intent(mContext, PersonDetail.class);
+                intent.putExtra("itemUserId",itemUserId);
+                intent.putExtra("itemUserName",itemUserName);
+                mContext.startActivity(intent);
+            }
+        });
 
         /**
          * 点赞监听
@@ -217,9 +232,8 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
         holder.itemLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CustomToast.showMsg(mContext,"itemLike");
                 holder.itemLike.setBackgroundResource(R.mipmap.like_blue);
-                final String wishId = wishList.get(position).getWishid();
+                final String wishId = mWishList.get(position).getWishid();
 
                 new Thread(new Runnable() {
                     @Override
@@ -233,7 +247,7 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
                                     WishsDTO.ResultBean.WishLikeBean likeBean = new WishsDTO.ResultBean.WishLikeBean();
                                     likeBean.setUserid(userId);
                                     likeBean.setUsername(userName);
-                                    wishList.get(position).getWish_like().add(likeBean);
+                                    mWishList.get(position).getWish_like().add(likeBean);
 
                                     Message msg = Message.obtain();
                                     msg.what = LIKE;
@@ -258,8 +272,7 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
         holder.itemComm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CustomToast.showMsg(mContext,"itemComm");
-                final String wishId =wishList.get(position).getWishid();
+                final String wishId =mWishList.get(position).getWishid();
                 initPopupWindow(wishId,position,holder);
 
             }
@@ -268,7 +281,7 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
         holder.itemLlyout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String wishId =wishList.get(position).getWishid();
+                final String wishId =mWishList.get(position).getWishid();
                 initPopupWindow(wishId,position,holder);
             }
         });
@@ -276,7 +289,7 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
 
     @Override
     public int getItemCount() {
-        return wishList.size();
+        return mWishList.size();
     }
 
     public class FooterViewHolder extends WishHolder {
@@ -284,6 +297,7 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
             super(view);
         }
     }
+
     public static class  WishHolder extends RecyclerView.ViewHolder{
         View mView;
         CircleImageView itemImg;
@@ -320,13 +334,12 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
      * @param position
      */
     public void likeWish(WishHolder holder,int position){
-
-        int likeListLenght = wishList.get(position).getWish_like().size();
+        int likeListLenght = mWishList.get(position).getWish_like().size();
         //点赞列表
         holder.itemLikeList.setVisibility(View.VISIBLE);
         StringBuffer sb = new StringBuffer();
         for(int i=0; i<likeListLenght; i++){
-            sb.append(wishList.get(position).getWish_like().get(i).getUsername());
+            sb.append(mWishList.get(position).getWish_like().get(i).getUsername());
             if(i == likeListLenght -1){
                 sb.append("觉得很赞");
             }else if (likeListLenght >=10){
@@ -336,7 +349,7 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
             }
         }
         Map<String,String> map = new HashMap<String,String>();
-        for(WishsDTO.ResultBean.WishLikeBean wrw : wishList.get(position).getWish_like()){
+        for(WishsDTO.ResultBean.WishLikeBean wrw : mWishList.get(position).getWish_like()){
             map.put(wrw.getUserid(),wrw.getUserid());
         }
         //如果点赞列表中的userId包含了当前用户的id把点赞设置成蓝色,若没有则设置成灰色
@@ -355,16 +368,15 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
      */
     public void commWish(WishHolder holder,int position){
         //评论列表
-        //int a = wishList.get(position).getWish_comm().size();
-        if(null == wishCommAdapter){
-            wishCommAdapter = new WishCommAdapter(mContext);
-            wishCommAdapter.setCommList(wishList.get(position).getWish_comm());
-            LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
-            holder.itemCommGrid.setLayoutManager(layoutManager);
-            holder.itemCommGrid.setAdapter(wishCommAdapter);
-        }else{
-            wishCommAdapter.setCommList(wishList.get(position).getWish_comm());
-            wishCommAdapter.notifyDataSetChanged();
-        }
+        WishCommAdapter wishCommAdapter = new WishCommAdapter(mContext);
+        wishCommAdapter.setCommList(mWishList.get(position).getWish_comm());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
+        holder.itemCommGrid.setLayoutManager(layoutManager);
+        holder.itemCommGrid.setAdapter(wishCommAdapter);
+
+        //关闭popupwindow
+        if(popupWindow != null) popupWindow.dismiss();
+        //关闭输入法
+        if(mEditext != null) mMinputMethodManager.hideSoftInputFromWindow(mEditext.getWindowToken(), 0);
     }
 }

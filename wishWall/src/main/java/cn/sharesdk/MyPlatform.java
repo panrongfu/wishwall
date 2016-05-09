@@ -30,7 +30,7 @@ public class MyPlatform extends SocializationCustomPlatform {
 
 	public int getLogo() {
 		// 返回显示在帐号选择列表中的平台图标
-		return R.mipmap.logo;
+		return R.drawable.logo;
 	}
 
 	protected boolean checkAuthorize(int action) {

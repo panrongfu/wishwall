@@ -9,7 +9,7 @@ import com.sea_monster.network.AbstractHttpRequest;
 
 import net.wishwall.Constants;
 import net.wishwall.R;
-import net.wishwall.domain.MyGroupsDTO;
+import net.wishwall.domain.GroupsDTO;
 import net.wishwall.rong.RongCloudEvent;
 import net.wishwall.rong.fragment.ChatFragmentActivity;
 import net.wishwall.rong.model.Groups;
@@ -40,7 +40,7 @@ public class ConversationListActivity extends BaseActivity {
     private AbstractHttpRequest<Groups> mGetMyGroupsRequest;
     private LoadingDialog mDialog;
     private SpUtil userSpUtil;
-    private List<MyGroupsDTO.ResultBean> mMyGroups = new ArrayList<MyGroupsDTO.ResultBean>();
+    private List<GroupsDTO.ResultBean> mMyGroups = new ArrayList<GroupsDTO.ResultBean>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,10 +113,10 @@ public class ConversationListActivity extends BaseActivity {
 //                if (DemoContext.getInstance() != null)
 //                    mGetMyGroupsRequest = DemoContext.getInstance().getDemoApi().getMyGroups(ConversationListActivity.this);
                 String userid = userSpUtil.getKeyValue("userId");
-                ApiClient.findMyGroups(userid, new Callback<MyGroupsDTO>() {
+                ApiClient.findMyGroups(new Callback<GroupsDTO>() {
                     @Override
-                    public void onResponse(Call<MyGroupsDTO> call, Response<MyGroupsDTO> response) {
-                        MyGroupsDTO body = response.body();
+                    public void onResponse(Call<GroupsDTO> call, Response<GroupsDTO> response) {
+                        GroupsDTO body = response.body();
                         if(body.getCode() ==200){
                             mMyGroups = body.getResult();
                             getMyGroups();
@@ -124,7 +124,7 @@ public class ConversationListActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<MyGroupsDTO> call, Throwable t) {
+                    public void onFailure(Call<GroupsDTO> call, Throwable t) {
 
                     }
                 });
@@ -144,7 +144,7 @@ public class ConversationListActivity extends BaseActivity {
     private void getMyGroups() {
 
         List<Group> grouplist = new ArrayList<Group>();
-        for(MyGroupsDTO.ResultBean mgr: mMyGroups){
+        for(GroupsDTO.ResultBean mgr: mMyGroups){
             String groupId = mgr.getGroupid();
             String groupName = mgr.getName();
             String icon = mgr.getIcon();

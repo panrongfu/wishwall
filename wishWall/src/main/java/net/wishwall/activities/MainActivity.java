@@ -33,14 +33,12 @@ import net.wishwall.fragments.PersonFragment;
 import net.wishwall.rong.activity.ContactsActivity;
 import net.wishwall.rong.activity.CreateGroup;
 import net.wishwall.rong.activity.FriendListActivity;
+import net.wishwall.rong.activity.SelectGroupActivity;
 import net.wishwall.utils.SpUtil;
 import net.wishwall.views.CustomToast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import io.rong.imkit.RongIM;
-import io.rong.imlib.model.Conversation;
 
 /**
  * @author panRongFu on 2016/4/22.
@@ -249,7 +247,6 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         this.mMenu = menu;
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
         return true;
     }
 
@@ -275,10 +272,11 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.add_item2://选择群组
-                if (RongIM.getInstance() != null)
-                    RongIM.getInstance().startSubConversationList(this, Conversation.ConversationType.GROUP);
-
+               // if (RongIM.getInstance() != null)
+                //    RongIM.getInstance().startSubConversationList(this, Conversation.ConversationType.GROUP);
+                startActivity(new Intent(this, SelectGroupActivity.class));
                 break;
+
             case R.id.add_item3://创建
                 startActivity(new Intent(this, CreateGroup.class));
 

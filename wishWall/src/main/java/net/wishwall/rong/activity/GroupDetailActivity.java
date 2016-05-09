@@ -19,8 +19,8 @@ import com.sea_monster.network.AbstractHttpRequest;
 
 import net.wishwall.Constants;
 import net.wishwall.R;
-import net.wishwall.domain.AllGroupsDTO.ResultBean;
-import net.wishwall.domain.MyGroupsDTO;
+import net.wishwall.domain.GroupsDTO.ResultBean;
+import net.wishwall.domain.GroupsDTO;
 import net.wishwall.domain.ResultDTO;
 import net.wishwall.rong.fragment.GroupListFragment;
 import net.wishwall.rong.model.Status;
@@ -77,7 +77,7 @@ public class GroupDetailActivity extends BaseApiActivity implements View.OnClick
     private String number;
     private String maxNumber;
     private String groupName;
-    private List<MyGroupsDTO.ResultBean> groupIdList;
+    private List<GroupsDTO.ResultBean> groupIdList;
     private Map<String,String>groupIdMap;
 
     @Override
@@ -145,18 +145,18 @@ public class GroupDetailActivity extends BaseApiActivity implements View.OnClick
         }
          userId = userSpUtil.getKeyValue("userId");
          groupIdMap = new HashMap<String,String>();
-         groupIdList = new ArrayList<MyGroupsDTO.ResultBean>();
+         groupIdList = new ArrayList<GroupsDTO.ResultBean>();
 
 //        if (DemoContext.getInstance() != null) {
 //            HashMap<String, Group> groupHashMap = DemoContext.getInstance().getGroupMap();
-            ApiClient.findMyGroups(userId, new Callback<MyGroupsDTO>() {
+            ApiClient.findMyGroups(new Callback<GroupsDTO>() {
                 @Override
-                public void onResponse(Call<MyGroupsDTO> call, Response<MyGroupsDTO> response) {
-                    MyGroupsDTO body = response.body();
+                public void onResponse(Call<GroupsDTO> call, Response<GroupsDTO> response) {
+                    GroupsDTO body = response.body();
                     if(body.getCode() == 200){
                         groupIdList = body.getResult();
                         if(groupIdList != null){
-                            for(MyGroupsDTO.ResultBean mr: groupIdList){
+                            for(GroupsDTO.ResultBean mr: groupIdList){
                                 groupIdMap.put(mr.getGroupid(),mr.getGroupid());
                             }
                             Message mess = Message.obtain();
@@ -170,7 +170,7 @@ public class GroupDetailActivity extends BaseApiActivity implements View.OnClick
                     }
                 }
                 @Override
-                public void onFailure(Call<MyGroupsDTO> call, Throwable t) {
+                public void onFailure(Call<GroupsDTO> call, Throwable t) {
 
                 }
             });

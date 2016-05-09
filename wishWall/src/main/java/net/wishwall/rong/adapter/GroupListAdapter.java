@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.wishwall.R;
-import net.wishwall.domain.AllGroupsDTO.ResultBean;
+import net.wishwall.domain.GroupsDTO.ResultBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,12 +23,21 @@ import io.rong.imlib.model.Group;
  * @email pan@ipushan.com
  */
 public class GroupListAdapter extends android.widget.BaseAdapter {
+
     private static final String TAG = GroupListAdapter.class.getSimpleName();
     private Context mContext;
     private LayoutInflater mLayoutInflater;
     private List<ResultBean> mResults;
     private ArrayList<View> mViewList;
     HashMap<String, Group> groupMap;
+    private Type mType = Type.MY;
+    public enum Type{
+        MY,ALL
+    }
+
+    public void setType(Type mType) {
+        this.mType = mType;
+    }
 
     OnItemButtonClick mOnItemButtonClick;
 
@@ -80,6 +89,13 @@ public class GroupListAdapter extends android.widget.BaseAdapter {
             viewHolder.mGroupLastmessge = (TextView) convertView.findViewById(R.id.group_last_mess);
             viewHolder.mImageView = (AsyncImageView) convertView.findViewById(R.id.group_adapter_img);
             viewHolder.mSelectButton = (ImageView) convertView.findViewById(R.id.group_select);
+
+            if(mType == Type.MY){
+                viewHolder.mSelectButton.setVisibility(View.GONE);
+            }else if(mType == Type.ALL){
+                viewHolder.mSelectButton.setVisibility(View.VISIBLE);
+            }
+
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();

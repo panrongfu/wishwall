@@ -1,6 +1,7 @@
 package net.wishwall.rong.activity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -71,10 +72,10 @@ public class CreateGroup extends BaseActivity implements View.OnClickListener {
      */
     private void createGroup() {
 
-        String userId = userSpUtil.getKeyValue("userId");
-        String name = groupName.getText().toString();
-        if("".equals(name)||null == name){
-            customToast.setMessage("群名称不能为空").show();
+        final String userId = userSpUtil.getKeyValue("userId");
+        final String  name = groupName.getText().toString();
+        if(TextUtils.isEmpty(name)){
+            CustomToast.showMsg(CreateGroup.this,"群名称不能为空");
             return;
         }
         progressDialog.setMessage("创建中...").show();
@@ -83,9 +84,9 @@ public class CreateGroup extends BaseActivity implements View.OnClickListener {
             public void onResponse(Call<ResultDTO> call, Response<ResultDTO> response) {
                 ResultDTO body = response.body();
                 if(body.getCode() == 200){
-                    customToast.setMessage("创建成功").show();
+                   CustomToast.showMsg(CreateGroup.this,"创建成功");
                 }else{
-                    customToast.setMessage("创建失败").show();
+                    CustomToast.showMsg(CreateGroup.this,"创建失败");
                 }
                 progressDialog.dismiss();
             }
@@ -94,7 +95,7 @@ public class CreateGroup extends BaseActivity implements View.OnClickListener {
             public void onFailure(Call<ResultDTO> call, Throwable t) {
                 t.printStackTrace();
                 progressDialog.dismiss();
-                customToast.setMessage("创建失败").show();
+                CustomToast.showMsg(CreateGroup.this,"创建失败");
             }
         });
     }

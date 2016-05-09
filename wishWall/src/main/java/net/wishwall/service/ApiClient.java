@@ -4,22 +4,21 @@ import android.util.Log;
 
 import net.wishwall.App;
 import net.wishwall.domain.AllChatroomsDTO;
-import net.wishwall.domain.AllGroupsDTO;
 import net.wishwall.domain.ApplyAddFriendListDTO;
 import net.wishwall.domain.CodeByNameDTO;
 import net.wishwall.domain.FriendIdsDTO;
 import net.wishwall.domain.FriendLikeNameDTO;
 import net.wishwall.domain.FriendListDTO;
 import net.wishwall.domain.GroupDTO;
+import net.wishwall.domain.GroupsDTO;
 import net.wishwall.domain.LoginDTO;
-import net.wishwall.domain.MyGroupsDTO;
-import net.wishwall.domain.WishsDTO;
 import net.wishwall.domain.ProvCityAreaDTO;
 import net.wishwall.domain.RegisterDTO;
 import net.wishwall.domain.ResultDTO;
 import net.wishwall.domain.UploadTokenDTO;
 import net.wishwall.domain.UserDTO;
 import net.wishwall.domain.UsersDTO;
+import net.wishwall.domain.WishsDTO;
 import net.wishwall.utils.SpUtil;
 
 import java.io.IOException;
@@ -213,8 +212,8 @@ public class ApiClient {
      * 查询所有群
      * @param callback
      */
-    public static void findAllGroups(Callback<AllGroupsDTO>callback){
-        Call<AllGroupsDTO> call = apiService.findAllGroups();
+    public static void findAllGroups(Callback<GroupsDTO>callback){
+        Call<GroupsDTO> call = apiService.findAllGroups();
         call.enqueue(callback);
     }
 
@@ -242,12 +241,11 @@ public class ApiClient {
     }
 
     /**
-     * 查询我加入的群的所有ID
-     * @param userId
+     * 查询我加入的群的所有I
      * @param callback
      */
-    public static void findMyGroups(String userId, Callback<MyGroupsDTO> callback){
-        Call<MyGroupsDTO> call = apiService.findMyGroups(userId);
+    public static void findMyGroups(Callback<GroupsDTO> callback){
+        Call<GroupsDTO> call = apiService.findMyGroups();
         call.enqueue(callback);
     }
 

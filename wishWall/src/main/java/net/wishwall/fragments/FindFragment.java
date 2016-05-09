@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +14,10 @@ import android.view.ViewGroup;
 import net.wishwall.Constants;
 import net.wishwall.R;
 import net.wishwall.activities.MainActivity;
-import net.wishwall.adapter.RecyclerViewAdapter;
 import net.wishwall.adapter.WishAdapter;
-import net.wishwall.domain.ResultDTO;
 import net.wishwall.domain.WishsDTO;
 import net.wishwall.service.ApiClient;
 import net.wishwall.utils.SpUtil;
-import net.wishwall.views.CustomToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +44,7 @@ public class FindFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private SpUtil localSputil;
     private Type mType = Type.REFRESH;
     private static List<WishsDTO.ResultBean> currentList = new ArrayList<WishsDTO.ResultBean>();
-    private static List<WishsDTO.ResultBean> wishList = new ArrayList<WishsDTO.ResultBean>();
+    private  List<WishsDTO.ResultBean> wishList = new ArrayList<WishsDTO.ResultBean>();
     private SpUtil userSputi;
     private static String userId;
     private enum Type{
@@ -76,7 +72,9 @@ public class FindFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         activity.setOnLocationFinishListener(new MainActivity.OnLocationFinishListener() {
             @Override
             public void finish(String cityName) {
-                initData(mType,cityName);
+                if(wishList ==null){
+                    initData(mType,cityName);
+                }
             }
         });
     }

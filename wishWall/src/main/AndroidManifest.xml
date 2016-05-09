@@ -46,7 +46,7 @@
     <application
         android:name="net.wishwall.App"
         android:allowBackup="true"
-        android:icon="@mipmap/logo"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.DesignDemo">
@@ -120,6 +120,11 @@
         <!--创建群组-->
         <activity
             android:name="net.wishwall.rong.activity.CreateGroup"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+        <!--查询群组-->
+        <activity
+            android:name="net.wishwall.rong.activity.SelectGroupActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
         <!--群详情-->

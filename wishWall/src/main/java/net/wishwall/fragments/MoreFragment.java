@@ -142,7 +142,7 @@ public class MoreFragment extends Fragment implements  OnClickListener{
 
          final NotificationManager manager = (NotificationManager)getActivity().getSystemService(Activity.NOTIFICATION_SERVICE);
          final Notification notify =new Notification();
-         notify.icon = R.mipmap.logo;
+         notify.icon = R.drawable.logo;
          notify.tickerText = "更新";
         // notify.setDefaults(Notification.DEFAULT_SOUND)
          notify.contentView = new RemoteViews(getActivity().getPackageName(), R.layout.update_notify_layout);

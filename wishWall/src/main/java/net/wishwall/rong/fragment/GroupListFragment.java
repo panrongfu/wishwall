@@ -16,8 +16,8 @@ import com.sea_monster.network.AbstractHttpRequest;
 
 import net.wishwall.Constants;
 import net.wishwall.R;
-import net.wishwall.domain.AllGroupsDTO;
-import net.wishwall.domain.AllGroupsDTO.ResultBean;
+import net.wishwall.domain.GroupsDTO;
+import net.wishwall.domain.GroupsDTO.ResultBean;
 import net.wishwall.rong.activity.GroupDetailActivity;
 import net.wishwall.rong.adapter.GroupListAdapter;
 import net.wishwall.rong.model.Groups;
@@ -48,7 +48,7 @@ public class GroupListFragment extends BaseFragment implements AdapterView.OnIte
     private String TAG = GroupListFragment.class.getSimpleName();
     private int RESULTCODE = 100;
     private ListView mGroupListView;
-    private GroupListAdapter mGroupListAdapter;
+    private GroupListAdapter mMyGroupListAdapter;
     private List<ResultBean> mResultList;
     private AbstractHttpRequest<Groups> mGetAllGroupsRequest;
     private AbstractHttpRequest<Status> mUserRequest;
@@ -57,7 +57,6 @@ public class GroupListFragment extends BaseFragment implements AdapterView.OnIte
     private Handler mHandler;
     private LoadingDialog mDialog;
     public static final String GroupListData = "GroupListData";
-
     Bundle mBundle;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,10 +80,10 @@ public class GroupListFragment extends BaseFragment implements AdapterView.OnIte
         savedInstanceState = mBundle;
 //        if (savedInstanceState != null) {
 //            mResultList = savedInstanceState.getParcelableArrayList(GroupListData);
-//            mGroupListAdapter = new GroupListAdapter(getActivity(), mResultList, mGroupMap);
-//            mGroupListView.setAdapter(mGroupListAdapter);
-//            mGroupListAdapter.setOnItemButtonClick(onItemButtonClick);
-//            mGroupListAdapter.notifyDataSetChanged();
+//            mMyGroupListAdapter = new GroupListAdapter(getActivity(), mResultList, mGroupMap);
+//            mGroupListView.setAdapter(mMyGroupListAdapter);
+//            mMyGroupListAdapter.setOnItemButtonClick(onItemButtonClick);
+//            mMyGroupListAdapter.notifyDataSetChanged();
 //            return;
 //        }
 
@@ -93,19 +92,20 @@ public class GroupListFragment extends BaseFragment implements AdapterView.OnIte
 //
 //        mGroupMap = DemoContext.getInstance().getGroupMap();
 //        mGetAllGroupsRequest = DemoContext.getInstance().getDemoApi().getAllGroups(this);
-        ApiClient.findAllGroups(new Callback<AllGroupsDTO>() {
+        ApiClient.findMyGroups(new Callback<GroupsDTO>() {
             @Override
-            public void onResponse(Call<AllGroupsDTO> call, Response<AllGroupsDTO> response) {
-                AllGroupsDTO body = response.body();
+            public void onResponse(Call<GroupsDTO> call, Response<GroupsDTO> response) {
+                GroupsDTO body = response.body();
                 if(body.getCode() == 200){
                     mResultList = body.getResult();
-                    mGroupListAdapter = new GroupListAdapter(getActivity(), mResultList, mGroupMap);
-                    mGroupListView.setAdapter(mGroupListAdapter);
-                    mGroupListAdapter.setOnItemButtonClick(onItemButtonClick);
+                    mMyGroupListAdapter = new GroupListAdapter(getActivity(), mResultList, mGroupMap);
+                    mMyGroupListAdapter.setType(GroupListAdapter.Type.MY);
+                    mGroupListView.setAdapter(mMyGroupListAdapter);
+                    mMyGroupListAdapter.setOnItemButtonClick(onItemButtonClick);
                 }
             }
             @Override
-            public void onFailure(Call<AllGroupsDTO> call, Throwable t) {
+            public void onFailure(Call<GroupsDTO> call, Throwable t) {
             }
         });
     }
@@ -146,9 +146,9 @@ public class GroupListFragment extends BaseFragment implements AdapterView.OnIte
 //                        mResultList.add(groups.getResult().get(i));
 //                    }
 //
-//                    mGroupListAdapter = new GroupListAdapter(getActivity(), mResultList, mGroupMap);
-//                    mGroupListView.setAdapter(mGroupListAdapter);
-//                    mGroupListAdapter.setOnItemButtonClick(onItemButtonClick);
+//                    mMyGroupListAdapter = new GroupListAdapter(getActivity(), mResultList, mGroupMap);
+//                    mGroupListView.setAdapter(mMyGroupListAdapter);
+//                    mMyGroupListAdapter.setOnItemButtonClick(onItemButtonClick);
                 } else {
                     WinToast.toast(getActivity(), groups.getCode());
                 }
@@ -193,10 +193,10 @@ public class GroupListFragment extends BaseFragment implements AdapterView.OnIte
     GroupListAdapter.OnItemButtonClick onItemButtonClick = new GroupListAdapter.OnItemButtonClick() {
         @Override
         public boolean onButtonClick(int position, View view) {
-            if (mGroupListAdapter == null)
+            if (mMyGroupListAdapter == null)
                 return false;
 
-            result = mGroupListAdapter.getItem(position);
+            result = mMyGroupListAdapter.getItem(position);
 
             if (result == null)
                 return false;
@@ -269,28 +269,28 @@ public class GroupListFragment extends BaseFragment implements AdapterView.OnIte
      */
     private void refreshAdapter() {
 
-        ApiClient.findAllGroups(new Callback<AllGroupsDTO>() {
+        ApiClient.findMyGroups(new Callback<GroupsDTO>() {
             @Override
-            public void onResponse(Call<AllGroupsDTO> call, Response<AllGroupsDTO> response) {
-                AllGroupsDTO body = response.body();
+            public void onResponse(Call<GroupsDTO> call, Response<GroupsDTO> response) {
+                GroupsDTO body = response.body();
                 if(body.getCode() == 200){
                     mResultList = body.getResult();
-                    mGroupListAdapter = new GroupListAdapter(getActivity(), mResultList, mGroupMap);
-                    mGroupListView.setAdapter(mGroupListAdapter);
+                    mMyGroupListAdapter = new GroupListAdapter(getActivity(), mResultList, mGroupMap);
+                    mGroupListView.setAdapter(mMyGroupListAdapter);
                 }
             }
             @Override
-            public void onFailure(Call<AllGroupsDTO> call, Throwable t) {
+            public void onFailure(Call<GroupsDTO> call, Throwable t) {
                     t.printStackTrace();
             }
         });
 
-//        if (mGroupListAdapter == null) {
-//            mGroupListAdapter = new GroupListAdapter(getActivity(), mResultList, mGroupMap);
-//            mGroupListView.setAdapter(mGroupListAdapter);
+//        if (mMyGroupListAdapter == null) {
+//            mMyGroupListAdapter = new GroupListAdapter(getActivity(), mResultList, mGroupMap);
+//            mGroupListView.setAdapter(mMyGroupListAdapter);
 //
 //        } else {
-//            mGroupListAdapter.notifyDataSetChanged();
+//            mMyGroupListAdapter.notifyDataSetChanged();
 //        }
     }
 
@@ -319,8 +319,8 @@ public class GroupListFragment extends BaseFragment implements AdapterView.OnIte
 
     @Override
     public void onDestroy() {
-        if (mGroupListAdapter != null) {
-            mGroupListAdapter = null;
+        if (mMyGroupListAdapter != null) {
+            mMyGroupListAdapter = null;
         }
         super.onDestroy();
     }

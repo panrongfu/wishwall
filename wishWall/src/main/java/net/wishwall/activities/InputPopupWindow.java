@@ -99,7 +99,7 @@ public class InputPopupWindow extends PopupWindow {
             @Override
             public void onClick(View v) {
                 if(mListener != null){
-                    mListener.send(mEditText.getText().toString());
+                    mListener.send(mEditText);
                 }
             }
         });
@@ -122,6 +122,6 @@ public class InputPopupWindow extends PopupWindow {
     }
 
     public interface OnCommSendListener{
-        void send(String text);
+        void send(EditText editText);
     }
 }

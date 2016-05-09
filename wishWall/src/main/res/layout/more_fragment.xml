@@ -47,7 +47,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.1dp"
-                android:background="@color/gray_light" />
+                android:background="@color/gray_light_light" />
 
             <RelativeLayout
                 android:id="@+id/more_about_wishwall"
@@ -79,7 +79,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.1dp"
-                android:background="@color/gray_light" />
+                android:background="@color/gray_light_light" />
 
             <RelativeLayout
                 android:id="@+id/more_version_updates"
@@ -111,7 +111,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.1dp"
-                android:background="@color/gray_light" />
+                android:background="@color/gray_light_light" />
 
             <RelativeLayout
                 android:id="@+id/more_idea_feedback"

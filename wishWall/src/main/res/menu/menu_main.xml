@@ -31,7 +31,7 @@
                 android:title="@string/add_chat" />
             <item
                 android:id="@+id/add_item2"
-                android:icon="@mipmap/de_btn_main_groups"
+                android:icon="@mipmap/join_group"
                 android:title="@string/add_select_group" />
             <item
                 android:id="@+id/add_item3"

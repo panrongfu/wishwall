@@ -40,11 +40,13 @@ dependencies {
     compile 'com.squareup.okio:okio:1.7.0'
     compile 'com.squareup.retrofit2:converter-gson:2.0.1'
     compile 'com.liulishuo.filedownloader:library:0.2.8'
+
     compile project(':IMKit')
+    compile project(':oss-android-sdk')
+
     compile files('libs/AMap_Services_V2.5.0.jar')
     compile files('libs/AMap_Location_v2.3.0_20160112.jar')
     compile files('libs/AMap_2DMap_V2.8.1_20160202.jar')
-    compile project(':oss-android-sdk')
     compile files('libs/MobCommons-2016.0426.1819.jar')
     compile files('libs/MobTools-2016.0426.1819.jar')
     compile files('libs/ShareSDK-Core-2.7.2.jar')

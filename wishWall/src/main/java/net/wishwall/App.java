@@ -3,6 +3,8 @@ package net.wishwall;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
+import android.text.TextUtils;
+import android.util.Log;
 
 import com.liulishuo.filedownloader.FileDownloader;
 
@@ -11,11 +13,13 @@ import net.wishwall.rong.message.AgreedFriendRequestMessage;
 import net.wishwall.rong.message.provider.ContactNotificationMessageProvider;
 import net.wishwall.rong.message.provider.NewDiscussionConversationProvider;
 import net.wishwall.rong.message.provider.RealTimeLocationMessageProvider;
+import net.wishwall.utils.SpUtil;
 
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.socialization.Socialization;
 import io.rong.imkit.RongContext;
 import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
 import io.rong.imlib.ipc.RongExceptionHandler;
 
 /**
@@ -27,8 +31,8 @@ public class App extends Application {
     //服务地址
     public static final String uploadBucket = "wishwall";
     public static final String endpoint = "http://oss-cn-shenzhen.aliyuncs.com";
-    public static final String baseUrl = "http://192.168.202.102:3000/";
-    public static final String downloadUrl ="http://192.168.202.102:4000/download/wishWall.apk";
+    public static final String baseUrl = "http://10.1.1.179:3000/";
+    public static final String downloadUrl ="http://10.1.1.179:4000/download/wishWall.apk";
     public static final String ContactNtf = "RC:ContactNtf";
     public static final String TxtMsg = "RC:TxtMsg";
     public static final String  packageName = "net.wishwall";
@@ -77,8 +81,27 @@ public class App extends Application {
                     e.printStackTrace();
                 }
             }
-        }
 
+            SpUtil userSpUtil = new SpUtil(this,Constants.USER_SPUTIL);
+            String token = userSpUtil.getKeyValue("token");
+            if(TextUtils.isEmpty(token)) return;
+            RongIM.connect(token, new RongIMClient.ConnectCallback() {
+                @Override
+                public void onTokenIncorrect() {
+
+                }
+                @Override
+                public void onSuccess(String s) {
+                    Log.i("onSuccess>", "userId:" + s);
+                }
+
+                @Override
+                public void onError(RongIMClient.ErrorCode errorCode) {
+
+                }
+            });
+
+        }
         //获取Context
         mContext = getApplicationContext();
         //捕获异常

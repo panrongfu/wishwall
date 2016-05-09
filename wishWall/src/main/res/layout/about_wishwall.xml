@@ -32,6 +32,7 @@
 
     </RelativeLayout>
 
+
     <net.wishwall.views.RoundImageView
         android:id="@+id/about_logo"
         android:layout_width="85dp"
@@ -39,8 +40,8 @@
         android:layout_below="@+id/relativeLayout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="45dp"
-        android:src="@mipmap/ic_user"
-        app:borderRadius="10dp"
+        android:src="@drawable/logo"
+        app:borderRadius="5dp"
         app:type="round" />
 
     <TextView
@@ -51,8 +52,8 @@
         android:layout_below="@+id/about_logo"
         android:text="许愿墙1.0"
         android:gravity="center"
-        android:textColor="@color/gray_deep"
-        android:textSize="20dp" />
+        android:textColor="@color/black"
+        android:textSize="17dp"/>
     <TextView
         android:layout_below="@+id/about_version"
         android:layout_width="match_parent"

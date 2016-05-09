@@ -79,7 +79,7 @@ public class MsgFragment extends Fragment implements View.OnClickListener,
 
     private void initViewUI(View view) {
         userSpUtil = new SpUtil(getActivity(), Constants.USER_SPUTIL);
-        connect2RongIM();
+       // connect2RongIM();
         RongIM.getInstance().enableNewComingMessageIcon(true);
         RongIM.getInstance().enableUnreadMessageIcon(true);
         mFragmentManager = getActivity().getSupportFragmentManager();

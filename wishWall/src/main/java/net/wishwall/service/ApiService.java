@@ -1,22 +1,21 @@
 package net.wishwall.service;
 
 import net.wishwall.domain.AllChatroomsDTO;
-import net.wishwall.domain.AllGroupsDTO;
 import net.wishwall.domain.ApplyAddFriendListDTO;
 import net.wishwall.domain.CodeByNameDTO;
 import net.wishwall.domain.FriendIdsDTO;
 import net.wishwall.domain.FriendLikeNameDTO;
 import net.wishwall.domain.FriendListDTO;
 import net.wishwall.domain.GroupDTO;
+import net.wishwall.domain.GroupsDTO;
 import net.wishwall.domain.LoginDTO;
-import net.wishwall.domain.MyGroupsDTO;
-import net.wishwall.domain.WishsDTO;
 import net.wishwall.domain.ProvCityAreaDTO;
 import net.wishwall.domain.RegisterDTO;
 import net.wishwall.domain.ResultDTO;
 import net.wishwall.domain.UploadTokenDTO;
 import net.wishwall.domain.UserDTO;
 import net.wishwall.domain.UsersDTO;
+import net.wishwall.domain.WishsDTO;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -187,7 +186,7 @@ public interface ApiService {
      * @return
      */
     @GET("/findAllGroups")
-    Call<AllGroupsDTO> findAllGroups();
+    Call<GroupsDTO> findAllGroups();
 
     /**
      * 加入群组
@@ -215,13 +214,11 @@ public interface ApiService {
             @Field("userId") String userId,
             @Field("groupId") String groupId);
     /**
-     * 查询我加入的群组的Id
-     * @param userId
+     * 查询我加入的群组
      * @return
      */
-    @POST("/findMyGroups")
-    @FormUrlEncoded
-    Call<MyGroupsDTO> findMyGroups(@Field("userId") String userId);
+    @GET("/findMyGroups")
+    Call<GroupsDTO> findMyGroups();
 
     /**
      * 获取所有的聊天室

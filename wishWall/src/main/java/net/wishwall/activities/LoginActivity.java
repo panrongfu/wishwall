@@ -132,7 +132,7 @@ public class LoginActivity extends BaseActivity
 			case R.id.login_forget_password:
 //				Intent intent_forget = new Intent(LoginActivity.this,FindBackPassword.class);
 //				startActivity(intent_forget);
-//				overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
+				overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
 				break;
 			case R.id.login_btn:
 				preLogin();

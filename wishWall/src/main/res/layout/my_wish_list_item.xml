@@ -70,7 +70,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/blue"
             android:visibility="invisible"
-            android:drawableLeft="@mipmap/small_like_blue"
+            android:paddingLeft="5dp"
             android:layout_marginLeft="5dp"
             android:layout_below="@+id/view" />
 

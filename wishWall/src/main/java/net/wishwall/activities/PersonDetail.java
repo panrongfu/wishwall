@@ -2,6 +2,7 @@ package net.wishwall.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
@@ -38,6 +39,7 @@ public class PersonDetail extends BaseActivity implements OnClickListener {
     private final int CHANGE = 1;
     private TextView edit;
     private TextView back;
+    private TextView title;
     private TextView me_person_detail_change;
     private TextView person_detail_name;
     private TextView person_detail_sex;
@@ -63,6 +65,7 @@ public class PersonDetail extends BaseActivity implements OnClickListener {
         userSpUtil = new SpUtil(this, Constants.USER_SPUTIL);
         back = (TextView)findViewById(R.id.person_detail_back);
         edit = (TextView)findViewById(R.id.person_detail_edit);
+        title =(TextView)findViewById(R.id.person_title);
         headportrait = (CircleImageView) findViewById(R.id.profile_image);
         person_detail_name = (TextView) findViewById(R.id.person_detail_name);
         person_detail_sex = (TextView) findViewById(R.id.person_detail_sex);
@@ -87,6 +90,17 @@ public class PersonDetail extends BaseActivity implements OnClickListener {
      */
     private void loadUserInfo() {
         String userId = userSpUtil.getKeyValue("userId");
+        Intent intent = getIntent();
+        String itemUserId = intent.getStringExtra("itemUserId");
+        String itemUserName = intent.getStringExtra("itemUserName");
+        if (TextUtils.isEmpty(itemUserId)){
+            edit.setVisibility(View.VISIBLE);
+            title.setText(R.string.personal_title);
+        }else{
+            userId = itemUserId;
+            edit.setVisibility(View.GONE);
+            title.setText(itemUserName);
+        }
         ApiClient.findUserById(userId, new Callback<UserDTO>() {
             @Override
             public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
