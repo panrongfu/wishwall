@@ -3,6 +3,7 @@ package net.wishwall.rong.activity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import net.wishwall.R;
 
@@ -25,6 +26,8 @@ public class ConversationSettingActivity extends BaseActionBarActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.chat_toolbar);
         setSupportActionBar(toolbar);
         final ActionBar ab = getSupportActionBar();
-        ab.setTitle(R.string.de_actionbar_set_conversation);
+        ab.setTitle("");
+        TextView title = (TextView)findViewById(R.id.conver_setting_title);
+        title.setText("聊天设置");
     }
 }

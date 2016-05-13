@@ -101,7 +101,6 @@ public class GroupListFragment extends BaseFragment implements AdapterView.OnIte
                     mMyGroupListAdapter = new GroupListAdapter(getActivity(), mResultList, mGroupMap);
                     mMyGroupListAdapter.setType(GroupListAdapter.Type.MY);
                     mGroupListView.setAdapter(mMyGroupListAdapter);
-                    mMyGroupListAdapter.setOnItemButtonClick(onItemButtonClick);
                 }
             }
             @Override
@@ -109,8 +108,6 @@ public class GroupListFragment extends BaseFragment implements AdapterView.OnIte
             }
         });
     }
-
-
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (mResultList != null && position != -1 && position < mResultList.size()) {
@@ -189,42 +186,6 @@ public class GroupListFragment extends BaseFragment implements AdapterView.OnIte
             Log.e(TAG, "---获取群组列表失败 ----");
         }
     }
-
-    GroupListAdapter.OnItemButtonClick onItemButtonClick = new GroupListAdapter.OnItemButtonClick() {
-        @Override
-        public boolean onButtonClick(int position, View view) {
-            if (mMyGroupListAdapter == null)
-                return false;
-
-            result = mMyGroupListAdapter.getItem(position);
-
-            if (result == null)
-                return false;
-
-            if (mGroupMap == null)
-                return false;
-
-            if (mGroupMap.containsKey(result.getGroupid())) {
-                RongIM.getInstance().startGroupChat(getActivity(), result.getGroupid(), result.getName());
-            } else {
-
-//                if (DemoContext.getInstance() != null) {
-//
-//                    if (result.getNumber().equals("500")) {
-//                        WinToast.toast(getActivity(), "群组人数已满");
-//                        return false;
-//                    }
-//
-//                    if (mDialog != null && !mDialog.isShowing())
-//                        mDialog.show();
-//
-//                    mUserRequest = DemoContext.getInstance().getDemoApi().joinGroup(result.getId(), GroupListFragment.this);
-//                }
-
-            }
-            return true;
-        }
-    };
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

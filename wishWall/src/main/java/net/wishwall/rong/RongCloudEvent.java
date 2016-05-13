@@ -21,11 +21,11 @@ import com.sea_monster.network.ApiCallback;
 
 import net.wishwall.App;
 import net.wishwall.R;
+import net.wishwall.activities.PersonDetailActivity;
 import net.wishwall.domain.GroupDTO;
 import net.wishwall.domain.UserDTO;
 import net.wishwall.rong.activity.LocationActivity;
 import net.wishwall.rong.activity.NewFriendListActivity;
-import net.wishwall.rong.activity.PersonalDetailActivity;
 import net.wishwall.rong.activity.PhotoActivity;
 import net.wishwall.rong.database.UserInfos;
 import net.wishwall.rong.fragment.ChatFragmentActivity;
@@ -463,9 +463,9 @@ public final class RongCloudEvent implements RongIMClient.OnReceiveMessageListen
             if (conversationType.equals(Conversation.ConversationType.PUBLIC_SERVICE) || conversationType.equals(Conversation.ConversationType.APP_PUBLIC_SERVICE)) {
                 RongIM.getInstance().startPublicServiceProfile(mContext, conversationType, user.getUserId());
             } else {
-                Intent in = new Intent(context, PersonalDetailActivity.class);
-                in.putExtra("USER", user);
-                context.startActivity(in);
+                Intent intent = new Intent(context, PersonDetailActivity.class);
+                intent.putExtra("USER", user);
+                context.startActivity(intent);
             }
         }
 

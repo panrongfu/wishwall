@@ -49,8 +49,8 @@
         </RelativeLayout>
         <TextView
             android:id="@+id/my_wish_item_content"
-            android:textColor="@color/gray_deep"
-            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:textSize="17sp"
             android:padding="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

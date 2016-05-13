@@ -165,14 +165,14 @@ public class MsgFragment extends Fragment implements View.OnClickListener,
             mBroadcastReciver = new ReceiveMessageBroadcastReciver();
         }
         getActivity().registerReceiver(mBroadcastReciver, intentFilter);
-        //getConversationPush();
+        getConversationPush();
         getPushMessage();
     }
 
     /**
      *
      */
-//    private void getConversationPush() {
+    private void getConversationPush() {
 //        if (getIntent() != null && getIntent().hasExtra("PUSH_CONVERSATIONTYPE") && getIntent().hasExtra("PUSH_TARGETID")) {
 //            final String conversationType = getIntent().getStringExtra("PUSH_CONVERSATIONTYPE");
 //            final String targetId = getIntent().getStringExtra("PUSH_TARGETID");
@@ -182,9 +182,9 @@ public class MsgFragment extends Fragment implements View.OnClickListener,
 //                    public void onSuccess(Conversation conversation) {
 //                        if (conversation != null) {
 //                            if (conversation.getLatestMessage() instanceof ContactNotificationMessage) {
-//                                startActivity(new Intent(ChatFragmentActivity.this, NewFriendListActivity.class));
+//                                startActivity(new Intent(getActivity(), NewFriendListActivity.class));
 //                            } else {
-//                                Uri uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon().appendPath("conversation")
+//                                Uri uri = Uri.parse("rong://" + App.packageName).buildUpon().appendPath("conversation")
 //                                        .appendPath(conversationType).appendQueryParameter("targetId", targetId).build();
 //                                Intent intent = new Intent(Intent.ACTION_VIEW);
 //                                intent.setData(uri);
@@ -198,7 +198,7 @@ public class MsgFragment extends Fragment implements View.OnClickListener,
 //                });
 //            }
 //        }
-//    }
+   }
 
     /**
      * 得到不落地 push 消息

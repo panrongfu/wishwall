@@ -71,7 +71,6 @@ public class App extends Application {
 
                 try {
                     RongIM.registerMessageType(AgreedFriendRequestMessage.class);
-
                     RongIM.registerMessageTemplate(new ContactNotificationMessageProvider());
                     RongIM.registerMessageTemplate(new RealTimeLocationMessageProvider());
                     //@ 消息模板展示
@@ -124,6 +123,14 @@ public class App extends Application {
     public static Context getContext(){
 
         return mContext;
+    }
+    public static String getWishToken(){
+        try {
+            return new SpUtil(getContext(),Constants.USER_SPUTIL).getKeyValue("wToken");
+        }catch (Exception e){
+
+        }
+        return null;
     }
 
     public static  RongIM.LocationProvider.LocationCallback getLastLocationCallback() {

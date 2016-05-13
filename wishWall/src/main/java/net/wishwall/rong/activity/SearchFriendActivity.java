@@ -1,7 +1,6 @@
 package net.wishwall.rong.activity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +15,7 @@ import com.sea_monster.network.AbstractHttpRequest;
 
 import net.wishwall.Constants;
 import net.wishwall.R;
+import net.wishwall.activities.PersonDetailActivity;
 import net.wishwall.domain.FriendLikeNameDTO;
 import net.wishwall.rong.adapter.SearchFriendAdapter;
 import net.wishwall.rong.model.Friends;
@@ -25,7 +25,6 @@ import net.wishwall.service.ApiClient;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.rong.imlib.model.UserInfo;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,6 +58,7 @@ public class SearchFriendActivity extends BaseActivity {
         mResultList = new ArrayList<FriendLikeNameDTO.ResultBean>();
         mDialog = new LoadingDialog(this);
 
+        assert mBtSearch != null;
         mBtSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,10 +91,10 @@ public class SearchFriendActivity extends BaseActivity {
         mListSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent in = new Intent(SearchFriendActivity.this, PersonalDetailActivity.class);
-                UserInfo userInfo = new UserInfo(mResultList.get(position).getUserid(), mResultList.get(position).getUsername(), Uri.parse(mResultList.get(position).getIcon()));
-                in.putExtra("USER", userInfo);
-                in.putExtra("USER_SEARCH", true);
+                Intent in = new Intent(SearchFriendActivity.this, PersonDetailActivity.class);
+//                UserInfo userInfo = new UserInfo(mResultList.get(position).getUserid(), mResultList.get(position).getUsername(), Uri.parse(mResultList.get(position).getIcon()));
+//                in.putExtra("USER", userInfo);
+                in.putExtra("USER_SEARCH", mResultList.get(position).getUserid());
                 startActivityForResult(in, Constants.SEARCH_REQUESTCODE);
             }
         });

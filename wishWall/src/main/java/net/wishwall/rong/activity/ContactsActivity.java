@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import net.wishwall.Constants;
 import net.wishwall.R;
+import net.wishwall.activities.PersonDetailActivity;
 import net.wishwall.domain.FriendListDTO;
 import net.wishwall.rong.adapter.ContactsMultiChoiceAdapter;
 import net.wishwall.rong.adapter.FriendListAdapter;
@@ -56,19 +57,31 @@ public class ContactsActivity extends BaseActionBarActivity implements SwitchGro
     private TextView textView;
     private ReceiveMessageBroadcastReciver mBroadcastReciver;
     private SpUtil userSpUtil;
+    private TextView contactTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.de_ac_address_fragment);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.conver_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.contact_toolbar);
         setSupportActionBar(toolbar);
         final ActionBar ab = getSupportActionBar();
-        ab.setTitle(getResources().getString(R.string.add_contacts));
+        ab.setTitle("");
+//        String titleStr = getResources().getString(R.string.add_contacts);
+//        SpannableString s = new SpannableString(titleStr);
+//        s.setSpan(new ForegroundColorSpan(Color.WHITE), 0, titleStr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        ab.setTitle(s);
         ab.setHomeAsUpIndicator(R.mipmap.de_actionbar_back);
         ab.setDisplayHomeAsUpEnabled(true);
+        initViewUI();
+
+    }
+
+    private void initViewUI() {
+
         userSpUtil  = new SpUtil(this,Constants.USER_SPUTIL);
+        contactTitle = (TextView)findViewById(R.id.contact_title);
+        contactTitle.setText(R.string.add_contacts);
         mListView = (PinnedHeaderListView) findViewById(R.id.de_ui_friend_list);
         mSwitchGroup = (SwitchGroup) findViewById(R.id.de_ui_friend_message);
 
@@ -196,7 +209,7 @@ public class ContactsActivity extends BaseActionBarActivity implements SwitchGro
                     RongIM.getInstance().startSubConversationList(this, Conversation.ConversationType.GROUP);
                 }
             }else {
-                Intent intent = new Intent(this, PersonalDetailActivity.class);
+                Intent intent = new Intent(this, PersonDetailActivity.class);
                 intent.putExtra("CONTACTS_USER", viewHolder.friend.getUserId());
                 startActivityForResult(intent, 19);
             }

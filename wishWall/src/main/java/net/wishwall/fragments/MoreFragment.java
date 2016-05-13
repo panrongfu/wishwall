@@ -26,11 +26,11 @@ import com.liulishuo.filedownloader.FileDownloader;
 import net.wishwall.App;
 import net.wishwall.Constants;
 import net.wishwall.R;
-import net.wishwall.activities.AboutWishwall;
+import net.wishwall.activities.AboutWishwallActivity;
 import net.wishwall.activities.ActivityCollector;
 import net.wishwall.activities.FeedBackActivity;
 import net.wishwall.activities.MainActivity;
-import net.wishwall.activities.PersonDetail;
+import net.wishwall.activities.PersonDetailActivity;
 import net.wishwall.utils.SpUtil;
 import net.wishwall.views.CustomDialogFragment;
 import net.wishwall.views.CustomExitDialog;
@@ -93,13 +93,13 @@ public class MoreFragment extends Fragment implements  OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.more_person_info:
-				Intent intent =  new Intent(getActivity(), PersonDetail.class);
+				Intent intent =  new Intent(getActivity(), PersonDetailActivity.class);
 				startActivity(intent);
 				getActivity().overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
 				break;
 			//关于
 			case R.id.more_about_wishwall:
-				Intent about =  new Intent(getActivity(), AboutWishwall.class);
+				Intent about =  new Intent(getActivity(), AboutWishwallActivity.class);
 				startActivity(about);
 				getActivity().overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
 				break;

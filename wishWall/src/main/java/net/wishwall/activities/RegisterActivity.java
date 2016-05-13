@@ -1,11 +1,11 @@
 package net.wishwall.activities;
 
-import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.URLSpan;
@@ -76,13 +76,13 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 		password = (EditText) findViewById(R.id.rg_password);
 		affirm_password = (EditText) findViewById(R.id.rg_affirm);
 		register_btn = (TextView) findViewById(R.id.register_btn);
-		rg_get_validate = (EditText) findViewById(R.id.rg_get_validate);
-		getValidate = (Button) findViewById(R.id.get_verify_code);
+		//rg_get_validate = (EditText) findViewById(R.id.rg_get_validate);
+		//getValidate = (Button) findViewById(R.id.get_verify_code);
 		checkbox = (CheckBox)findViewById(R.id.register_agree_checkbox);
 		back.setOnClickListener(this);
 		rg_get_validate.setOnClickListener(this);
 		register_btn.setOnClickListener(this);
-		getValidate.setOnClickListener(this);
+		//getValidate.setOnClickListener(this);
 		initAgree();
 	}
 	
@@ -102,9 +102,9 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 		switch (v.getId()) {
 			case R.id.register_back:
 				RegisterActivity.this.finish();
-			case R.id.get_verify_code:
-				getValCode(getValidate);
-				break;
+//			case R.id.get_verify_code:
+//				getValCode(getValidate);
+//				break;
 			case R.id.register_btn:
 				preRegister();
 				break;
@@ -126,65 +126,71 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 	/**
 	 * 获取手机验证码
 	 */
-	private void getValCode(final Button button) {
-		userPhone = phone.getText().toString();
-		userPassWord = password.getText().toString();
-		againPassWord = affirm_password.getText().toString();
-		if ("".equals(userPhone) || "".equals(userPassWord)|| "".equals(againPassWord)) {
-			if ("".equals(userPhone)) {
-				customToast.setMessage("手机号不能为空").show();
-			} else if ("".equals(userPassWord)) {
-				customToast.setMessage("密码不能为空").show();
-			} else if ("".equals(againPassWord)) {
-				customToast.setMessage("确认密码不能为空").show();
-			}
-            return;
-		}
-        /**
-         * 利用属性动画，实现倒计时重新获取验证码效果
-         */
-        button.setEnabled(false);
-        ValueAnimator valueAnimator = ValueAnimator.ofInt(60,0);
-        valueAnimator.setDuration(60000);
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                int value = (Integer) animation.getAnimatedValue();
-                button.setText("("+value+")"+ RegisterActivity.this.getResources().getString(R.string.register_refresh));
-                if(value == 0){
-                    button.setEnabled(true);
-                    button.setBackgroundResource(R.color.gray_light);
-                    button.setText(R.string.get_verify_code);
-                }
-            }
-        });
-        valueAnimator.start();
-	}
+//	private void getValCode(final Button button) {
+//		userPhone = phone.getText().toString();
+//		userPassWord = password.getText().toString();
+//		againPassWord = affirm_password.getText().toString();
+//		if ("".equals(userPhone) || "".equals(userPassWord)|| "".equals(againPassWord)) {
+//			if ("".equals(userPhone)) {
+//				customToast.setMessage("手机号不能为空").show();
+//			} else if ("".equals(userPassWord)) {
+//				customToast.setMessage("密码不能为空").show();
+//			} else if ("".equals(againPassWord)) {
+//				customToast.setMessage("确认密码不能为空").show();
+//			}
+//            return;
+//		}
+//        /**
+//         * 利用属性动画，实现倒计时重新获取验证码效果
+//         */
+//        button.setEnabled(false);
+//        ValueAnimator valueAnimator = ValueAnimator.ofInt(60,0);
+//        valueAnimator.setDuration(60000);
+//        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator animation) {
+//                int value = (Integer) animation.getAnimatedValue();
+//                button.setText("("+value+")"+ RegisterActivity.this.getResources().getString(R.string.register_refresh));
+//                if(value == 0){
+//                    button.setEnabled(true);
+//                    button.setBackgroundResource(R.color.gray_light);
+//                    button.setText(R.string.get_verify_code);
+//                }
+//            }
+//        });
+//        valueAnimator.start();
+//	}
 
 	/**
 	 * 注册账号前准备，判断用户输入的信息是否有误
 	 */
 	private void preRegister() {
-		validate = rg_get_validate.getText().toString();
-		if ("".equals(userPhone) || "".equals(userPassWord)
-				||"".equals(againPassWord)||"".equals(validate)) {
-			if ("".equals(userPhone)) {
-				customToast.setMessage("手机号不能为空").show();
-			} else if ("".equals(userPassWord)) {
-				customToast.setMessage("密码不能为空").show();
-			} else if ("".equals(againPassWord)) {
-				customToast.setMessage("确认密码不能为空").show();
-			}else if ("".equals(validate)) {
-				customToast.setMessage("验证码不能为空").show();
-			}
-		}else{
-			 //判断是否同意服务条款,同意之后才能注册
-			if(checkbox.isChecked()){
-				startRegister();
-			}else{
-				customToast.setMessage("请阅读并确认您同意服务条款再确认").show();
-			}
-		}			
+		//validate = rg_get_validate.getText().toString();
+		userPhone = phone.getText().toString();
+		userPassWord = password.getText().toString();
+		againPassWord = affirm_password.getText().toString();
+		if(TextUtils.isEmpty(userPhone)){
+			CustomToast.showMsg(this,"账号不能为空");
+			return;
+		}
+		if(TextUtils.isEmpty(userPassWord)){
+			CustomToast.showMsg(this,"密码不能为空");
+			return;
+		}
+		if(TextUtils.isEmpty(againPassWord)){
+			CustomToast.showMsg(this,"确认密码不能为空");
+			return;
+		}
+		if(!userPassWord.equals(againPassWord)){
+			CustomToast.showMsg(this,"两次密码不一致");
+			return;
+		}
+		if(!checkbox.isChecked()){
+			CustomToast.showMsg(this,"请阅读并确认您同意服务条款再确认");
+			return;
+		}
+		//开始注册
+		startRegister();
 	}
 
 	/**

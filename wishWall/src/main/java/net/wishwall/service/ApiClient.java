@@ -19,7 +19,6 @@ import net.wishwall.domain.UploadTokenDTO;
 import net.wishwall.domain.UserDTO;
 import net.wishwall.domain.UsersDTO;
 import net.wishwall.domain.WishsDTO;
-import net.wishwall.utils.SpUtil;
 
 import java.io.IOException;
 
@@ -38,7 +37,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @email pan@ipushan.com
  */
 public class ApiClient {
-    static SpUtil userSpUtil = new SpUtil(App.getContext(),"userInfo");
 
     static OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
         @Override
@@ -48,7 +46,7 @@ public class ApiClient {
 //                return chain.proceed(request);
 //            }
 
-            String wToken = userSpUtil.getKeyValue("wToken");
+            String wToken = App.getWishToken();
             Request  compressedRequest = request.newBuilder()
                         .addHeader("Authorization",wToken==null ? "":wToken)
                         .build();
@@ -144,11 +142,10 @@ public class ApiClient {
 
     /**
      * 查询所有好友id
-     * @param userid
      * @param callback
      */
-    public static void findFriendIds(String userid, Callback<FriendIdsDTO>callback){
-        Call<FriendIdsDTO> call = apiService.findFriendIds(userid);
+    public static void findFriendIds(Callback<FriendIdsDTO>callback){
+        Call<FriendIdsDTO> call = apiService.findFriendIds();
         call.enqueue(callback);
     }
 
@@ -217,6 +214,15 @@ public class ApiClient {
         call.enqueue(callback);
     }
 
+    /**
+     * 根据名称查询群
+     * @param groupName
+     * @param callback
+     */
+    public static void findGroupByName(String groupName,Callback<GroupsDTO> callback){
+        Call<GroupsDTO> call = apiService.findGroupByName(groupName);
+        call.enqueue(callback);
+    }
     /**
      * 加入群
      * @param userId

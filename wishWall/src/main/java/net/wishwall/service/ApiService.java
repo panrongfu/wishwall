@@ -113,12 +113,10 @@ public interface ApiService {
 
     /**
      * 获取好友列表的ID
-     * @param userid
      * @return
      */
-    @POST("/findFriendIds")
-    @FormUrlEncoded
-    Call<FriendIdsDTO>findFriendIds(@Field("userid") String userid);
+    @GET("/findFriendIds")
+    Call<FriendIdsDTO>findFriendIds();
 
     /**
      * 获取用户的好友列表
@@ -188,6 +186,14 @@ public interface ApiService {
     @GET("/findAllGroups")
     Call<GroupsDTO> findAllGroups();
 
+    /**
+     * 根据名称查询群组
+     * @param groupName
+     * @return
+     */
+    @POST("/findGroupByName")
+    @FormUrlEncoded
+    Call<GroupsDTO>findGroupByName(@Field("groupName") String groupName);
     /**
      * 加入群组
      * @param userId

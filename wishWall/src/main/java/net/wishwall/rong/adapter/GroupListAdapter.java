@@ -1,11 +1,13 @@
 package net.wishwall.rong.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import net.wishwall.R;
 import net.wishwall.domain.GroupsDTO.ResultBean;
@@ -39,17 +41,6 @@ public class GroupListAdapter extends android.widget.BaseAdapter {
         this.mType = mType;
     }
 
-    OnItemButtonClick mOnItemButtonClick;
-
-    public OnItemButtonClick getOnItemButtonClick() {
-        return mOnItemButtonClick;
-    }
-
-    public void setOnItemButtonClick(OnItemButtonClick onItemButtonClick) {
-        this.mOnItemButtonClick = onItemButtonClick;
-    }
-
-
     public GroupListAdapter(Context context, List<ResultBean> result, HashMap<String, Group> group) {
 
         this.mResults = result;
@@ -57,14 +48,11 @@ public class GroupListAdapter extends android.widget.BaseAdapter {
         mContext = context;
         this.groupMap = group;
         mViewList = new ArrayList<View>();
-
-
     }
 
     @Override
     public int getCount() {
         return mResults.size();
-
     }
 
     @Override
@@ -88,45 +76,22 @@ public class GroupListAdapter extends android.widget.BaseAdapter {
             viewHolder.mGroupCurrentSum = (TextView) convertView.findViewById(R.id.group_current_sum);
             viewHolder.mGroupLastmessge = (TextView) convertView.findViewById(R.id.group_last_mess);
             viewHolder.mImageView = (AsyncImageView) convertView.findViewById(R.id.group_adapter_img);
-            viewHolder.mSelectButton = (ImageView) convertView.findViewById(R.id.group_select);
-
-            if(mType == Type.MY){
-                viewHolder.mSelectButton.setVisibility(View.GONE);
-            }else if(mType == Type.ALL){
-                viewHolder.mSelectButton.setVisibility(View.VISIBLE);
-            }
-
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         if (viewHolder != null) {
-            viewHolder.mSelectButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mOnItemButtonClick != null)
-                        mOnItemButtonClick.onButtonClick(position, v);
-                }
-            });
             viewHolder.mGroupName.setText(mResults.get(position).getName());
             viewHolder.mGroupCurrentNum.setText(mResults.get(position).getNumber() + "/");
             viewHolder.mGroupCurrentSum.setText(mResults.get(position).getMax_number()+"");
             viewHolder.mGroupLastmessge.setText(mResults.get(position).getIntroduce());
-            String groupid = mResults.get(position).getGroupid();
-            if (groupMap != null) {
-                if (groupMap.containsKey(groupid)) {
-                    viewHolder.mSelectButton.setBackgroundResource(R.drawable.de_group_chat_selector);
-                } else {
-                    viewHolder.mSelectButton.setBackgroundResource(R.drawable.de_group_join_selector);
-                }
+            String path = mResults.get(position).getIcon();
+            if(!TextUtils.isEmpty(path)){
+               // viewHolder.mImageView.
+                Picasso.with(mContext).load(path).into(viewHolder.mImageView);
             }
         }
-
         return convertView;
-    }
-
-    public interface OnItemButtonClick {
-        boolean onButtonClick(int position, View view);
     }
 
     static class ViewHolder {
@@ -135,6 +100,5 @@ public class GroupListAdapter extends android.widget.BaseAdapter {
         TextView mGroupCurrentSum;
         TextView mGroupLastmessge;
         AsyncImageView mImageView;
-        ImageView mSelectButton;
     }
 }

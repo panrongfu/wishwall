@@ -105,6 +105,7 @@ public class ConversationActivity extends BaseApiActivity implements RongIMClien
     public static final int SET_TEXT_TYPING_TITLE = 1;
     public static final int SET_VOICE_TYPING_TITLE = 2;
     public static final int SET_TARGETID_TITLE = 0;
+    private TextView mTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,13 +113,17 @@ public class ConversationActivity extends BaseApiActivity implements RongIMClien
         Log.e(TAG, "---------onCreate------");
         setContentView(R.layout.conversation);
         mDialog = new LoadingDialog(this);
+
+        mTextView = (TextView)findViewById(R.id.conver_title_text);
         //设置标题栏
         Toolbar toolbar = (Toolbar) findViewById(R.id.conver_toolbar);
         setSupportActionBar(toolbar);
         final ActionBar ab = getSupportActionBar();
-        ab.setTitle(getResources().getString(R.string.app_name));
+        ab.setTitle("");
         ab.setHomeAsUpIndicator(R.mipmap.de_actionbar_back);
         ab.setDisplayHomeAsUpEnabled(true);
+
+
         Intent intent = getIntent();
         if (intent == null || intent.getData() == null) return;
 
@@ -134,8 +139,9 @@ public class ConversationActivity extends BaseApiActivity implements RongIMClien
                 .getLastPathSegment().toUpperCase(Locale.getDefault()));
 
         title = intent.getData().getQueryParameter("title");
-
+        mTextView.setText(title);
         mTargetIds = intent.getData().getQueryParameter("targetIds");
+
 
        // setActionBarTitle(mConversationType, mTargetId);
 
@@ -143,9 +149,7 @@ public class ConversationActivity extends BaseApiActivity implements RongIMClien
         checkTextInputEditTextChanged();
         isPushMessage(intent);
         //地理位置共享，若不是用地理位置共享，可忽略
-        setRealTime();
-
-
+       // setRealTime();
         if ("ConversationActivity".equals(this.getClass().getSimpleName()))
             EventBus.getDefault().register(this);
 
@@ -155,6 +159,7 @@ public class ConversationActivity extends BaseApiActivity implements RongIMClien
             @Override
             public void onTypingStatusChanged(Conversation.ConversationType type, String targetId, Collection<TypingStatus> typingStatusSet) {
                 //当输入状态的会话类型和targetID与当前会话一致时，才需要显示
+                String types = type.toString();
                 if (type.equals(mConversationType) && targetId.equals(mTargetId)) {
                     int count = typingStatusSet.size();
                     RLog.d(this, "onTypingStatusChanged", "count = " + count);
@@ -971,6 +976,7 @@ public class ConversationActivity extends BaseApiActivity implements RongIMClien
               //  getSupportActionBar().setTitle(VoiceTypingTitle);
                 break;
             case SET_TARGETID_TITLE:
+                String string = "dfdfd";
                 setActionBarTitle(mConversationType, mTargetId);
                 break;
             default:

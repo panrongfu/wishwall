@@ -254,7 +254,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
-                Intent intent =new Intent(this,SelectProvCity.class);
+                Intent intent =new Intent(this,SelectProvCityActivity.class);
                 intent.putExtra("location",location);
                 startActivityForResult(intent,SELECT_CITY);
                  break;

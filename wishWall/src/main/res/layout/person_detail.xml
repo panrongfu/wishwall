@@ -68,6 +68,7 @@
                     android:layout_margin="15dp"
                     android:src="@mipmap/ic_user"
                     app:border_color="@color/font_color"
+
                     app:border_width="2dp" />
 
                 <RelativeLayout

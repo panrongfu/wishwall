@@ -29,7 +29,6 @@ import cn.sharesdk.framework.PlatformDb;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qq.QQ;
-import cn.sharesdk.wechat.friends.Wechat;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -142,8 +141,9 @@ public class LoginActivity extends BaseActivity
 				authorize(qq);
 				break;
 			case R.id.wx_login:
-				Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
-				authorize(wechat);
+//				Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
+//				authorize(wechat);
+				CustomToast.showMsg(this,"暂不支持微信登录");
 				break;
 			case R.id.wb_login:
 				Platform sina = ShareSDK.getPlatform(SinaWeibo.NAME);
@@ -152,18 +152,21 @@ public class LoginActivity extends BaseActivity
 		}
 	}
 
+	/**
+	 * 开始授权
+	 * @param plat
+     */
     private void authorize(Platform plat) {
         //判断指定平台是否已经完成授权
-//        if(plat.isAuthValid()) {
-//            String userId = plat.getDb().getUserId();
-//            if (userId != null) {
-//               // UIHandler.sendEmptyMessage(MSG_USERID_FOUND, this);
-//             //   login(plat.getName(), userId, null);
-//                CustomToast.showMsg(this,"已经授权>>>>>>>>>>>>");
-//
-//                return;
-//            }
-//        }
+        if(plat.isAuthValid()) {
+			PlatformDb platDB = plat.getDb();
+			String userId = platDB.getUserId();
+            if (userId != null) {
+				final String userName = platDB.getUserName();
+				startLogin(userName,Constants.DEFAULT_PASSWORD);
+                return;
+            }
+        }
         plat.setPlatformActionListener(this);
         // true不使用SSO授权，false使用SSO授权
         plat.SSOSetting(true);
@@ -268,7 +271,6 @@ public class LoginActivity extends BaseActivity
         return false;
 
     }
-
     /**
 	 * 当用户切换到登录界面的时候先判断 如果用户上次登录的时候选择了记住密码，
 	 * 则系统自动获取账号密码 否则需要用户自己填写账号密码

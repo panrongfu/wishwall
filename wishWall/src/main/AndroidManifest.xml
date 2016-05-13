@@ -49,6 +49,7 @@
         android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:largeHeap="true"
         android:theme="@style/Theme.DesignDemo">
         //登录界面
         <activity
@@ -59,7 +60,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
          <activity
              android:name="net.wishwall.activities.MainActivity"
              android:screenOrientation="portrait"
@@ -78,7 +78,7 @@
             <category android:name="android.intent.category.DEFAULT" />
         </intent-filter>
         <!--关于许愿墙-->
-        <activity android:name="net.wishwall.activities.AboutWishwall"
+        <activity android:name=".activities.AboutWishwallActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
         <!--意见反馈-->
@@ -94,12 +94,12 @@
 
         <!-- 选择城市-->
         <activity
-            android:name="net.wishwall.activities.SelectProvCity"
+            android:name=".activities.SelectProvCityActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
         <!-- 省市区-->
         <activity
-            android:name="net.wishwall.activities.ProvCityArea"
+            android:name=".activities.ProvCityAreaActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
         <activity
@@ -108,12 +108,14 @@
             android:windowSoftInputMode="stateHidden|adjustResize"/>
 
         <!-- 查看个人资料-->
-        <activity android:name="net.wishwall.activities.PersonDetail"
+        <activity
+            android:launchMode="singleTop"
+            android:name=".activities.PersonDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
         <!-- 编辑个人资料-->
         <activity
-            android:name="net.wishwall.activities.EditPersonDetail"
+            android:name=".activities.EditPersonDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
 

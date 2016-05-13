@@ -14,6 +14,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -110,7 +111,7 @@ public class ChatFragmentActivity extends AppCompatActivity implements View.OnCl
      */
     private void connect2RongIM() {
         String token = userSpUtil.getKeyValue("token");
-        if("".equals(token) || token == null) return;
+        if(TextUtils.isEmpty(token)) return;
         RongIM.connect(token, new RongIMClient.ConnectCallback() {
             @Override
             public void onTokenIncorrect() {

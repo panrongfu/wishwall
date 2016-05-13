@@ -28,7 +28,7 @@ import net.wishwall.Constants;
 import net.wishwall.R;
 import net.wishwall.activities.InputPopupWindow;
 import net.wishwall.activities.MainActivity;
-import net.wishwall.activities.PersonDetail;
+import net.wishwall.activities.PersonDetailActivity;
 import net.wishwall.domain.ResultDTO;
 import net.wishwall.domain.WishsDTO;
 import net.wishwall.service.ApiClient;
@@ -219,9 +219,8 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
             public void onClick(View v) {
                 String itemUserId = mWishList.get(position).getUserid();
                 String itemUserName = mWishList.get(position).getUsername();
-                Intent intent = new Intent(mContext, PersonDetail.class);
-                intent.putExtra("itemUserId",itemUserId);
-                intent.putExtra("itemUserName",itemUserName);
+                Intent intent = new Intent(mContext, PersonDetailActivity.class);
+                intent.putExtra("WISH_ITME",itemUserId);
                 mContext.startActivity(intent);
             }
         });

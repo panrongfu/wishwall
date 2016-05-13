@@ -1,11 +1,15 @@
 package net.wishwall.rong.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -14,18 +18,11 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.sea_monster.exception.BaseException;
-import com.sea_monster.network.AbstractHttpRequest;
-
 import net.wishwall.Constants;
 import net.wishwall.R;
-import net.wishwall.domain.GroupsDTO.ResultBean;
 import net.wishwall.domain.GroupsDTO;
 import net.wishwall.domain.ResultDTO;
-import net.wishwall.rong.fragment.GroupListFragment;
-import net.wishwall.rong.model.Status;
 import net.wishwall.rong.widget.LoadingDialog;
-import net.wishwall.rong.widget.WinToast;
 import net.wishwall.service.ApiClient;
 import net.wishwall.utils.SpUtil;
 import net.wishwall.views.CustomProgressDialog;
@@ -46,7 +43,7 @@ import retrofit2.Response;
 /**
  * Created by Bob on 2015/3/28.
  */
-public class GroupDetailActivity extends BaseApiActivity implements View.OnClickListener, Handler.Callback {
+public class GroupDetailActivity extends BaseActivity implements View.OnClickListener, Handler.Callback {
 
     private static final String TAG = GroupDetailActivity.class.getSimpleName();
     private static final int HAS_JOIN = 1;
@@ -64,9 +61,6 @@ public class GroupDetailActivity extends BaseApiActivity implements View.OnClick
     private Button mGroupJoin;
     private Button mGroupQuit;
     private Button mGroupChat;
-    private ResultBean mApiResult;
-    private AbstractHttpRequest<Status> mJoinRequest;
-    private AbstractHttpRequest<Status> mQuitRequest;
     private Handler mHandler;
     private LoadingDialog mDialog;
     private CustomToast customToast;
@@ -88,7 +82,10 @@ public class GroupDetailActivity extends BaseApiActivity implements View.OnClick
         Toolbar toolbar = (Toolbar) findViewById(R.id.conver_toolbar);
         setSupportActionBar(toolbar);
         final ActionBar ab = getSupportActionBar();
-        ab.setTitle(getResources().getString(R.string.personal_title));
+        String titleStr = "详细资料";
+        SpannableString s = new SpannableString(titleStr);
+        s.setSpan(new ForegroundColorSpan(Color.WHITE), 0, titleStr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ab.setTitle(s);
         ab.setHomeAsUpIndicator(R.mipmap.de_actionbar_back);
         ab.setDisplayHomeAsUpEnabled(true);
         initView();
@@ -311,87 +308,6 @@ public class GroupDetailActivity extends BaseApiActivity implements View.OnClick
 
     }
 
-
-    @Override
-    public void onCallApiSuccess(AbstractHttpRequest request, Object obj) {
-
-        if (mJoinRequest!=null && mJoinRequest.equals(request)) {
-            if (obj instanceof Status) {
-                final Status status = (Status) obj;
-                if (status.getCode() == 200 && mApiResult != null) {
-                    WinToast.toast(this, R.string.group_join_success);
-                    Log.e(TAG, "-----------join success ----");
-                    GroupListFragment.setGroupMap(mApiResult, 1);
-
-                    if (RongIM.getInstance() != null)
-                        RongIM.getInstance().getRongIMClient().joinGroup(mApiResult.getGroupid(), mApiResult.getName(), new RongIMClient.OperationCallback() {
-                            @Override
-                            public void onSuccess() {
-
-                                Message mess = Message.obtain();
-                                mess.what = HAS_JOIN;
-                                mHandler.sendMessage(mess);
-                                RongIM.getInstance().startGroupChat(GroupDetailActivity.this, mApiResult.getGroupid(), mApiResult.getName());
-
-                            }
-                            @Override
-                            public void onError(RongIMClient.ErrorCode errorCode) {
-                            }
-                        });
-
-                    Intent intent = new Intent();
-                   // intent.putExtra("result", DemoContext.getInstance().getGroupMap());
-                    GroupDetailActivity.this.setResult(Constants.GROUP_JOIN_REQUESTCODE, intent);
-                }
-            }
-        } else if (mQuitRequest!=null &&mQuitRequest.equals(request)) {
-            if (obj instanceof Status) {
-                final Status status = (Status) obj;
-                if (status.getCode() == 200) {
-//                    WinToast.toast(this, "quit success ");
-                    GroupListFragment.setGroupMap(mApiResult, 0);
-
-                    Message mess = Message.obtain();
-                    mess.what = NO_JOIN;
-                    mHandler.sendMessage(mess);
-
-                    if (RongIM.getInstance() != null && RongIM.getInstance().getRongIMClient()!=null) {
-                        RongIM.getInstance().getRongIMClient().quitGroup(mApiResult.getGroupid(), new RongIMClient.OperationCallback() {
-                            @Override
-                            public void onSuccess() {
-                                WinToast.toast(GroupDetailActivity.this, R.string.group_quit_success);
-                                Intent intent = new Intent();
-                              //  intent.putExtra("result", DemoContext.getInstance().getGroupMap());
-                                GroupDetailActivity.this.setResult(Constants.GROUP_QUIT_REQUESTCODE, intent);
-                                Log.e(TAG, "-----------quit success ----");
-                            }
-
-                            @Override
-                            public void onError(RongIMClient.ErrorCode errorCode) {
-
-                            }
-                        });
-                    }
-                }
-            }
-        }
-    }
-
-    @Override
-    public void onCallApiFailure(AbstractHttpRequest request, BaseException e) {
-
-        if(mQuitRequest!=null && mQuitRequest.equals(request)){
-
-            if (mDialog != null)
-                mDialog.dismiss();
-
-        }else if(mJoinRequest!=null && mJoinRequest.equals(request)){
-
-            if (mDialog != null)
-                mDialog.dismiss();
-        }
-    }
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (KeyEvent.KEYCODE_BACK == event.getKeyCode()) {
@@ -405,6 +321,4 @@ public class GroupDetailActivity extends BaseApiActivity implements View.OnClick
         finish();
         return super.onOptionsItemSelected(item);
     }
-
-
 }

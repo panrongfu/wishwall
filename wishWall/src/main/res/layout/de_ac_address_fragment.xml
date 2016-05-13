@@ -6,14 +6,24 @@
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/conver_toolbar"
+        android:id="@+id/contact_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:layout_scrollFlags="scroll|enterAlways|snap"/>
+        app:layout_scrollFlags="scroll|enterAlways|snap">
+        <TextView
+            android:id="@+id/contact_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/font_color"
+            android:textSize="20sp"
+            android:text="tongxunl"/>
+    </android.support.v7.widget.Toolbar>
 
     <net.wishwall.rong.widget.PinnedHeaderListView
+        android:layout_marginTop="?actionBarSize"
         android:layout_below="@+id/conver_toolbar"
         android:id="@+id/de_ui_friend_list"
         android:layout_width="fill_parent"
