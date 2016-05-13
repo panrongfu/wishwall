@@ -1,6 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</LinearLayout>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/scan_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:layout_scrollFlags="scroll|enterAlways|snap">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/font_color"
+            android:text="@string/scan_qrcode"
+            android:textSize="20sp"
+            />
+    </android.support.v7.widget.Toolbar>
+
+    <cn.bingoogolapple.qrcode.zxing.ZXingView
+        android:layout_marginTop="?actionBarSize"
+        android:id="@+id/zxingview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:qrcv_animTime="1000"
+        app:qrcv_borderColor="@android:color/white"
+        app:qrcv_borderSize="2dp"
+        app:qrcv_cornerColor="@color/gray_blue"
+        app:qrcv_cornerLength="20dp"
+        app:qrcv_cornerSize="3dp"
+        app:qrcv_maskColor="#33FFFFFF"
+        app:qrcv_rectWidth="215dp"
+        app:qrcv_scanLineColor="@color/gray_blue"
+        app:qrcv_scanLineSize="1dp"
+        app:qrcv_topOffset="80dp" />
+</RelativeLayout>

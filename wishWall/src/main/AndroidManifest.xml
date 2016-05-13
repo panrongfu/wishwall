@@ -113,6 +113,16 @@
             android:name=".activities.PersonDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
+        <!--扫描二维码-->
+        <activity
+            android:name=".activities.ScanQRcodeActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+        <!--生成二维码名片-->
+        <activity
+            android:name=".activities.GenerateQrcodeActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
         <!-- 编辑个人资料-->
         <activity
             android:name=".activities.EditPersonDetailActivity"

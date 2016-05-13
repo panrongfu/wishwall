@@ -20,11 +20,11 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            android:clickable="true"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
         <io.codetail.widget.RevealFrameLayout
+            android:clickable="true"
             android:id="@+id/revealFrameLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -46,10 +46,10 @@
                     <ImageView
                         android:id="@+id/arrows"
                         android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_height="match_parent"
                         android:layout_margin="5dp"
                         android:clickable="true"
-                        android:scaleType="centerCrop"
+                        android:scaleType="fitCenter"
                         android:src="@mipmap/arrows" />
 
                     <EditText
@@ -73,6 +73,7 @@
                         android:id="@+id/search_group_btn"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
+                        android:clickable="true"
                         android:layout_margin="5dp"
                         android:src="@mipmap/search" />
                 </LinearLayout>

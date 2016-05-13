@@ -5,6 +5,7 @@ import android.util.Log;
 import net.wishwall.App;
 import net.wishwall.domain.AllChatroomsDTO;
 import net.wishwall.domain.ApplyAddFriendListDTO;
+import net.wishwall.domain.CenterPicDTO;
 import net.wishwall.domain.CodeByNameDTO;
 import net.wishwall.domain.FriendIdsDTO;
 import net.wishwall.domain.FriendLikeNameDTO;
@@ -426,6 +427,25 @@ public class ApiClient {
     }
 
     /**
+     * 为个人中心添加背景图片
+     * @param picUrl
+     * @param callback
+     */
+    public static void addMyCenterPic(String picUrl, Callback<ResultDTO> callback){
+        Call<ResultDTO> call = apiService.addMyCenterPic(picUrl);
+        call.enqueue(callback);
+    }
+
+    /**
+     * 查询个人中心图片
+     * @param callback
+     */
+    public static void findMyCenterPic(Callback<CenterPicDTO>callback){
+        Call<CenterPicDTO> call = apiService.findMyCenterPic();
+        call.enqueue(callback);
+    }
+
+    /**
      * 查询我的许愿条
      * @param rows
      * @param callback
@@ -446,6 +466,16 @@ public class ApiClient {
         call.enqueue(callback);
     }
 
+    /**
+     * 更加名称查许愿条
+     * @param page
+     * @param name
+     * @param callback
+     */
+    public static void findWishByName(int page,String name,Callback<WishsDTO> callback){
+        Call<WishsDTO> call = apiService.findWishByName(page, name);
+        call.enqueue(callback);
+    }
     /**
      * 提交个人意见
      * @param advise

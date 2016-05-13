@@ -2,6 +2,7 @@ package net.wishwall.service;
 
 import net.wishwall.domain.AllChatroomsDTO;
 import net.wishwall.domain.ApplyAddFriendListDTO;
+import net.wishwall.domain.CenterPicDTO;
 import net.wishwall.domain.CodeByNameDTO;
 import net.wishwall.domain.FriendIdsDTO;
 import net.wishwall.domain.FriendLikeNameDTO;
@@ -372,6 +373,23 @@ public interface ApiService {
             @Field("imgUrls") String imgUrl);
 
     /**
+     * 为个人中心添加背景图片
+     * @param picUrl
+     * @return
+     */
+    @POST("/addMyCenterPic")
+    @FormUrlEncoded
+    Call<ResultDTO> addMyCenterPic(@Field("picUrl") String picUrl);
+
+    /**
+     * 查询个人中心背景图片
+     * @return
+     */
+    @GET("/findMyCenterPic")
+    Call<CenterPicDTO>findMyCenterPic();
+
+
+    /**
      * 查找我的许愿条
      * @return
      */
@@ -389,6 +407,17 @@ public interface ApiService {
             @Field("page") int page,
             @Field("cityName") String cityName);
 
+    /**
+     * 根据名称查询许愿条
+     * @param page
+     * @param name
+     * @return
+     */
+    @POST("/findWishByName")
+    @FormUrlEncoded
+    Call<WishsDTO> findWishByName(
+            @Field("page") int page,
+            @Field("name") String name);
     /**
      * 提交个人意见
      * @param advise

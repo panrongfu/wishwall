@@ -1,5 +1,6 @@
 package net.wishwall.activities;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,6 +18,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.AccelerateInterpolator;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
@@ -29,31 +35,35 @@ import net.wishwall.R;
 import net.wishwall.fragments.FindFragment;
 import net.wishwall.fragments.MoreFragment;
 import net.wishwall.fragments.MsgFragment;
-import net.wishwall.fragments.PersonFragment;
+import net.wishwall.fragments.MeFragment;
 import net.wishwall.rong.activity.ContactsActivity;
 import net.wishwall.rong.activity.CreateGroup;
 import net.wishwall.rong.activity.FriendListActivity;
 import net.wishwall.rong.activity.SelectGroupActivity;
+import net.wishwall.utils.DensityUtil;
 import net.wishwall.utils.SpUtil;
 import net.wishwall.views.CustomToast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import io.codetail.animation.SupportAnimator;
+import io.codetail.animation.ViewAnimationUtils;
+import io.codetail.widget.RevealFrameLayout;
+
 /**
  * @author panRongFu on 2016/4/22.
  * @Description
  * @email pan@ipushan.com
  */
-public class MainActivity extends AppCompatActivity
-                implements AHBottomNavigation.OnTabSelectedListener
-                            ,NavigationView.OnNavigationItemSelectedListener, AMapLocationListener {
+public class MainActivity extends AppCompatActivity implements AHBottomNavigation.OnTabSelectedListener
+        ,NavigationView.OnNavigationItemSelectedListener, AMapLocationListener,View.OnClickListener {
 
     public static String cityName;
     private String location;
     private Fragment currentFragment;
     private FindFragment findFragment;
-    private PersonFragment personFragment;
+    private MeFragment meFragment;
     private Toolbar toolbar;
     private ActionBar ab;
     private TextView toolbarTitle;
@@ -70,6 +80,15 @@ public class MainActivity extends AppCompatActivity
     private static int currentIndex;
     public static View mainActiviyView;
 
+    RevealFrameLayout mRevealFrameLayout;
+    private SupportAnimator mAnimator;
+    CardView mCardView ;
+    ImageView mArrows;
+    ImageView mSearch;
+    EditText mSearchEditText;
+
+    FrameLayout mFramelayout;
+    private OnSearchListener mSearchListener;
 
     @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,7 +97,6 @@ public class MainActivity extends AppCompatActivity
         mainActiviyView = LayoutInflater.from(this).inflate(R.layout.main_activity,null);
         initToolbar();
         initViewUI();
-        initShareSDK();
         initLocation();
   }
     private void initToolbar(){
@@ -90,9 +108,17 @@ public class MainActivity extends AppCompatActivity
     private void initViewUI() {
         // currentFragment = new FindFragment();
         localSpUtil = new SpUtil(this,"location");
+        mFramelayout = (FrameLayout)findViewById(R.id.toolbar_framelayout);
+        mRevealFrameLayout = (RevealFrameLayout)findViewById(R.id.main_revealFrameLayout);
+        mCardView = (CardView)findViewById(R.id.main_card_search);
+        mArrows = (ImageView)findViewById(R.id.main_arrows);
+        mSearch = (ImageView)findViewById(R.id.main_search_wish);
+        mSearchEditText = (EditText)findViewById(R.id.main_edit_text_search);
         toolbarTitle =(TextView)findViewById(R.id.toolbar_title);
         bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnTabSelectedListener(this);
+        mArrows.setOnClickListener(this);
+        mSearch.setOnClickListener(this);
 
         // Create items
         AHBottomNavigationItem item1 = new AHBottomNavigationItem("信息", R.mipmap.message, R.color.de_action_white);
@@ -140,13 +166,6 @@ public class MainActivity extends AppCompatActivity
     bottomNavigation.setNotification(1, 0);
   }
 
-    /**
-     * 初始化shareSDK
-     */
-    private void initShareSDK() {
-//        ShareSDK.initSDK(this);
-//        ShareSDK.registerService(Socialization.class);
-    }
     /**
      * 初始化定位
      */
@@ -225,23 +244,19 @@ public class MainActivity extends AppCompatActivity
        currentIndex = index;
     switch (position){
         case 0:
-//            Intent intent = new Intent(this, ChatFragmentActivity.class);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//            startActivity(intent);
             showFragment(new MsgFragment());
             break;
         case 1:
             showFragment(new FindFragment());
             break;
         case 2:
-            showFragment(new PersonFragment());
+            showFragment(new MeFragment());
             break;
         case 3:
             showFragment(new MoreFragment());
             break;
     }
   }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -260,7 +275,45 @@ public class MainActivity extends AppCompatActivity
                  break;
 
             case R.id.menu_search:
-                CustomToast.showMsg(this,"搜索");
+                mCardView.setVisibility(View.VISIBLE);
+                mRevealFrameLayout.setVisibility(View.VISIBLE);
+                mSearchEditText.setFocusable(true);
+                mSearchEditText.setFocusableInTouchMode(true);
+                mSearchEditText.requestFocus();
+
+                CustomToast.showMsg(this,"宽:"+mCardView.getWidth()+"高:"+mCardView.getHeight());
+                mAnimator = ViewAnimationUtils.createCircularReveal(mCardView,mCardView.getWidth(), mCardView.getHeight()/2, 0, 3000);
+                mAnimator.setInterpolator(new AccelerateInterpolator());
+                mAnimator.setDuration(500);
+                mAnimator.addListener(new SupportAnimator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart() {
+                        ObjectAnimator aninimator = ObjectAnimator.ofFloat(mArrows, "translationX", mCardView.getWidth()/2,
+                                DensityUtil.px2dip(MainActivity.this,5));
+                        aninimator.setInterpolator(new AccelerateInterpolator());
+                        aninimator.setDuration(300);
+                        aninimator.start();
+                    }
+
+                    @Override
+                    public void onAnimationEnd() {
+                        ObjectAnimator sAnimator = ObjectAnimator.ofFloat(mSearch,"alpha",0,1,0,1);
+                        sAnimator.setInterpolator(new AccelerateInterpolator());
+                        sAnimator.setDuration(1000);
+                        sAnimator.start();
+                    }
+
+                    @Override
+                    public void onAnimationCancel() {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat() {
+
+                    }
+                });
+                mAnimator.start();
                 break;
 
             case R.id.menu_add:
@@ -296,14 +349,18 @@ public class MainActivity extends AppCompatActivity
     private void showFragment(Fragment fragment) {
         this.getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
         invalidateOptionsMenu();
+        mCardView.setVisibility(View.INVISIBLE);
         toolbar.setVisibility(View.VISIBLE);
+        mFramelayout.setVisibility(View.VISIBLE);
+        mRevealFrameLayout.setVisibility(View.INVISIBLE);
         if(fragment instanceof MsgFragment){
             toolbarTitle.setText("信息");
             ab.setTitle("");
             ab.setDisplayHomeAsUpEnabled(false);
             //ab.setHomeAsUpIndicator(null);
-        }else if(fragment instanceof PersonFragment){
+        }else if(fragment instanceof MeFragment){
             toolbar.setVisibility(View.GONE);
+            mFramelayout.setVisibility(View.GONE);
         }else if(fragment instanceof FindFragment){
             ab.setHomeAsUpIndicator(R.mipmap.xiangxia);
             ab.setDisplayHomeAsUpEnabled(true);
@@ -312,8 +369,6 @@ public class MainActivity extends AppCompatActivity
         }else if(fragment instanceof MoreFragment){
             ab.setTitle("");
             ab.setDisplayHomeAsUpEnabled(false);
-           // ab.setHideOffset(0);
-           // ab.setHomeAsUpIndicator(null);
             toolbarTitle.setText("更多");
         }
         FragmentTransaction transaction= getSupportFragmentManager().beginTransaction();
@@ -332,8 +387,35 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.main_arrows:
+                if(mAnimator !=null&&!mAnimator.isRunning()){
+                    mAnimator = mAnimator.reverse();
+                    mAnimator.setDuration(1000);
+                    mAnimator.addListener(new SupportAnimator.SimpleAnimatorListener() {
+                        @Override
+                        public void onAnimationEnd() {
+                            mAnimator = null;
+                            mCardView.setVisibility(View.GONE);
+                            mRevealFrameLayout.setVisibility(View.GONE);
+                        }
+                    });
+                    mAnimator.start();
+                }
+                break;
+            case R.id.main_search_wish:
+                if(mSearchListener !=null){
+                    String searchName =mSearchEditText.getText().toString();
+                    mSearchListener.search(searchName);
+                }
+                break;
+        }
+    }
 
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
         return false;
     }
 
@@ -379,15 +461,33 @@ public class MainActivity extends AppCompatActivity
         this.mListener = listener;
     }
 
-    public interface OnSelectCityListener {
-        void finish(String cityName);
-    }
 
     public void setOnLocationFinishListener(OnLocationFinishListener listener){
         this.mlocatinListener = listener;
     }
 
-    public interface OnLocationFinishListener{
+    public void setOnSearchListener(OnSearchListener l){
+        this.mSearchListener = l;
+    }
+
+    /**
+     * 城市选择回调接口
+     */
+    public interface OnSelectCityListener {
         void finish(String cityName);
+    }
+
+    /**
+     * 定位回调接口
+     */
+    public interface OnLocationFinishListener{
+        void finish(String name);
+    }
+
+    /**
+     * 搜索回调接口
+     */
+    public interface OnSearchListener{
+        void search(String content);
     }
 }

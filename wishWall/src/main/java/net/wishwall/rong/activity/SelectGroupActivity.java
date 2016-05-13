@@ -1,7 +1,5 @@
 package net.wishwall.rong.activity;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Color;
@@ -25,14 +23,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
-
 import net.wishwall.Constants;
 import net.wishwall.R;
 import net.wishwall.domain.GroupsDTO;
 import net.wishwall.rong.adapter.GroupListAdapter;
 import net.wishwall.service.ApiClient;
-import net.wishwall.views.CustomToast;
+import net.wishwall.utils.DensityUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +56,6 @@ public class SelectGroupActivity extends AppCompatActivity
     private List<GroupsDTO.ResultBean> mResultList;
     private HashMap<String, Group> mGroupMap;
     private int RESULTCODE = 100;
-    MaterialSearchView searchView;
     RevealFrameLayout revealFrameLayout;
     private SupportAnimator mAnimator;
      CardView cardView ;
@@ -89,9 +84,6 @@ public class SelectGroupActivity extends AppCompatActivity
         SpannableString s = new SpannableString("选择群组");
         s.setSpan(new ForegroundColorSpan(Color.WHITE), 0, titleStr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         ab.setTitle(s);
-//        int titleId = Resources.getSystem().getIdentifier("action_bar_title","id", "android");
-//        TextView androidTitleTV = (TextView) findViewById(titleId);
-//        androidTitleTV.setTextColor(Color.WHITE);
         ab.setHomeAsUpIndicator(R.mipmap.back);
         ab.setDisplayHomeAsUpEnabled(true);
     }
@@ -100,23 +92,17 @@ public class SelectGroupActivity extends AppCompatActivity
      * 初始化ui
      */
     private void initViewUI() {
-//        searchView = (MaterialSearchView) findViewById(R.id.search_view);
-//        searchView.setVoiceSearch(false);
+
         mSearchEditText =(EditText)findViewById(R.id.edit_text_search);
         arrows = (ImageView)findViewById(R.id.arrows);
         search = (ImageView)findViewById(R.id.search_group_btn);
         cardView = (CardView) findViewById(R.id.card_search);
         revealFrameLayout = (RevealFrameLayout)findViewById(R.id.revealFrameLayout);
         revealFrameLayout.setVisibility(View.INVISIBLE);
-       // searchView.setCursorDrawable(R.drawable.round_shape);
-      //  title = (TextView)findViewById(R.id.select_group_title);
         mListView = (ListView) findViewById(R.id.all_group_list);
-       // title.setText(R.string.add_select_group);
         mListView.setOnItemClickListener(this);
         arrows.setOnClickListener(this);
         search.setOnClickListener(this);
-       // searchView.setOnQueryTextListener(this);
-       // searchView.setOnSearchViewListener(this);
     }
     @Override
     public void onClick(View v) {
@@ -206,50 +192,39 @@ public class SelectGroupActivity extends AppCompatActivity
                 finish();
                 break;
             case R.id.menu_search_group:
+                revealFrameLayout.setVisibility(View.VISIBLE);
+                cardView.setVisibility(View.VISIBLE);
                 mSearchEditText.setEnabled(true);
                 mSearchEditText.setFocusable(true);
                 mSearchEditText.setFocusableInTouchMode(true);
-                final ActionBar ab = getSupportActionBar();
-                revealFrameLayout.setVisibility(View.VISIBLE);
-                cardView.setVisibility(View.VISIBLE);
-
-               // int cx = (cardView.getLeft() + cardView.getRight()) / 2;
-                //int cy = (cardView.getTop() + cardView.getBottom()) / 2;
-                int cx = cardView.getRight();
-                int cy = cardView.getBottom();
-                // get the final radius for the clipping circle
-                int dx = Math.max(cx, cardView.getWidth() - cx);
-                int dy = Math.max(cy, cardView.getHeight() - cy);
-              //  float finalRadius = (float) Math.hypot(dx, dy);
-                float radius = r(cardView.getWidth(), cardView.getHeight());
-                CustomToast.showMsg(this,"宽:"+cardView.getWidth() +"高:"+cardView.getHeight());
-                ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(ab, "alpha", 1f, 0f);
-                objectAnimator.addListener(new AnimatorListenerAdapter() {
+                animator = ViewAnimationUtils.createCircularReveal(cardView,cardView.getWidth(), cardView.getHeight()/2, 0, 3000);
+                animator.setInterpolator(new AccelerateInterpolator());
+                animator.setDuration(500);
+                animator.addListener(new SupportAnimator.AnimatorListener() {
                     @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                        animator = ViewAnimationUtils.createCircularReveal(cardView,cardView.getWidth(), cardView.getHeight()/2, 0, 3000);
-                        animator.setInterpolator(new AccelerateInterpolator());
-                        animator.setDuration(800);
-                        animator.addListener(new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationStart(Animator animation) {
-                                super.onAnimationStart(animation);
-                                ObjectAnimator sAnimator = ObjectAnimator.ofFloat(search,"alpha",0,1);
-                                sAnimator.setInterpolator(new AccelerateInterpolator());
-                                sAnimator.setDuration(3000);
-                                sAnimator.start();
-                            }
-                        });
-                        animator.start();
+                    public void onAnimationStart() {
+                        ObjectAnimator aninimator = ObjectAnimator.ofFloat(arrows, "translationX", cardView.getWidth()/2,
+                                DensityUtil.px2dip(SelectGroupActivity.this,5));
+                        aninimator.setInterpolator(new AccelerateInterpolator());
+                        aninimator.setDuration(300);
+                        aninimator.start();
                     }
 
                     @Override
-                    public void onAnimationStart(Animator animation) {
-                        super.onAnimationStart(animation);
+                    public void onAnimationEnd() {
+                        ObjectAnimator sAnimator = ObjectAnimator.ofFloat(search,"alpha",0,1,0,1);
+                        sAnimator.setInterpolator(new AccelerateInterpolator());
+                        sAnimator.setDuration(1000);
+                        sAnimator.start();
                     }
+
+                    @Override
+                    public void onAnimationCancel() {}
+
+                    @Override
+                    public void onAnimationRepeat() {}
                 });
-                objectAnimator.start();
+                animator.start();
                 break;
         }
         return super.onOptionsItemSelected(item);

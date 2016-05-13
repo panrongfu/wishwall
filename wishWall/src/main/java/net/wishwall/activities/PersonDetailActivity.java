@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -53,6 +54,8 @@ public class PersonDetailActivity extends BaseActivity implements OnClickListene
     private TextView person_detail_phone;
     private TextView person_detail_qq;
     private TextView person_detail_weixin;
+    private RelativeLayout qrcodeLayout;
+    private View qrcodeDivide;
     private TextView person_detail_born;
     private TextView person_detail_local;
     private CircleImageView headportrait;
@@ -88,12 +91,31 @@ public class PersonDetailActivity extends BaseActivity implements OnClickListene
         person_detail_phone = (TextView) findViewById(R.id.person_detail_phone);
         person_detail_qq = (TextView) findViewById(R.id.person_detail_qq);
         person_detail_weixin = (TextView) findViewById(R.id.person_detail_weixin);
+        qrcodeLayout = (RelativeLayout)findViewById(R.id.qrcode_layout);
+        qrcodeDivide = findViewById(R.id.qrcode_divide);
         person_detail_born = (TextView) findViewById(R.id.person_detail_born);
         person_detail_local = (TextView) findViewById(R.id.person_detail_local);
+        qrcodeLayout.setOnClickListener(this);
         edit.setOnClickListener(this);
         back.setOnClickListener(this);
     }
 
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.person_detail_back:
+                this.finish();
+                break;
+            case R.id.person_detail_edit:
+                doWhatByText(edit.getText());
+                break;
+            case R.id.qrcode_layout:
+                startActivity(new Intent(this,GenerateQrcodeActivity.class));
+                overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
+                break;
+        }
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -240,18 +262,6 @@ public class PersonDetailActivity extends BaseActivity implements OnClickListene
                 person_detail_local.setText(bundle.getString("detailLocal"));
                 String detaillogo = bundle.getString("detailLogo");
             }
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.person_detail_back:
-                this.finish();
-                break;
-            case R.id.person_detail_edit:
-                doWhatByText(edit.getText());
-                break;
         }
     }
 

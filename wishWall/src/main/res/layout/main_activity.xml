@@ -1,50 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout android:id="@+id/CoordinatorLayout01"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/CoordinatorLayout01"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
     <LinearLayout
-        android:layout_marginBottom="?attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="?attr/actionBarSize"
         android:orientation="vertical"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <FrameLayout
+            android:id="@+id/toolbar_framelayout"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:layout_scrollFlags="scroll|enterAlways|snap">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/toolbar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </android.support.v7.widget.Toolbar>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+                <TextView
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/font_color"
+                    android:textSize="20sp" />
+            </android.support.v7.widget.Toolbar>
+
+            <io.codetail.widget.RevealFrameLayout
+                android:clickable="true"
+                android:id="@+id/main_revealFrameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/main_card_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:cardBackgroundColor="?attr/colorPrimary"
+                    app:cardCornerRadius="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/main_arrows"
+                            android:layout_width="30dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="5dp"
+                            android:clickable="true"
+                            android:scaleType="fitCenter"
+                            android:src="@mipmap/arrows" />
+
+                        <EditText
+                            android:id="@+id/main_edit_text_search"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_margin="10dp"
+                            android:layout_weight="8"
+                            android:background="@drawable/edittext_line_bg"
+                            android:gravity="center_vertical"
+                            android:hint="search"
+                            android:paddingLeft="12dp"
+                            android:paddingRight="8dp"
+                            android:singleLine="true"
+                            android:textColor="@color/gray_blue"
+                            android:textCursorDrawable="@drawable/color_cursor">
+
+                            <requestFocus />
+                        </EditText>
+
+                        <ImageView
+                            android:id="@+id/main_search_wish"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="5dp"
+                            android:clickable="true"
+                            android:src="@mipmap/search" />
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+            </io.codetail.widget.RevealFrameLayout>
+        </FrameLayout>
 
 
         <FrameLayout
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <com.aurelhubert.ahbottomnavigation.AHBottomNavigation
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-
-        android:layout_gravity="bottom"/>
+        android:layout_gravity="bottom" />
 </android.support.design.widget.CoordinatorLayout>

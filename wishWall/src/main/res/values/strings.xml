@@ -74,8 +74,10 @@
     <string name="me_person_detail_id">身份证号码</string>
     <string name="me_person_detail_qq">QQ号</string>
     <string name="me_person_detail_weixin">微信号</string>
+    <string name="me_person_detail_qrcode">二维码名片</string>
     <string name="me_person_detail_born">出生日期</string>
     <string name="me_person_detail_local">所在地</string>
+    <string name="scan_qrcode">扫描二维码</string>
 
     <!--编辑个人资料-->
     <string name="man">男</string>
@@ -88,6 +90,7 @@
     <string name="me_input_detail_weixin">请输入你的微信号</string>
     <string name="me_input_detail_born">请输入你的出生日期</string>
     <string name="me_input_detail_local">请输入你的所在地</string>
+    <string name="me_scan_qrcode">扫描上面的二维码,加我为好友吧</string>
 
     <!--个人资料 -->
     <string name="icon_set_from_sdcard">从相册选择</string>
