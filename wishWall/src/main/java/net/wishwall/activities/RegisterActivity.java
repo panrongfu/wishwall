@@ -80,7 +80,7 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 		//getValidate = (Button) findViewById(R.id.get_verify_code);
 		checkbox = (CheckBox)findViewById(R.id.register_agree_checkbox);
 		back.setOnClickListener(this);
-		rg_get_validate.setOnClickListener(this);
+		//rg_get_validate.setOnClickListener(this);
 		register_btn.setOnClickListener(this);
 		//getValidate.setOnClickListener(this);
 		initAgree();

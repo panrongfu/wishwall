@@ -41,7 +41,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
                     android:drawableRight="@mipmap/forward"
-                    android:gravity="center"></TextView>
+                    android:gravity="center"/>
             </RelativeLayout>
 
             <View

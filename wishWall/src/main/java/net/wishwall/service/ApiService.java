@@ -166,7 +166,8 @@ public interface ApiService {
             @Field("fromUserId") String fromUserId,
             @Field("toUserId") String toUserId,
             @Field("message") String message,
-            @Field("objectName") String objectName);
+            @Field("objectName") String objectName,
+            @Field("msgType") String msgType);
 
     /**
      * 创建群组

@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +32,7 @@ import com.amap.api.location.AMapLocationListener;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 
+import net.wishwall.Constants;
 import net.wishwall.R;
 import net.wishwall.fragments.FindFragment;
 import net.wishwall.fragments.MoreFragment;
@@ -50,6 +52,8 @@ import java.util.Date;
 import io.codetail.animation.SupportAnimator;
 import io.codetail.animation.ViewAnimationUtils;
 import io.codetail.widget.RevealFrameLayout;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
 
 /**
  * @author panRongFu on 2016/4/22.
@@ -98,7 +102,9 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
         initToolbar();
         initViewUI();
         initLocation();
+        connectRongCloud();
   }
+
     private void initToolbar(){
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -199,6 +205,30 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
         }else {
             ab.setTitle(cityName);
         }
+    }
+
+    /**
+     * 链接到融云
+     */
+    private void connectRongCloud() {
+        SpUtil userSpUtil = new SpUtil(this, Constants.USER_SPUTIL);
+        String token = userSpUtil.getKeyValue("token");
+        if(TextUtils.isEmpty(token)) return;
+        RongIM.connect(token, new RongIMClient.ConnectCallback() {
+            @Override
+            public void onTokenIncorrect() {
+
+            }
+            @Override
+            public void onSuccess(String s) {
+                Log.i("onSuccess>", "userId:" + s);
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+
+            }
+        });
     }
 
     @Override

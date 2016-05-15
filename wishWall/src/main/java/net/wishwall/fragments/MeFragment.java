@@ -19,6 +19,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -166,7 +167,13 @@ public class MeFragment extends Fragment implements View.OnClickListener,
             public void onResponse(Call<CenterPicDTO> call, Response<CenterPicDTO> response) {
                 CenterPicDTO body  = response.body();
                 if(body.getCode() == 200){
-                    Picasso.with(getActivity()).load(body.getResult().getPic_url()).into(mImageView);
+
+                    CenterPicDTO.ResultBean result = body.getResult();
+                    if(result != null){
+                        String picUrl = result.getPic_url();
+                        Picasso.with(getActivity()).load(picUrl).into(mImageView);
+                    }
+
                 }
             }
             @Override
@@ -263,7 +270,7 @@ public class MeFragment extends Fragment implements View.OnClickListener,
                 break;
             case R.id.me_more_btn:
                 initMorePopupWindow(v);
-                lightOff(0.9f);
+                lightOff(0.8f);
                 break;
         }
     }

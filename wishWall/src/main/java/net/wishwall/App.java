@@ -31,11 +31,14 @@ public class App extends Application {
     //服务地址
     public static final String uploadBucket = "wishwall";
     public static final String endpoint = "http://oss-cn-shenzhen.aliyuncs.com";
-    public static final String baseUrl = "http://10.1.1.179:3000/";
+    public static final String baseUrl = "http://192.168.202.102:3000/";
     public static final String downloadUrl ="http://10.1.1.179:4000/download/wishWall.apk";
     public static final String ContactNtf = "RC:ContactNtf";
     public static final String TxtMsg = "RC:TxtMsg";
-    public static final String  packageName = "net.wishwall";
+    public static final String packageName = "net.wishwall";
+    public static final String ADD="ADD";
+    public final static String Apply="APPLY";
+
     static  Context mContext;
     private App app = null;
 
@@ -44,7 +47,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        Log.e("APPPPPPP","onCreate:>>>>>>>>>>>>>>>>>");
         ShareSDK.initSDK(this);
         ShareSDK.registerService(Socialization.class);
         FileDownloader.init(this);
@@ -80,25 +83,6 @@ public class App extends Application {
                     e.printStackTrace();
                 }
             }
-
-            SpUtil userSpUtil = new SpUtil(this,Constants.USER_SPUTIL);
-            String token = userSpUtil.getKeyValue("token");
-            if(TextUtils.isEmpty(token)) return;
-            RongIM.connect(token, new RongIMClient.ConnectCallback() {
-                @Override
-                public void onTokenIncorrect() {
-
-                }
-                @Override
-                public void onSuccess(String s) {
-                    Log.i("onSuccess>", "userId:" + s);
-                }
-
-                @Override
-                public void onError(RongIMClient.ErrorCode errorCode) {
-
-                }
-            });
 
         }
         //获取Context

@@ -78,7 +78,7 @@ public class ScanQRcodeActivity extends AppCompatActivity implements QRCodeView.
      */
     private void applyAddFriend(String friendId){
         String userId = new SpUtil(this, Constants.USER_SPUTIL).getKeyValue("userId");
-        ApiClient.sendMessage(userId, friendId, "请求添加好友", App.ContactNtf, new Callback<ResultDTO>() {
+        ApiClient.sendMessage(userId, friendId, "请求添加好友", App.ContactNtf,App.Apply, new Callback<ResultDTO>() {
             @Override
             public void onResponse(Call<ResultDTO> call, Response<ResultDTO> response) {
                 ResultDTO body = response.body();

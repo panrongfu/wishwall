@@ -66,7 +66,7 @@ public class NewFriendListActivity extends BaseActivity implements Handler.Callb
         Toolbar toolbar = (Toolbar) findViewById(R.id.conver_toolbar);
         setSupportActionBar(toolbar);
         final ActionBar ab = getSupportActionBar();
-        ab.setTitle(getResources().getString(R.string.de_new_friends));
+        ab.setTitle("");
         ab.setHomeAsUpIndicator(R.mipmap.de_actionbar_back);
         ab.setDisplayHomeAsUpEnabled(true);
         mNewFriendList = (ListView) findViewById(R.id.de_new_friend_list);
@@ -163,10 +163,10 @@ public class NewFriendListActivity extends BaseActivity implements Handler.Callb
     /**
      * 添加好友成功后，向对方发送一条消息
      *
-     * @param toUserid 对方id
+     * @param toUserId 对方id
      */
-    private void sendMessage(String toUserid) {
-        ApiClient.sendMessage(userId, toUserid, "我们已经是好友了开始对话吧", App.ContactNtf, new Callback<ResultDTO>() {
+    private void sendMessage(String toUserId) {
+        ApiClient.sendMessage(userId, toUserId,"我们开始对话吧", App.ContactNtf, App.ADD,new Callback<ResultDTO>() {
             @Override
             public void onResponse(Call<ResultDTO> call, Response<ResultDTO> response) {
                 ResultDTO body = response.body();

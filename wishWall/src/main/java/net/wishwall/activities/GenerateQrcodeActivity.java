@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -68,12 +69,16 @@ public class GenerateQrcodeActivity extends AppCompatActivity {
         String userIcon = userSpUtil.getKeyValue("userIcon");
 //        mTextView.setText(userName);
 //        Picasso.with(this).load(userIcon).into(mRoundImageView);
+        if(TextUtils.isEmpty(userIcon)){
+            createQRcodeNotLogo();
+            return;
+        }
 
         Target mTarget = new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                 logoBitmap = bitmap;
-                createQRcode();
+                createQRcodeWithLogo();
             }
 
             @Override
@@ -99,9 +104,9 @@ public class GenerateQrcodeActivity extends AppCompatActivity {
     }
 
     /**
-     * 生成二维码
+     * 生成带logo的二维码
      */
-    public void createQRcode(){
+    public void createQRcodeWithLogo(){
         String userId = userSpUtil.getKeyValue("userId");
         QRCodeEncoder.encodeQRCode(
                 userId,
@@ -119,5 +124,29 @@ public class GenerateQrcodeActivity extends AppCompatActivity {
                         CustomToast.showMsg(GenerateQrcodeActivity.this,"创建失败");
                     }
                 });
+    }
+
+    /**
+     * 生成不带logo的二维码
+     */
+    public void createQRcodeNotLogo(){
+        String userId = userSpUtil.getKeyValue("userId");
+
+        QRCodeEncoder.encodeQRCode(
+                userId,
+                DensityUtil.dip2px(this, 145),
+                Color.parseColor("#000000"),
+                new QRCodeEncoder.Delegate() {
+                    @Override
+                    public void onEncodeQRCodeSuccess(Bitmap bitmap) {
+                        mQRcodeImageView.setImageBitmap(bitmap);
+                    }
+
+                    @Override
+                    public void onEncodeQRCodeFailure() {
+                        CustomToast.showMsg(GenerateQrcodeActivity.this,"创建失败");
+                    }
+                });
+
     }
 }

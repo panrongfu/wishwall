@@ -43,13 +43,13 @@ public class ApiClient {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Request request = chain.request();
-//            if (request.body() == null || request.header("Content-Encoding") != null) {
-//                return chain.proceed(request);
-//            }
+            if (request.body() == null || request.header("Content-Encoding") != null) {
+                return chain.proceed(request);
+            }
 
             String wToken = App.getWishToken();
             Request  compressedRequest = request.newBuilder()
-                        .addHeader("Authorization",wToken==null ? "":wToken)
+                        .header("Authorization",wToken==null ? "abc":wToken)
                         .build();
             Response response = chain.proceed(compressedRequest);
            // App.cookie = response.headers().get("Set-Cookie");
@@ -190,8 +190,8 @@ public class ApiClient {
      * @param objectName
      * @param callback
      */
-    public static void sendMessage(String fromUserId,String toUserId,String message,String objectName,Callback<ResultDTO> callback){
-        Call<ResultDTO> call = apiService.sendMessage(fromUserId, toUserId, message, objectName);
+    public static void sendMessage(String fromUserId,String toUserId,String message,String objectName,String msgType,Callback<ResultDTO> callback){
+        Call<ResultDTO> call = apiService.sendMessage(fromUserId, toUserId, message, objectName,msgType);
         call.enqueue(callback);
     }
 

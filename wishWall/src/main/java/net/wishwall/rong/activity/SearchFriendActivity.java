@@ -45,10 +45,10 @@ public class SearchFriendActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.de_ac_search);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.conver_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.search_friend_toolbar);
         setSupportActionBar(toolbar);
         final ActionBar ab = getSupportActionBar();
-        ab.setTitle(getResources().getString(R.string.public_account_search));
+        ab.setTitle("");
         ab.setHomeAsUpIndicator(R.mipmap.de_actionbar_back);
         ab.setDisplayHomeAsUpEnabled(true);
 

@@ -320,7 +320,7 @@ public class PersonDetailActivity extends BaseActivity implements OnClickListene
      */
     private void applyAddFriend(){
         addFriendDialog.setMessage("请求中...").show();
-        ApiClient.sendMessage(userId, friendId, "请求添加好友", App.ContactNtf, new Callback<ResultDTO>() {
+        ApiClient.sendMessage(userId, friendId,"请求添加好友", App.ContactNtf,App.Apply, new Callback<ResultDTO>() {
             @Override
             public void onResponse(Call<ResultDTO> call, Response<ResultDTO> response) {
                 ResultDTO body = response.body();

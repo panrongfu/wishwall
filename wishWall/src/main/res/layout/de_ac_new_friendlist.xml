@@ -11,7 +11,15 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:layout_scrollFlags="scroll|enterAlways|snap"/>
+        app:layout_scrollFlags="scroll|enterAlways|snap">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/de_new_friends"
+            android:textColor="@color/font_color"
+            android:textSize="20sp"/>
+    </android.support.v7.widget.Toolbar>
 
     <ListView
         android:id="@+id/de_new_friend_list"
