@@ -72,6 +72,15 @@ public class LoginDTO {
         private String city;
         private String area;
         private String wToken;
+        private String nickname;
+
+        public String getNickname() {
+            return nickname;
+        }
+
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
+        }
 
         public String getUserid() {
             return userid;

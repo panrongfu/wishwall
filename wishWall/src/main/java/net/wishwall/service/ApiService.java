@@ -21,7 +21,6 @@ import net.wishwall.domain.WishsDTO;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 /**
@@ -71,12 +70,12 @@ public interface ApiService {
 
     /**
      * 通过用户名查询用户信息
-     * @param username
+     * @param nickname
      * @return
      */
     @POST("/findUsersLikeName")
     @FormUrlEncoded
-    Call<FriendLikeNameDTO> findUsersLikeName(@Field("username") String username);
+    Call<FriendLikeNameDTO> findUsersLikeName(@Field("nickname") String nickname);
 
 
     /**
@@ -116,8 +115,9 @@ public interface ApiService {
      * 获取好友列表的ID
      * @return
      */
-    @GET("/findFriendIds")
-    Call<FriendIdsDTO>findFriendIds();
+    @POST("/findFriendIds")
+    @FormUrlEncoded
+    Call<FriendIdsDTO>findFriendIds(@Field("userId") String userId);
 
     /**
      * 获取用户的好友列表
@@ -185,8 +185,9 @@ public interface ApiService {
      * 获取所有群组
      * @return
      */
-    @GET("/findAllGroups")
-    Call<GroupsDTO> findAllGroups();
+    @POST("/findAllGroups")
+    @FormUrlEncoded
+    Call<GroupsDTO> findAllGroups(@Field("userId") String userId);
 
     /**
      * 根据名称查询群组
@@ -225,15 +226,17 @@ public interface ApiService {
      * 查询我加入的群组
      * @return
      */
-    @GET("/findMyGroups")
-    Call<GroupsDTO> findMyGroups();
+    @POST("/findMyGroups")
+    @FormUrlEncoded
+    Call<GroupsDTO> findMyGroups(@Field("userId") String userId);
 
     /**
      * 获取所有的聊天室
      * @return
      */
-    @GET("/findAllChatrooms")
-    Call<AllChatroomsDTO> findAllChatrooms();
+    @POST("/findAllChatrooms")
+    @FormUrlEncoded
+    Call<AllChatroomsDTO> findAllChatrooms(@Field("userId") String userId);
 
     /**
      * 根据多个id查询多个用户的信息
@@ -266,8 +269,9 @@ public interface ApiService {
      * 同步获取上传指令token
      * @return
      */
-    @GET("/getUploadToken")
-    Call<UploadTokenDTO> synchGetUploadToken();
+    @POST("/getUploadToken")
+     @FormUrlEncoded
+    Call<UploadTokenDTO> synchGetUploadToken(@Field("userId") String userId);
 
     //////////
     //省市区//
@@ -277,8 +281,9 @@ public interface ApiService {
      * 获取所有的省
      * @return
      */
-    @GET("/findAllProv")
-    Call<ProvCityAreaDTO> findAllProv();
+    @POST("/findAllProv")
+    @FormUrlEncoded
+    Call<ProvCityAreaDTO> findAllProv(@Field("userId") String userId);
 
     /**
      * 获取省下的市
@@ -293,8 +298,9 @@ public interface ApiService {
      * 查出所有的市
      * @return
      */
-    @GET("/getAllCity")
-    Call<ProvCityAreaDTO> getAllCity();
+    @POST("/getAllCity")
+    @FormUrlEncoded
+    Call<ProvCityAreaDTO> getAllCity(@Field("userId") String userId);
 
     /**
      * 获取市下的区(县)
@@ -317,7 +323,7 @@ public interface ApiService {
     /**
      * 更新用户信息
      * @param userId
-     * @param userName
+     * @param nickName
      * @param icon
      * @param sex
      * @param phone
@@ -335,7 +341,7 @@ public interface ApiService {
     @FormUrlEncoded
     Call<ResultDTO> updateUserInfo(
             @Field("userId") String userId,
-            @Field("userName") String userName,
+            @Field("nickName") String nickName,
             @Field("icon") String icon,
             @Field("sex") String sex,
             @Field("phone") String phone,
@@ -386,8 +392,9 @@ public interface ApiService {
      * 查询个人中心背景图片
      * @return
      */
-    @GET("/findMyCenterPic")
-    Call<CenterPicDTO>findMyCenterPic();
+    @POST("/findMyCenterPic")
+    @FormUrlEncoded
+    Call<CenterPicDTO>findMyCenterPic(@Field("userId") String userId);
 
 
     /**

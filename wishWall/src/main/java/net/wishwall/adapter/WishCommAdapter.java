@@ -48,7 +48,7 @@ public class WishCommAdapter extends RecyclerView.Adapter<WishCommAdapter.CommVi
 
     @Override
     public void onBindViewHolder(CommViewHolder holder, int position) {
-        holder.commName.setText(commList.get(position).getUsername()+":");
+        holder.commName.setText(commList.get(position).getNickname()+":");
         holder.commText.setText(commList.get(position).getContent());
     }
 

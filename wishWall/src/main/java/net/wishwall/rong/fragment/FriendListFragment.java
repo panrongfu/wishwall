@@ -88,10 +88,6 @@ public class FriendListFragment extends Fragment implements SwitchGroup.ItemHand
         userSpUtil = new SpUtil(getActivity(), Constants.USER_SPUTIL);
         String userId = userSpUtil.getKeyValue("userId");
         if(userId.trim()== null)return;
-
-//        if (DemoContext.getInstance() != null) {
-//            userInfos = DemoContext.getInstance().getFriendList();
-//        }
         mFriendsList = new ArrayList<Friend>();
         mFriendsListDTO = new ArrayList<FriendListDTO.ResultBean>();
         ApiClient.findFriendList(userId, new Callback<FriendListDTO>() {
@@ -124,7 +120,7 @@ public class FriendListFragment extends Fragment implements SwitchGroup.ItemHand
         if(userId.trim()== null)return;
         for (FriendListDTO.ResultBean flr : mFriendsListDTO) {
             Friend friend = new Friend();
-            friend.setNickname(flr.getUsername());
+            friend.setNickname(flr.getNickname()==null?flr.getUsername():flr.getNickname());
             friend.setPortrait(flr.getIcon() + "");
             friend.setUserId(flr.getUserid());
             mFriendsList.add(friend);

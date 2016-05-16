@@ -63,6 +63,7 @@ public class WishsDTO {
         private String content;
         private String time;
         private String wishid;
+        private String nickname;
         /**
          * imageid : http://wishwall.oss-cn-shenzhen.aliyuncs.com/0c65486c-e93c-462d-a0f4-61c39fecb37d
          */
@@ -82,6 +83,14 @@ public class WishsDTO {
          */
 
         private List<WishCommBean> wish_comm;
+
+        public String getNickname() {
+            return nickname;
+        }
+
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
+        }
 
         public String getUsername() {
             return username;
@@ -170,6 +179,15 @@ public class WishsDTO {
         public static class WishLikeBean {
             private String userid;
             private String username;
+            private String nickname;
+
+            public String getNickname() {
+                return nickname;
+            }
+
+            public void setNickname(String nickname) {
+                this.nickname = nickname;
+            }
 
             public String getUserid() {
                 return userid;
@@ -193,6 +211,15 @@ public class WishsDTO {
             private String username;
             private String icon;
             private String content;
+            private String nickname;
+
+            public String getNickname() {
+                return nickname;
+            }
+
+            public void setNickname(String nickname) {
+                this.nickname = nickname;
+            }
 
             public String getUserid() {
                 return userid;

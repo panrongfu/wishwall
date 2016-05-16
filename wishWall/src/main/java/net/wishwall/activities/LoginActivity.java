@@ -318,7 +318,7 @@ public class LoginActivity extends BaseActivity
 					userSpUtil.putBooleanCode("login",true);
                     userSpUtil.setKeyValue("token",body.getResult().getToken());
                     userSpUtil.setKeyValue("userId",body.getResult().getUserid());
-					userSpUtil.setKeyValue("userName",body.getResult().getUsername());
+					userSpUtil.setKeyValue("nickName",body.getResult().getNickname());
 					userSpUtil.setKeyValue("userIcon",body.getResult().getIcon());
 					userSpUtil.setKeyValue("wToken","Bearer "+body.getResult().getWToken());
 					mindPassword();

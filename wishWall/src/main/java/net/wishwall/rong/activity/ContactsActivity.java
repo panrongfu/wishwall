@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -67,10 +68,6 @@ public class ContactsActivity extends BaseActionBarActivity implements SwitchGro
         setSupportActionBar(toolbar);
         final ActionBar ab = getSupportActionBar();
         ab.setTitle("");
-//        String titleStr = getResources().getString(R.string.add_contacts);
-//        SpannableString s = new SpannableString(titleStr);
-//        s.setSpan(new ForegroundColorSpan(Color.WHITE), 0, titleStr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//        ab.setTitle(s);
         ab.setHomeAsUpIndicator(R.mipmap.de_actionbar_back);
         ab.setDisplayHomeAsUpEnabled(true);
         initViewUI();
@@ -110,12 +107,7 @@ public class ContactsActivity extends BaseActionBarActivity implements SwitchGro
         mFriendsListDTO = new ArrayList<FriendListDTO.ResultBean>();
         ArrayList<UserInfo> userInfos = null;
         String userid = userSpUtil.getKeyValue("userId");
-        if("".equals(userid) || null == userid) return;
-
-//        //获取好友列表
-//        if (DemoContext.getInstance() != null) {
-//            userInfos = DemoContext.getInstance().getFriendList();
-//        }
+        if(TextUtils.isEmpty(userid)) return;
         ApiClient.findFriendList(userid, new Callback<FriendListDTO>() {
             @Override
             public void onResponse(Call<FriendListDTO> call, Response<FriendListDTO> response) {
@@ -132,18 +124,9 @@ public class ContactsActivity extends BaseActionBarActivity implements SwitchGro
     }
     private void getFriendInfo(List<FriendListDTO.ResultBean> mFriendsListDTO) {
         mFriendsList = new ArrayList<Friend>();
-//        if (userInfos != null) {
-//            for (UserInfo userInfo : userInfos) {
-//                Friend friend = new Friend();
-//                friend.setNickname(userInfo.getName());
-//                friend.setPortrait(userInfo.getPortraitUri() + "");
-//                friend.setUserId(userInfo.getUserId());
-//                mFriendsList.add(friend);
-//            }
-//        }
         for(FriendListDTO.ResultBean fds :mFriendsListDTO){
             Friend friend = new Friend();
-            friend.setNickname(fds.getUsername());
+            friend.setNickname(fds.getNickname());
             friend.setPortrait(fds.getIcon() + "");
             friend.setUserId(fds.getUserid());
             mFriendsList.add(friend);

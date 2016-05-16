@@ -68,7 +68,7 @@
     <string name="change_detail">编辑</string>
     <string name="save_detail">保存</string>
     <string name="change_person_detail">编辑资料</string>
-    <string name="me_person_detail_name">姓名</string>
+    <string name="me_person_detail_name">昵称</string>
     <string name="me_person_detail_sex">性别</string>
     <string name="me_person_detail_phone">手机</string>
     <string name="me_person_detail_id">身份证号码</string>
@@ -82,7 +82,7 @@
     <!--编辑个人资料-->
     <string name="man">男</string>
     <string name="girl">女</string>
-    <string name="me_input_detail_name">请输入你的姓名</string>
+    <string name="me_input_detail_name">请输入你的昵称</string>
     <string name="me_input_detail_sex">请输入你的性别</string>
     <string name="me_input_detail_phone">请输入你的手机号</string>
     <string name="me_input_detail_id">请输入你的身份证号码</string>

@@ -103,11 +103,11 @@ public class ApiClient {
 
     /**
      * 通过用户名查询用户信息
-     * @param username
+     * @param nickname
      * @param callback
      */
-    public static void findUsersLikeName(String username, Callback<FriendLikeNameDTO> callback){
-        Call<FriendLikeNameDTO> call = apiService.findUsersLikeName(username);
+    public static void findUsersLikeName(String nickname, Callback<FriendLikeNameDTO> callback){
+        Call<FriendLikeNameDTO> call = apiService.findUsersLikeName(nickname);
         call.enqueue(callback);
     }
 
@@ -146,7 +146,7 @@ public class ApiClient {
      * @param callback
      */
     public static void findFriendIds(Callback<FriendIdsDTO>callback){
-        Call<FriendIdsDTO> call = apiService.findFriendIds();
+        Call<FriendIdsDTO> call = apiService.findFriendIds(null);
         call.enqueue(callback);
     }
 
@@ -211,7 +211,7 @@ public class ApiClient {
      * @param callback
      */
     public static void findAllGroups(Callback<GroupsDTO>callback){
-        Call<GroupsDTO> call = apiService.findAllGroups();
+        Call<GroupsDTO> call = apiService.findAllGroups(null);
         call.enqueue(callback);
     }
 
@@ -252,7 +252,7 @@ public class ApiClient {
      * @param callback
      */
     public static void findMyGroups(Callback<GroupsDTO> callback){
-        Call<GroupsDTO> call = apiService.findMyGroups();
+        Call<GroupsDTO> call = apiService.findMyGroups(null);
         call.enqueue(callback);
     }
 
@@ -261,7 +261,7 @@ public class ApiClient {
      * @param callback
      */
     public static void findAllChatrooms(Callback<AllChatroomsDTO> callback){
-        Call<AllChatroomsDTO> call = apiService.findAllChatrooms();
+        Call<AllChatroomsDTO> call = apiService.findAllChatrooms(null);
         call.enqueue(callback);
     }
 
@@ -312,7 +312,7 @@ public class ApiClient {
      */
     public static retrofit2.Response<UploadTokenDTO> synchGetUploadToken(){
         try{
-            Call<UploadTokenDTO> call = apiService.synchGetUploadToken();
+            Call<UploadTokenDTO> call = apiService.synchGetUploadToken(null);
             return call.execute();
         }catch (Exception e){
             e.printStackTrace();
@@ -329,7 +329,7 @@ public class ApiClient {
      * @return
      */
     public static void findAllProv(Callback<ProvCityAreaDTO> callback){
-        Call<ProvCityAreaDTO> call = apiService.findAllProv();
+        Call<ProvCityAreaDTO> call = apiService.findAllProv(null);
         call.enqueue(callback);
     }
 
@@ -349,7 +349,7 @@ public class ApiClient {
      * @return
     */
     public static void getAllCity(Callback<ProvCityAreaDTO> callback){
-        Call<ProvCityAreaDTO> call = apiService.getAllCity();
+        Call<ProvCityAreaDTO> call = apiService.getAllCity(null);
         call.enqueue(callback);
     }
 
@@ -376,7 +376,7 @@ public class ApiClient {
     /**
      * 更新个人信息
      * @param userId
-     * @param userName
+     * @param nickName
      * @param icon
      * @param sex
      * @param phone
@@ -391,13 +391,13 @@ public class ApiClient {
      * @param callback
      */
     public static void updateUserInfo(
-                        String userId,String userName, String icon,
+                        String userId,String nickName, String icon,
                         String sex,  String phone, String year, String month,
                         String day, String province, String city, String area,
                         String wx, String qq,Callback<ResultDTO> callback){
 
         Call<ResultDTO> call = apiService.updateUserInfo(
-                         userId, userName, icon, sex, phone, year,
+                         userId, nickName, icon, sex, phone, year,
                          month, day, province, city, area, wx, qq);
         call.enqueue(callback);
     }
@@ -441,7 +441,7 @@ public class ApiClient {
      * @param callback
      */
     public static void findMyCenterPic(Callback<CenterPicDTO>callback){
-        Call<CenterPicDTO> call = apiService.findMyCenterPic();
+        Call<CenterPicDTO> call = apiService.findMyCenterPic(null);
         call.enqueue(callback);
     }
 

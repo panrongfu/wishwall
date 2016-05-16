@@ -16,12 +16,12 @@
         "source": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_ic_keyboard.xml"
     },
     {
-        "merged": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_btn_sound_off_selector.xml",
-        "source": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_btn_sound_off_selector.xml"
-    },
-    {
         "merged": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_ic_smiley.xml",
         "source": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_ic_smiley.xml"
+    },
+    {
+        "merged": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_btn_sound_off_selector.xml",
+        "source": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_btn_sound_off_selector.xml"
     },
     {
         "merged": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_ic_extend.xml",

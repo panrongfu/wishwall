@@ -19,7 +19,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -167,7 +166,6 @@ public class MeFragment extends Fragment implements View.OnClickListener,
             public void onResponse(Call<CenterPicDTO> call, Response<CenterPicDTO> response) {
                 CenterPicDTO body  = response.body();
                 if(body.getCode() == 200){
-
                     CenterPicDTO.ResultBean result = body.getResult();
                     if(result != null){
                         String picUrl = result.getPic_url();

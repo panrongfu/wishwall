@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Process;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,8 @@ import net.wishwall.views.CustomExitDialog;
 import net.wishwall.views.CustomToast;
 
 import java.io.File;
+
+import io.rong.imkit.RongIM;
 
 
 /**
@@ -194,10 +197,7 @@ public class MoreFragment extends Fragment implements  OnClickListener{
         }else {
             CustomToast.showMsg(getActivity(),"SD卡不可用");
         }
-
 	}
-
-
 	public void exit() {
 
 		exitDialog = new CustomExitDialog(getActivity(),"你确定要退出当前账号？", R.style.mystyle);
@@ -206,6 +206,13 @@ public class MoreFragment extends Fragment implements  OnClickListener{
 			public void loginOut() {
 				ActivityCollector.finishAllActivities();
                 userSpUtil.putBooleanCode("login",false);
+                RongIM.getInstance().logout();
+                try {
+                    Thread.sleep(500);
+                    Process.killProcess(Process.myPid());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 exitDialog.dismiss();
                 mainActivity.finish();
             }

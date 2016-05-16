@@ -74,6 +74,15 @@ public class UserDTO {
         private String area;
         private String weixin;
         private String qq;
+        private String nickname;
+
+        public String getNickname() {
+            return nickname;
+        }
+
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
+        }
 
         public String getQq() {
             return qq;

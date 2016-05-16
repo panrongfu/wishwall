@@ -1,6 +1,7 @@
 package net.wishwall.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,8 +12,11 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 import net.wishwall.R;
+import net.wishwall.activities.ZoomImageActivity;
+import net.wishwall.domain.WishImageBean;
 import net.wishwall.domain.WishsDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,7 +51,22 @@ public class WishItemAdapter extends RecyclerView.Adapter<WishItemAdapter.ItemVi
 
     @Override
     public void onBindViewHolder(WishItemAdapter.ItemViewHolder holder, int position) {
+
         Picasso.with(mContext).load(wishItemGridList.get(position).getImageid()).into(holder.itemImage);
+        holder.itemImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<WishImageBean> wrw = new ArrayList<WishImageBean>();
+                for(int i=0;i<wishItemGridList.size();i++){
+                    WishImageBean wib = new WishImageBean();
+                    wib.setImageid(wishItemGridList.get(i).getImageid());
+                    wrw.add(wib);
+                }
+                Intent intent = new Intent(mContext, ZoomImageActivity.class);
+                intent.putExtra("list",wrw);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override

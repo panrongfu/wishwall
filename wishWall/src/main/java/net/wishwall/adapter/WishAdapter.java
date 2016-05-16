@@ -62,7 +62,7 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
     private InputMethodManager mMinputMethodManager;
     private SpUtil userSputil;
     private static String userId ;
-    private static String userName;
+    private static String nickName;
     private static int LIKE = 0X00;
     private static int COMM = 0X01;
     private static int UNLIKE = 0X11;
@@ -95,7 +95,7 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
         mMinputMethodManager = (InputMethodManager) mContext.getSystemService(mContext.INPUT_METHOD_SERVICE);
 
         userId = userSputil.getKeyValue("userId");
-        userName = userSputil.getKeyValue("userName");
+        nickName = userSputil.getKeyValue("nickName");
         mInflater = LayoutInflater.from(context);
     }
 
@@ -137,7 +137,7 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
                                     //更新wishlist的数据，为了让用户马上看到评论的效果
                                     WishsDTO.ResultBean.WishCommBean commBean = new WishsDTO.ResultBean.WishCommBean();
                                     commBean.setUserid(userId);
-                                    commBean.setUsername(userName);
+                                    commBean.setNickname(nickName);
                                     commBean.setContent(commText);
                                     mWishList.get(position).getWish_comm().add(commBean);
                                     //commBean.setIcon();
@@ -188,7 +188,7 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
             Picasso.with(mContext).load(path).into(holder.itemImg);
         }
         //设置item的用户名
-        holder.itemNam.setText(mWishList.get(position).getUsername());
+        holder.itemNam.setText(mWishList.get(position).getNickname());
         //设置item时间
         holder.itemTime.setText(DateTimeUtil.yyyyMMddHHmm(mWishList.get(position).getTime()));
         //设置item内容
@@ -245,7 +245,7 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
                                     //更新wishlist的数据，为了让用户马上看到点赞的效果
                                     WishsDTO.ResultBean.WishLikeBean likeBean = new WishsDTO.ResultBean.WishLikeBean();
                                     likeBean.setUserid(userId);
-                                    likeBean.setUsername(userName);
+                                    likeBean.setNickname(nickName);
                                     mWishList.get(position).getWish_like().add(likeBean);
 
                                     Message msg = Message.obtain();
@@ -338,7 +338,7 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
         holder.itemLikeList.setVisibility(View.VISIBLE);
         StringBuffer sb = new StringBuffer();
         for(int i=0; i<likeListLenght; i++){
-            sb.append(mWishList.get(position).getWish_like().get(i).getUsername());
+            sb.append(mWishList.get(position).getWish_like().get(i).getNickname());
             if(i == likeListLenght -1){
                 sb.append("觉得很赞");
             }else if (likeListLenght >=10){

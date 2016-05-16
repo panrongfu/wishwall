@@ -3,7 +3,6 @@ package net.wishwall;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.liulishuo.filedownloader.FileDownloader;
@@ -19,7 +18,6 @@ import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.socialization.Socialization;
 import io.rong.imkit.RongContext;
 import io.rong.imkit.RongIM;
-import io.rong.imlib.RongIMClient;
 import io.rong.imlib.ipc.RongExceptionHandler;
 
 /**
@@ -31,7 +29,7 @@ public class App extends Application {
     //服务地址
     public static final String uploadBucket = "wishwall";
     public static final String endpoint = "http://oss-cn-shenzhen.aliyuncs.com";
-    public static final String baseUrl = "http://192.168.202.102:3000/";
+    public static final String baseUrl = "http://10.1.1.179:3000/";
     public static final String downloadUrl ="http://10.1.1.179:4000/download/wishWall.apk";
     public static final String ContactNtf = "RC:ContactNtf";
     public static final String TxtMsg = "RC:TxtMsg";

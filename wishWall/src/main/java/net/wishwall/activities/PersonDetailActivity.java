@@ -168,7 +168,7 @@ public class PersonDetailActivity extends BaseActivity implements OnClickListene
                     if(!TextUtils.isEmpty(logoUrl)){
                         Picasso.with(PersonDetailActivity.this).load(logoUrl).into(headportrait);
                     }
-                    name = body.getResult().getUsername();
+                    name = body.getResult().getNickname();
                     sex = body.getResult().getSex();
                     phone = body.getResult().getPhone();
                     qq = body.getResult().getQq();

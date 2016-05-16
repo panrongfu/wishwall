@@ -98,7 +98,7 @@
                         android:gravity="center"
                         android:paddingRight="5dp"
                         android:textColor="@color/gray_deep"
-                        android:textSize="15sp"></TextView>
+                        android:textSize="15sp"/>
                 </RelativeLayout>
 
                 <View
