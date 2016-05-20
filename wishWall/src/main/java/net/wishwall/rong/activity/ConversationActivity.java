@@ -20,7 +20,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.sea_monster.exception.BaseException;
 import com.sea_monster.network.AbstractHttpRequest;
 
 import net.wishwall.Constants;
@@ -68,7 +67,7 @@ import io.rong.message.VoiceMessage;
  * 2，加载会话页面
  * 3，push 和 通知 判断
  */
-public class ConversationActivity extends BaseApiActivity implements RongIMClient.RealTimeLocationListener, Handler.Callback {
+public class ConversationActivity extends BaseActivity implements RongIMClient.RealTimeLocationListener, Handler.Callback {
 
     private String TAG = ConversationActivity.class.getSimpleName();
     /**
@@ -610,16 +609,6 @@ public class ConversationActivity extends BaseApiActivity implements RongIMClien
             }
         }
     }
-
-
-    @Override
-    public void onCallApiSuccess(AbstractHttpRequest request, Object obj) {
-        if (mGetMyGroupsRequest != null && mGetMyGroupsRequest.equals(request)) {
-            Log.e(TAG, "---push--onCallApiSuccess-");
-            getMyGroupApiSuccess(obj);
-        }
-    }
-
     /**
      * @param obj
      */
@@ -674,12 +663,6 @@ public class ConversationActivity extends BaseApiActivity implements RongIMClien
                 }
             }
         }
-    }
-
-
-    @Override
-    public void onCallApiFailure(AbstractHttpRequest request, BaseException e) {
-        Log.e(TAG, "---push--onCallApiFailure-");
     }
 
     @Override

@@ -13,7 +13,7 @@ import net.wishwall.R;
 /**
  * Created by Administrator on 2015/3/2.
  */
-public class NewMessageRemindActivity extends BaseActionBarActivity  {
+public class NewMessageRemindActivity extends BaseActivity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

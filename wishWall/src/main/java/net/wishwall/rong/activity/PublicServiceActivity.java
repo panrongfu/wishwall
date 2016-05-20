@@ -12,7 +12,7 @@ import net.wishwall.R;
 /**
  * Created by rongdev on 15/4/10.
  */
-public class PublicServiceActivity extends BaseActionBarActivity {
+public class PublicServiceActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

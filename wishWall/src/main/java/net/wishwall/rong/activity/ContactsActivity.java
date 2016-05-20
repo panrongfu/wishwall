@@ -44,7 +44,7 @@ import retrofit2.Response;
 /**
  * Created by Administrator on 2015/3/26.
  */
-public class ContactsActivity extends BaseActionBarActivity implements SwitchGroup.ItemHander, View.OnClickListener, TextWatcher, FriendListAdapter.OnFilterFinished, AdapterView.OnItemClickListener{
+public class ContactsActivity extends BaseActivity implements SwitchGroup.ItemHander, View.OnClickListener, TextWatcher, FriendListAdapter.OnFilterFinished, AdapterView.OnItemClickListener{
 
     private String TAG = ContactsActivity.class.getSimpleName();
     protected ContactsMultiChoiceAdapter mAdapter;

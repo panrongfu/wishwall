@@ -27,7 +27,7 @@ import io.rong.imlib.RongIMClient;
 /**
  * Created by Bob on 15/8/24.
  */
-public class DisturbActivity extends BaseActionBarActivity implements View.OnClickListener, Handler.Callback {
+public class DisturbActivity extends BaseActivity implements View.OnClickListener, Handler.Callback {
 
     private String TAG = DisturbActivity.class.getSimpleName();
 

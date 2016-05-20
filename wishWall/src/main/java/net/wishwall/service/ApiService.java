@@ -445,6 +445,7 @@ public interface ApiService {
     @POST("/likeWish")
     @FormUrlEncoded
     Call<ResultDTO> likeWish(
+            @Field("likeId")String likeId,
             @Field("wishId") String wishId,
             @Field("type") String type);
 

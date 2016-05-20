@@ -48,12 +48,12 @@
         "source": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_fr_photo.xml"
     },
     {
-        "merged": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_item_public_service_input_menu.xml",
-        "source": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_item_public_service_input_menu.xml"
-    },
-    {
         "merged": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_activity.xml",
         "source": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_activity.xml"
+    },
+    {
+        "merged": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_item_public_service_input_menu.xml",
+        "source": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_item_public_service_input_menu.xml"
     },
     {
         "merged": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_ac_webview.xml",

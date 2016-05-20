@@ -180,6 +180,15 @@ public class WishsDTO {
             private String userid;
             private String username;
             private String nickname;
+            private String likeid;
+
+            public String getLikeid() {
+                return likeid;
+            }
+
+            public void setLikeid(String likeid) {
+                this.likeid = likeid;
+            }
 
             public String getNickname() {
                 return nickname;

@@ -6,12 +6,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
-import android.widget.GridView;
 import android.widget.TextView;
 
 import net.wishwall.R;
 import net.wishwall.adapter.ExpandableListViewAdapter;
-import net.wishwall.adapter.MyGridViewAdapter;
 import net.wishwall.domain.ProvCityAreaDTO;
 import net.wishwall.service.ApiClient;
 import net.wishwall.views.CustomProgressDialog;
@@ -33,7 +31,6 @@ public class SelectProvCityActivity extends BaseActivity  {
 
 	private TextView choose_city_back;
 	private TextView gps_local;
-	private GridView choose_hotcity_gv;
 	private ExpandableListView expandableListView;
 	private ExpandableListViewAdapter expandableListViewAdapter;
 	private CustomProgressDialog progressDialog ;
@@ -58,8 +55,6 @@ public class SelectProvCityActivity extends BaseActivity  {
 		progressDialog.setMessage("加载中...").show();
 		choose_city_back = (TextView) findViewById(R.id.choose_city_back);
 		gps_local = (TextView) findViewById(R.id.gps_local);
-		choose_hotcity_gv = (GridView) findViewById(R.id.choose_hotcity_gv);
-		choose_hotcity_gv.setAdapter(new MyGridViewAdapter(this));
 		gps_local.setOnClickListener(new ChooseCityBtnClickListener());
 		choose_city_back.setOnClickListener(new ChooseCityBtnClickListener());
 		expandableListView = (ExpandableListView) findViewById(R.id.choose_city_list);

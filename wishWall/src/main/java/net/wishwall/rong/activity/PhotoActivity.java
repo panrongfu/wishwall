@@ -20,7 +20,7 @@ import io.rong.imkit.tools.PhotoFragment;
 /**
  * Created by DragonJ on 15/4/13.
  */
-public class PhotoActivity extends BaseActionBarActivity {
+public class PhotoActivity extends BaseActivity {
     PhotoFragment mPhotoFragment;
     Uri mUri;
     Uri mDownloaded;

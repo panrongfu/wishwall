@@ -231,24 +231,6 @@ public class ChatFragmentActivity extends AppCompatActivity implements View.OnCl
 
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//
-//        MenuInflater inflater = getMenuInflater();
-//        this.mMenu = menu;
-//
-//        inflater.inflate(R.menu.de_main_menu, menu);
-//        if (hasNewFriends) {
-//            mMenu.getItem(0).setIcon(getResources().getDrawable(R.mipmap.de_ic_add_hasmessage));
-//            mMenu.getItem(0).getSubMenu().getItem(2).setIcon(getResources().getDrawable(R.mipmap.de_btn_main_contacts_select));
-//        } else {
-//            mMenu.getItem(0).setIcon(getResources().getDrawable(R.mipmap.de_ic_add));
-//            mMenu.getItem(0).getSubMenu().getItem(2).setIcon(getResources().getDrawable(R.mipmap.de_btn_main_contacts));
-//        }
-//
-//        return true;
-//    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

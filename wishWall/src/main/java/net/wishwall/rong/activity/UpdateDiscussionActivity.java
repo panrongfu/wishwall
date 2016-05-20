@@ -19,7 +19,7 @@ import io.rong.imlib.RongIMClient;
 /**
  * Created by Bob on 15/6/8.
  */
-public class UpdateDiscussionActivity extends  BaseActionBarActivity{
+public class UpdateDiscussionActivity extends  BaseActivity{
 
     private EditText mNewName;
     private String mTargetId;

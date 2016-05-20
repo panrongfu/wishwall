@@ -263,6 +263,24 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
                     isLocation = false;
                     mLocationClient.onDestroy();
                 }
+            }else{
+                //如果定位不成功默认显示广州市的许愿条
+                localSpUtil.setKeyValue("cityName",Constants.DEFALUT_CITY);
+                ab.setTitle(Constants.DEFALUT_CITY);
+                if(mlocatinListener != null){
+                    mlocatinListener.finish(Constants.DEFALUT_CITY);
+                    isLocation = false;
+                    mLocationClient.onDestroy();
+                }
+            }
+        }else{
+            //如果定位不成功默认显示广州市的许愿条
+            localSpUtil.setKeyValue("cityName",Constants.DEFALUT_CITY);
+            ab.setTitle(Constants.DEFALUT_CITY);
+            if(mlocatinListener != null){
+                mlocatinListener.finish(Constants.DEFALUT_CITY);
+                isLocation = false;
+                mLocationClient.onDestroy();
             }
         }
     }

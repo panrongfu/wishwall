@@ -29,6 +29,4 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
         Toast.makeText(mContext,ex.getMessage(),Toast.LENGTH_SHORT).show();
     }
-
-
 }

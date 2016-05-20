@@ -1,8 +1,10 @@
 package net.wishwall.service;
 
-import android.util.Log;
+import android.content.Intent;
 
 import net.wishwall.App;
+import net.wishwall.Constants;
+import net.wishwall.activities.LoginActivity;
 import net.wishwall.domain.AllChatroomsDTO;
 import net.wishwall.domain.ApplyAddFriendListDTO;
 import net.wishwall.domain.CenterPicDTO;
@@ -21,12 +23,19 @@ import net.wishwall.domain.UserDTO;
 import net.wishwall.domain.UsersDTO;
 import net.wishwall.domain.WishsDTO;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
+import okio.Buffer;
+import okio.BufferedSource;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -52,8 +61,31 @@ public class ApiClient {
                         .header("Authorization",wToken==null ? "abc":wToken)
                         .build();
             Response response = chain.proceed(compressedRequest);
-           // App.cookie = response.headers().get("Set-Cookie");
-            Log.e("response --<><><><><><", "intercept: " +response.headers());
+
+            ResponseBody responseBody = response.body();
+            BufferedSource source = responseBody.source();
+            source.request(Long.MAX_VALUE); // Buffer the entire body.
+            Buffer buffer = source.buffer();
+            Charset charset =Charset.forName("utf-8");
+            MediaType contentType = responseBody.contentType();
+            if (contentType != null) {
+                charset = contentType.charset(Charset.forName("utf-8"));
+            }
+            String bodyString = buffer.clone().readString(charset);
+            try {
+                JSONObject object = new JSONObject(bodyString);
+                String message = object.getString("message");
+                int code = Integer.parseInt(object.getString("code"));
+                if(message.equals(Constants.TOKEN_INVALID)&& code == 400){
+                    Intent intent =new Intent(App.getContext(), LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    App.getContext().startActivity(intent);
+                    return null;
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
             return response;
         }
     }).build();
@@ -492,8 +524,8 @@ public class ApiClient {
      * @param wishId
      * @param callback
      */
-    public static void likeWish(String wishId,String type,Callback<ResultDTO> callback){
-        Call<ResultDTO> call = apiService.likeWish(wishId,type);
+    public static void likeWish(String likeId,String wishId,String type,Callback<ResultDTO> callback){
+        Call<ResultDTO> call = apiService.likeWish(likeId,wishId,type);
         call.enqueue(callback);
     }
 

@@ -17,7 +17,7 @@ import net.wishwall.R;
  *      3，在 Activity 中只需要继承 FragmentActivity 即可。
  *
  */
-public class ConversationSettingActivity extends BaseActionBarActivity {
+public class ConversationSettingActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

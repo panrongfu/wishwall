@@ -254,7 +254,7 @@ public class LoginActivity extends BaseActivity
                 ApiClient.defaultRegister(userId, userName, userIcon, userGender, new Callback<RegisterDTO>() {
                     @Override
                     public void onResponse(Call<RegisterDTO> call, Response<RegisterDTO> response) {
-                            RegisterDTO body = response.body();
+						RegisterDTO body = response.body();
                         if(body.getCode() == 200){
                             startLogin(userName,Constants.DEFAULT_PASSWORD);
                         }

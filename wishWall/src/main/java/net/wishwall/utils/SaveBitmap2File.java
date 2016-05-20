@@ -47,7 +47,7 @@ public class SaveBitmap2File {
       }  
       File myCaptureFile = new File(dirFile.getAbsolutePath()+"/" + fileName);  
       BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(myCaptureFile));  
-      bm.compress(Bitmap.CompressFormat.JPEG, 80, bos);  
+      bm.compress(Bitmap.CompressFormat.JPEG, 40, bos);
       bos.flush();  
       bos.close();  
   }

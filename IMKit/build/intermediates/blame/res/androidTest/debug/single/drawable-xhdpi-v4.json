@@ -712,16 +712,16 @@
         "source": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f44d.png"
     },
     {
-        "merged": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_bar_logo.png",
-        "source": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_bar_logo.png"
-    },
-    {
         "merged": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f319.png",
         "source": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f319.png"
     },
     {
         "merged": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_star_hover.png",
         "source": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_star_hover.png"
+    },
+    {
+        "merged": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_bar_logo.png",
+        "source": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_bar_logo.png"
     },
     {
         "merged": "E:\\studiospace\\MyApplication\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_albums_normal.png",

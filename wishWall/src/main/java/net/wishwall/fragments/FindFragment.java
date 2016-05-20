@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import net.wishwall.adapter.WishAdapter;
 import net.wishwall.domain.WishsDTO;
 import net.wishwall.service.ApiClient;
 import net.wishwall.utils.SpUtil;
+import net.wishwall.views.CustomToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +81,7 @@ public class FindFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         activity.setOnSelectCityListener(new MainActivity.OnSelectCityListener() {
             @Override
             public void finish(String cityName) {
-                initData(mType,cityName);
+                initData(Type.REFRESH,cityName);
                 mLoadType = LoadType.COMMON;
             }
         });
@@ -87,7 +89,7 @@ public class FindFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void finish(String cityName) {
                 if(wishList ==null){
-                    initData(mType,cityName);
+                    initData(Type.REFRESH,cityName);
                     mLoadType = LoadType.COMMON;
                 }
             }
@@ -98,7 +100,7 @@ public class FindFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 searchName = content;
                 //如果搜索名称为空则按照当前用户的城市查询
                 if(TextUtils.isEmpty(searchName)){
-                    initData(mType,MainActivity.cityName);
+                    initData(Type.REFRESH,Constants.DEFALUT_CITY);
                     mLoadType = LoadType.COMMON;
                 }else{
                     initSearchData(Type.REFRESH,searchName);
@@ -115,6 +117,10 @@ public class FindFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         return view;
     }
 
+   /**
+    * 初始化视图
+    * @param view
+    */
     private void initViewUI(View view) {
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
@@ -122,7 +128,7 @@ public class FindFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mRefreshlayout.setOnRefreshListener(this);
         mRecyclerView.addOnScrollListener(new LoadMoreScrollListener());
         String cityName = localSputil.getKeyValue("cityName");
-        initData(mType,"广州市");
+        initData(mType,cityName);
     }
     /**
      * 初始化数据
@@ -134,8 +140,8 @@ public class FindFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             public void onResponse(Call<WishsDTO> call, Response<WishsDTO> response) {
                 WishsDTO body = response.body();
                 if(body.getCode() == 200){
-                    wishList = body.getResult();
-                    initRecyclerView(wishList,mType);
+                    List<WishsDTO.ResultBean> list = body.getResult();
+                    initRecyclerView(list,mType);
                 }
             }
             @Override
@@ -168,21 +174,35 @@ public class FindFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     /**
      * 为recyclerView 填充数据
-     * @param wishList
+     * @param list
      */
-    private void initRecyclerView(List<WishsDTO.ResultBean> wishList,Type type) {
-        if(type == Type.REFRESH){
-            mRefreshlayout.setRefreshing(false);
-        }else if(type == Type.LOAD){
-            isLoading = false;
-        }
-        if(adapter == null){
-            adapter = new WishAdapter(getActivity());
-            adapter.setWishList(wishList);
-            mRecyclerView.setAdapter(adapter);
-        }else {
-            adapter.setWishList(wishList);
-            adapter.notifyDataSetChanged();
+    private void initRecyclerView(List<WishsDTO.ResultBean> list,Type type) {
+        if(list.size() > 0){
+            if(type == Type.REFRESH){
+                mRefreshlayout.setRefreshing(false);
+                wishList = list;
+                if(wishList.size() == 0){
+                    CustomToast.showMsg(getActivity(),"暂无数据");
+                }
+            }else if(type == Type.LOAD){
+                isLoading = false;
+                if(list.size() == 0){
+                    WishAdapter.hasWish = false;
+                }
+                for(WishsDTO.ResultBean wr: list){
+                    wishList.add(wr);
+                }
+            }
+            if(adapter == null){
+                adapter = new WishAdapter(getActivity());
+                adapter.setWishList(wishList);
+                mRecyclerView.setAdapter(adapter);
+            }else {
+                adapter.setWishList(wishList);
+                adapter.notifyDataSetChanged();
+            }
+        }else if(list.size() == 0){
+            WishAdapter.hasWish = false;
         }
     }
 
@@ -213,10 +233,12 @@ public class FindFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
+            Log.e("onScrollStateChanged",newState+">>>>>>>>");
         }
 
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
             mRefreshlayout.setEnabled(layoutManager.findFirstCompletelyVisibleItemPosition() == 0);
             super.onScrolled(recyclerView, dx, dy);
             int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();

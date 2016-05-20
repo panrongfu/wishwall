@@ -61,12 +61,15 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
     private InputPopupWindow popupWindow;
     private InputMethodManager mMinputMethodManager;
     private SpUtil userSputil;
+    private String likeNowId =null;//刚刚点赞
     private static String userId ;
     private static String nickName;
     private static int LIKE = 0X00;
     private static int COMM = 0X01;
     private static int UNLIKE = 0X11;
+    private boolean isLikeNow=false;
     private static WishHolder wishHolder;
+    public static boolean hasWish = true;
    // private static WishCommAdapter wishCommAdapter;
     private EditText mEditext;
     private  Handler likeCommHanlder = new Handler(){
@@ -161,7 +164,7 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
 
     @Override
     public int getItemViewType(int position) {
-        if(position+1 == getItemCount()&& getItemCount()>=10){
+        if(position+1 == getItemCount()&& getItemCount()>=10 && hasWish){
             return TYPE_FOOTER;
         }
         return TYPE_ITEM;
@@ -173,9 +176,11 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
             View view = mInflater.inflate(R.layout.my_wish_list_item,parent,false);
             wishHolder = new WishHolder(view);
             return wishHolder;
-        }
+        }else if(viewType == TYPE_FOOTER){
             View footer = mInflater.inflate(R.layout.footerview,parent,false);
             return new FooterViewHolder(footer);
+        }
+       return null;
     }
 
     @Override
@@ -183,7 +188,8 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
 
         if(position+1 == getItemCount()&& getItemCount()>=10) return;
         //设置头item头像
-        String path = mWishList.get(position).getIcon();
+        final String path = mWishList.get(position).getIcon();
+
         if(!TextUtils.isEmpty(path)){
             Picasso.with(mContext).load(path).into(holder.itemImg);
         }
@@ -202,8 +208,9 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
                     RecyclerViewItemDecoration.MODE_GRID,
                     Color.WHITE,10,5,0));
             holder.itemImgGrid.setAdapter(new WishItemAdapter(mContext,mWishList.get(position).getWish_img()));
-
+         //   WishImgLoader.getInstance().loadImge(mContext,mWishList.get(position).getWish_img(),holder);
         }
+
         if( mWishList.get(position).getWish_like().size() != 0 ){
             likeWish(holder,position);
         }
@@ -231,22 +238,77 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
         holder.itemLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.itemLike.setBackgroundResource(R.mipmap.like_blue);
+                //先判断用户是否已经点赞了，若是则取消点赞，若不是则点赞
+                final Map<Integer,String> likeMap = new HashMap<Integer,String>();
+                int size = mWishList.get(position).getWish_like().size();
+                int i=0;
+                for(WishsDTO.ResultBean.WishLikeBean wrw: mWishList.get(position).getWish_like()){
+
+                    String id = mWishList.get(position).getWish_like().get(i).getUserid();
+                    likeMap.put(i,id);
+                    i++;
+                }
+                if(likeMap.containsValue(userId)){
+                    holder.itemLike.setBackgroundResource(R.mipmap.like_gray);
+                    Constants.LIKE_TYPE="UNLIKE";
+                }else{
+                    holder.itemLike.setBackgroundResource(R.mipmap.like_blue);
+                    Constants.LIKE_TYPE="LIKE";
+                    isLikeNow =true;
+                }
+
                 final String wishId = mWishList.get(position).getWishid();
 
                 new Thread(new Runnable() {
+
                     @Override
                     public void run() {
-                        ApiClient.likeWish(wishId, Constants.LIKE, new Callback<ResultDTO>() {
+                        //如果有用户点赞，获取点赞的id
+                        String likeId =null;
+                        if(mWishList.get(position).getWish_like().size()>0){
+                            //遍历map通过value找出key
+                            int likePos=0;
+                            for(int key :likeMap.keySet()){
+                                if(userId.equals(likeMap.get(userId))){
+                                    likePos = key;
+                                }
+                            }
+                            /**
+                             * 如果用户刚刚点赞，
+                             * 再取消赞时，
+                             * 点赞id采用服务器返回来的id，否则抛出异常
+                             */
+                            if(isLikeNow){
+                                likeId = likeNowId;
+                                isLikeNow = false;
+                            }else{
+                                likeId = mWishList.get(position).getWish_like().get(likePos).getLikeid();
+                            }
+                        }
+                        ApiClient.likeWish(likeId==null?null:likeId, wishId, Constants.LIKE_TYPE, new Callback<ResultDTO>() {
                             @Override
                             public void onResponse(Call<ResultDTO> call, Response<ResultDTO> response) {
                                 ResultDTO body = response.body();
                                 if(body.getCode() == 200){
-                                    //更新wishlist的数据，为了让用户马上看到点赞的效果
-                                    WishsDTO.ResultBean.WishLikeBean likeBean = new WishsDTO.ResultBean.WishLikeBean();
-                                    likeBean.setUserid(userId);
-                                    likeBean.setNickname(nickName);
-                                    mWishList.get(position).getWish_like().add(likeBean);
+                                    if(Constants.LIKE_TYPE.equals("LIKE")){
+                                        likeNowId = body.getResult();
+                                        //更新wishlist的数据，为了让用户马上看到点赞的效果
+                                        WishsDTO.ResultBean.WishLikeBean likeBean = new WishsDTO.ResultBean.WishLikeBean();
+                                        likeBean.setUserid(userId);
+                                        likeBean.setNickname(nickName);
+                                        mWishList.get(position).getWish_like().add(likeBean);
+
+                                    }else if(Constants.LIKE_TYPE.equals("UNLIKE")){
+
+                                        //遍历map通过value找出key
+                                        int likePos=0;
+                                        for(int key :likeMap.keySet()){
+                                            if(userId.equals(likeMap.get(userId))){
+                                                   likePos = key;
+                                            }
+                                        }
+                                        mWishList.get(position).getWish_like().remove(likePos);
+                                    }
 
                                     Message msg = Message.obtain();
                                     msg.what = LIKE;
@@ -299,16 +361,16 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
 
     public static class  WishHolder extends RecyclerView.ViewHolder{
         View mView;
-        CircleImageView itemImg;
-        TextView itemNam;
-        TextView itemTime;
-        TextView itemContent;
-        RecyclerView itemImgGrid;
-        TextView itemLikeList;
-        RecyclerView itemCommGrid;
-        ImageView itemLike;
-        ImageView itemComm;
-        LinearLayout itemLlyout;
+        public CircleImageView itemImg;
+        public TextView itemNam;
+        public TextView itemTime;
+        public TextView itemContent;
+        public RecyclerView itemImgGrid;
+        public TextView itemLikeList;
+        public RecyclerView itemCommGrid;
+        public ImageView itemLike;
+        public ImageView itemComm;
+        public LinearLayout itemLlyout;
 
         public WishHolder(View v) {
             super(v);
@@ -377,5 +439,11 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
         if(popupWindow != null) popupWindow.dismiss();
         //关闭输入法
         if(mEditext != null) mMinputMethodManager.hideSoftInputFromWindow(mEditext.getWindowToken(), 0);
+    }
+    public void setOnScrollingListener(OnScrollingListener l){
+
+    }
+    interface OnScrollingListener{
+        void isScroll();
     }
 }

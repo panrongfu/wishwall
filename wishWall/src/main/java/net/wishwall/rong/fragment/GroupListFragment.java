@@ -4,14 +4,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.sea_monster.exception.BaseException;
 import com.sea_monster.network.AbstractHttpRequest;
 
 import net.wishwall.Constants;
@@ -23,15 +22,12 @@ import net.wishwall.rong.adapter.GroupListAdapter;
 import net.wishwall.rong.model.Groups;
 import net.wishwall.rong.model.Status;
 import net.wishwall.rong.widget.LoadingDialog;
-import net.wishwall.rong.widget.WinToast;
 import net.wishwall.service.ApiClient;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import io.rong.imkit.RongIM;
-import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Group;
 import retrofit2.Call;
@@ -43,7 +39,7 @@ import retrofit2.Response;
  * @Description
  * @email pan@ipushan.com
  */
-public class GroupListFragment extends BaseFragment implements AdapterView.OnItemClickListener {
+public class GroupListFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private String TAG = GroupListFragment.class.getSimpleName();
     private int RESULTCODE = 100;
@@ -75,23 +71,8 @@ public class GroupListFragment extends BaseFragment implements AdapterView.OnIte
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        savedInstanceState = mBundle;
-//        if (savedInstanceState != null) {
-//            mResultList = savedInstanceState.getParcelableArrayList(GroupListData);
-//            mMyGroupListAdapter = new GroupListAdapter(getActivity(), mResultList, mGroupMap);
-//            mGroupListView.setAdapter(mMyGroupListAdapter);
-//            mMyGroupListAdapter.setOnItemButtonClick(onItemButtonClick);
-//            mMyGroupListAdapter.notifyDataSetChanged();
-//            return;
-//        }
-
-//        if (DemoContext.getInstance() == null)
-//            return;
-//
-//        mGroupMap = DemoContext.getInstance().getGroupMap();
-//        mGetAllGroupsRequest = DemoContext.getInstance().getDemoApi().getAllGroups(this);
+    public void onResume() {
+        super.onResume();
         ApiClient.findMyGroups(new Callback<GroupsDTO>() {
             @Override
             public void onResponse(Call<GroupsDTO> call, Response<GroupsDTO> response) {
@@ -108,6 +89,7 @@ public class GroupListFragment extends BaseFragment implements AdapterView.OnIte
             }
         });
     }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (mResultList != null && position != -1 && position < mResultList.size()) {
@@ -130,63 +112,6 @@ public class GroupListFragment extends BaseFragment implements AdapterView.OnIte
         }
 
     }
-
-    @Override
-    public void onCallApiSuccess(final AbstractHttpRequest request, Object obj) {
-        if (mGetAllGroupsRequest != null && mGetAllGroupsRequest.equals(request)) {
-
-            if (obj instanceof Groups) {
-
-                final Groups groups = (Groups) obj;
-                if (groups.getCode() == 200) {
-//                    for (int i = 0; i < groups.getResult().size(); i++) {
-//                        mResultList.add(groups.getResult().get(i));
-//                    }
-//
-//                    mMyGroupListAdapter = new GroupListAdapter(getActivity(), mResultList, mGroupMap);
-//                    mGroupListView.setAdapter(mMyGroupListAdapter);
-//                    mMyGroupListAdapter.setOnItemButtonClick(onItemButtonClick);
-                } else {
-                    WinToast.toast(getActivity(), groups.getCode());
-                }
-            }
-        } else if (mUserRequest != null && mUserRequest.equals(request)) {
-            WinToast.toast(getActivity(), R.string.group_join_success);
-
-            if (result != null) {
-
-                setGroupMap(result, 1);
-
-                refreshAdapter();
-
-                RongIM.getInstance().getRongIMClient().joinGroup(result.getGroupid(), result.getName(), new RongIMClient.OperationCallback() {
-                    @Override
-                    public void onSuccess() {
-                        if (mDialog != null)
-                            mDialog.dismiss();
-                        RongIM.getInstance().startGroupChat(getActivity(), result.getGroupid(), result.getName());
-                    }
-
-                    @Override
-                    public void onError(RongIMClient.ErrorCode errorCode) {
-
-                    }
-                });
-            }
-        }
-    }
-
-    @Override
-    public void onCallApiFailure(AbstractHttpRequest request, BaseException e) {
-
-        if (mUserRequest != null && mUserRequest.equals(request)) {
-            if (mDialog != null)
-                mDialog.dismiss();
-        } else if (mGetAllGroupsRequest != null && mGetAllGroupsRequest.equals(request)) {
-            Log.e(TAG, "---获取群组列表失败 ----");
-        }
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -196,33 +121,6 @@ public class GroupListFragment extends BaseFragment implements AdapterView.OnIte
                 refreshAdapter();
                 break;
         }
-    }
-
-    /**
-     * 设置群组信息提供者
-     *
-     * @param result
-     * @param i      0,退出；1 加入
-     */
-    public static void setGroupMap(ResultBean result, int i) {
-
-//        if (DemoContext.getInstance() != null && result != null) {
-//            HashMap<String, Group> groupHashMap = DemoContext.getInstance().getGroupMap();
-//
-//            if (result.getId() == null)
-//                return;
-//
-//            if (i == 1) {
-//                if (result.getPortrait() != null)
-//                    groupHashMap.put(result.getId(), new Group(result.getId(), result.getName(), Uri.parse(result.getPortrait())));
-//                else
-//                    groupHashMap.put(result.getId(), new Group(result.getId(), result.getName(), null));
-//            } else if (i == 0) {
-//                groupHashMap.remove(result.getId());
-//            }
-//            DemoContext.getInstance().setGroupMap(groupHashMap);
-//
-//        }
     }
 
     /**
@@ -245,14 +143,6 @@ public class GroupListFragment extends BaseFragment implements AdapterView.OnIte
                     t.printStackTrace();
             }
         });
-
-//        if (mMyGroupListAdapter == null) {
-//            mMyGroupListAdapter = new GroupListAdapter(getActivity(), mResultList, mGroupMap);
-//            mGroupListView.setAdapter(mMyGroupListAdapter);
-//
-//        } else {
-//            mMyGroupListAdapter.notifyDataSetChanged();
-//        }
     }
 
     @Override

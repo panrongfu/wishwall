@@ -41,6 +41,7 @@ public class Constants {
 
     public static final String USER_SPUTIL = "userInfo";
     public static final String DEFAULT_PASSWORD = "123456";
-    public static final String LIKE="LIKE";
-    public static final String UNLIKE="UNLIKE";
+    public static String LIKE_TYPE="LIKE";
+    public static final String DEFALUT_CITY="广州市";
+    public static final String TOKEN_INVALID="TOKEN_INVALID";
 }

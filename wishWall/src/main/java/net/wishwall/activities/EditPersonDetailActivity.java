@@ -99,7 +99,7 @@ public class EditPersonDetailActivity extends BaseActivity
     private OSS oss;
 
     private ImageSelectPopupWindow popupwindow;
-    private static final int CROP = 2;
+    private static final int CAMERA = 2;
     private static final int CROP_PICTURE = 3;
     private static final int FROM_PHOTO = 7 ;
     private static final int CROP_FINISH = 8 ;
@@ -290,7 +290,6 @@ public class EditPersonDetailActivity extends BaseActivity
                 Uri imageUri = null;
                 String fileName = null;
                 Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                REQUEST_CODE = CROP;
 
                 // 删除上一次截图的临时文件
                 String tempName = tempSpUtil.getKeyValue("tempName");
@@ -304,7 +303,7 @@ public class EditPersonDetailActivity extends BaseActivity
                 imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), fileName));
                 // 指定照片保存路径（SD卡），image.jpg为一个临时文件，每次拍照后这个图片都会被替换
                 openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                startActivityForResult(openCameraIntent, REQUEST_CODE);
+                startActivityForResult(openCameraIntent, CAMERA);
                 popupwindow.dismiss();
             }
 
@@ -349,7 +348,7 @@ public class EditPersonDetailActivity extends BaseActivity
                     Log.e("PHOTO", "onActivityResult: "+path );
                     cropImage(Uri.fromFile(new File(path)), 155, 155, CROP_PICTURE);
                     break;
-                case CROP:
+                case CAMERA:
                     Uri uri = null;
                     if (data != null) {
                         uri = data.getData();

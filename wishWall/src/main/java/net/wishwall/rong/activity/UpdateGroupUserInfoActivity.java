@@ -12,7 +12,7 @@ import net.wishwall.R;
 /**
  * Created by Bob on 15/11/13.
  */
-public class UpdateGroupUserInfoActivity extends BaseActionBarActivity {
+public class UpdateGroupUserInfoActivity extends BaseActivity {
 
     private EditText mNewName;
     String mGroupId;

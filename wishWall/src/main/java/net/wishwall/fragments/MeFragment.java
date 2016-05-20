@@ -75,7 +75,7 @@ import retrofit2.Response;
  * @email pan@ipushan.com
  */
 public class MeFragment extends Fragment implements View.OnClickListener,
-        SwipeRefreshLayout.OnRefreshListener ,AppBarLayout.OnOffsetChangedListener{
+        SwipeRefreshLayout.OnRefreshListener ,AppBarLayout.OnOffsetChangedListener,IssueWishActivity.OnIssueFinishListener{
     MainActivity activity;
     private TextView toolarTitle;
     private FloatingActionButton issueWish;
@@ -104,18 +104,13 @@ public class MeFragment extends Fragment implements View.OnClickListener,
     private OSSClient oss;
 
     private enum Type{
-        REFRESH,LOAD
+        REFRESH,LOAD_MORE
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        IssueWishActivity.setOnIssueFinishListener(new IssueWishActivity.OnIssueFinishListener() {
-            @Override
-            public void finish() {
-                initData(Type.REFRESH);
-            }
-        });
+        IssueWishActivity.setOnIssueFinishListener(this);
     }
 
     @Override
@@ -171,7 +166,6 @@ public class MeFragment extends Fragment implements View.OnClickListener,
                         String picUrl = result.getPic_url();
                         Picasso.with(getActivity()).load(picUrl).into(mImageView);
                     }
-
                 }
             }
             @Override
@@ -237,11 +231,24 @@ public class MeFragment extends Fragment implements View.OnClickListener,
             public void onResponse(Call<WishsDTO> call, Response<WishsDTO> response) {
                 WishsDTO body = response.body();
                 if(body.getCode() == 200){
-                    myWishList = body.getResult();
+                    List<WishsDTO.ResultBean>list = body.getResult();
+
                     if(type == Type.REFRESH){
+                        myWishList = list;
+                        if(myWishList.size()==0){
+                            CustomToast.showMsg(getActivity(),"暂无数据");
+                        }
                         mRefreshlayout.setRefreshing(false);
-                    }else if(type == Type.LOAD){
+
+                    }else if(type == Type.LOAD_MORE){
                         isLoading = false;
+                        //加载更多的时候数据以及获取完毕
+                        if(list.size() == 0){
+                            WishAdapter.hasWish = false;
+                        }
+                        for(WishsDTO.ResultBean wr: list){
+                            myWishList.add(wr);
+                        }
                     }
                     if(adapter == null){
                         adapter = new WishAdapter(getActivity());
@@ -251,6 +258,7 @@ public class MeFragment extends Fragment implements View.OnClickListener,
                         adapter.setWishList(myWishList);
                         adapter.notifyDataSetChanged();
                     }
+
                 }
             }
             @Override
@@ -271,6 +279,11 @@ public class MeFragment extends Fragment implements View.OnClickListener,
                 lightOff(0.8f);
                 break;
         }
+    }
+
+    @Override
+    public void finish() {
+        initData(Type.REFRESH);
     }
 
     @Override
@@ -364,7 +377,7 @@ public class MeFragment extends Fragment implements View.OnClickListener,
                 if(!isLoading){
                     isLoading = true;
                     page = page+1;
-                    initData(Type.LOAD);
+                    initData(Type.LOAD_MORE);
                 }
             }
         }

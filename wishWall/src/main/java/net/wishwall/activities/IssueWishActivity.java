@@ -1,9 +1,9 @@
 package net.wishwall.activities;
 
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -38,6 +38,7 @@ import net.wishwall.domain.ResultDTO;
 import net.wishwall.domain.UploadTokenDTO;
 import net.wishwall.service.ApiClient;
 import net.wishwall.utils.ImageTools;
+import net.wishwall.utils.SaveBitmap2File;
 import net.wishwall.utils.SpUtil;
 import net.wishwall.views.CustomProgressDialog;
 import net.wishwall.views.CustomToast;
@@ -69,7 +70,7 @@ public class IssueWishActivity extends BaseActivity
     private RecyclerView mRecyclerView;
     private GridLayoutManager gridLayout;
     private ImageSelectPopupWindow popupwindow;
-    private static final int CROP = 2;
+    private static final int CAMERA = 2;
     private static final int CROP_PICTURE = 3;
     private LinearLayout mParent;
     private IssueWishAdpter adapter;
@@ -97,12 +98,10 @@ public class IssueWishActivity extends BaseActivity
             }else if(msg.what == FINISH){
                 Log.e("handleMessage", "handleMessage: "+msg.what);
                 addWishImage();
-//                if(progressDialog !=null){
-//                    progressDialog.dismiss();
-//                }
             }
         }
     };
+    private SpUtil tempSpUtil;
 
 
     @Override
@@ -115,6 +114,7 @@ public class IssueWishActivity extends BaseActivity
 
     private void initViewUI() {
         mImagePath.clear();
+        tempSpUtil = new SpUtil(this,"tempIssue");
         userSpUtil = new SpUtil(this, Constants.USER_SPUTIL);
         progressDialog = CustomProgressDialog.createDialog(this);
         sendWish = (TextView)findViewById(R.id.wish_send);
@@ -149,20 +149,21 @@ public class IssueWishActivity extends BaseActivity
                 Uri imageUri = null;
                 String fileName = null;
                 Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                REQUEST_CODE = CROP;
+               // REQUEST_CODE = CAMERA;
+
                 // 删除上一次截图的临时文件
-                SharedPreferences sharedPreferences = getSharedPreferences("temp", Context.MODE_WORLD_WRITEABLE);
-                ImageTools.deletePhotoAtPathAndName(Environment.getExternalStorageDirectory().getAbsolutePath(),sharedPreferences.getString("tempName", ""));
+                String tempName = tempSpUtil.getKeyValue("tempName");
+                String path =Environment.getExternalStorageDirectory().getAbsolutePath();
+                ImageTools.deletePhotoAtPathAndName(path,tempName);
+
                 // 保存本次截图临时文件名字
                 fileName = String.valueOf(System.currentTimeMillis()) + ".jpg";
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("tempName", fileName);
-                editor.commit();
+                tempSpUtil.setKeyValue("tempName",fileName);
 
                 imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), fileName));
                 // 指定照片保存路径（SD卡），image.jpg为一个临时文件，每次拍照后这个图片都会被替换
                 openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                startActivityForResult(openCameraIntent, REQUEST_CODE);
+                startActivityForResult(openCameraIntent, CAMERA);
                 popupwindow.dismiss();
             }
 
@@ -196,7 +197,6 @@ public class IssueWishActivity extends BaseActivity
         WindowManager.LayoutParams lp = getWindow().getAttributes();
         lp.alpha = 0.3f;
         getWindow().setAttributes(lp);
-
     }
 
     @Override
@@ -207,7 +207,6 @@ public class IssueWishActivity extends BaseActivity
                 break;
             case R.id.wish_send:
                 createWish();
-               // preUpLoad();
                 break;
         }
     }
@@ -230,10 +229,7 @@ public class IssueWishActivity extends BaseActivity
                 ResultDTO body = response.body();
                 if(body.getCode() == 200){
                     wishId = body.getResult();
-//                    Message msg = Message.obtain();
-//                    msg.what = CREATE;
-//                    uploadHandler.sendMessage(msg);
-                      preUpLoad();
+                    preUpLoad();
                 }
             }
             @Override
@@ -261,10 +257,10 @@ public class IssueWishActivity extends BaseActivity
                 if(body.getCode() == 200){
                     CustomToast.showMsg(IssueWishActivity.this,"发送成功");
                     progressDialog.dismiss();
-                    IssueWishActivity.this.finish();
                     if(mListener !=null){
                         mListener.finish();
                     }
+                    IssueWishActivity.this.finish();
                 }else {
                     CustomToast.showMsg(IssueWishActivity.this,"发送失败");
                     progressDialog.dismiss();
@@ -294,15 +290,81 @@ public class IssueWishActivity extends BaseActivity
             switch (requestCode){
                 case PHOTO:
                     String path = data.getStringExtra("path");
-                    mImagePath.add(path);
+                    Bitmap bitmap = decodeSampledBitmapFromPath(path);
+                    savaImage(bitmap);
                     //adapter = new IssueWishAdpter(this,mImagePath);
                    // mRecyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
+                    break;
+                case CAMERA:
+                    Uri uri = data.getData();
+                   // Bitmap cameraBitmap;
+                    //cameraBitmap = BitmapFactory.decodeFile(uri.getPath());
+                    Bitmap bmp = decodeSampledBitmapFromPath(uri.getPath());
+                    savaImage(bmp);
                     break;
             }
         }
     }
 
+    /**
+     * 保存图片
+     * @param data
+     */
+    private void savaImage(Bitmap data) {
+        if (data != null) {
+            Bitmap bitmap = data;
+            try {
+                String name = UUID.randomUUID().toString()+System.currentTimeMillis()+".jpg";  ;
+                String path = SaveBitmap2File.getSDPath()+ "/wishwall/";
+                SaveBitmap2File.saveFile(bitmap, path,name);// 保存图片到手机
+                // change_image.setImageBitmap(bitmap);
+                String uploadPath = path+name;
+                mImagePath.add(uploadPath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 压缩图片
+     * @param path
+     * @return
+     */
+    private Bitmap decodeSampledBitmapFromPath(String path) {
+        //获得图片的宽和高，并不把图片加载到内存中
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds =true;
+        BitmapFactory.decodeFile(path,options);
+
+        options.inSampleSize = calculateInSampleSize(options,480,800);
+        //使用获得到的InSampleSize再次解析图片,并把图片加载到内存中
+        options.inJustDecodeBounds= false;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(path,options);
+
+        return bitmap;
+    }
+
+    /**
+     * 根据需求的宽高，和实际的宽高计算InSampleSize
+     * @param options
+     * @param reqwidth
+     * @param reqheight
+     * @return
+     */
+    private int calculateInSampleSize(BitmapFactory.Options options, int reqwidth, int reqheight) {
+        int width = options.outWidth;
+        int height = options.outHeight;
+        int inSampleSize = 1;
+        if(width>reqwidth || height>reqheight){
+            int widthRadio = Math.round(width*1.0f/reqwidth);
+            int heightRadio = Math.round(height*1.0f/reqheight);
+            inSampleSize = Math.max(widthRadio,heightRadio);
+        }
+        return inSampleSize;
+    }
     /**
      * 上传图片
      * @param
@@ -318,7 +380,7 @@ public class IssueWishActivity extends BaseActivity
                      accessKeyId = body.getResult().getAccessKeyId();
                      accessKeySecret = body.getResult().getAccessKeySecret();
                      securityToken = body.getResult().getSecurityToken();
-                    startUpload();
+                     startUpload();
                 }
             }
         }).start();
@@ -328,7 +390,6 @@ public class IssueWishActivity extends BaseActivity
      * 开始上传图片
      */
     private void startUpload() {
-
         OSSCredentialProvider credentialProvider = new OSSStsTokenCredentialProvider(accessKeyId, accessKeySecret,securityToken);
 
         ClientConfiguration conf = new ClientConfiguration();
@@ -357,6 +418,7 @@ public class IssueWishActivity extends BaseActivity
                             uploadHandler.sendMessage(msg);
                         }else{
                             msg.what = FINISH;
+                            uploadIndex=0;
                             uploadHandler.sendMessage(msg);
                         }
                         adapter.notifyDataSetChanged();
