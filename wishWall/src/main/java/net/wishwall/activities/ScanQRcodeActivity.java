@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import net.wishwall.App;
 import net.wishwall.Constants;
 import net.wishwall.R;
 import net.wishwall.domain.ResultDTO;
@@ -78,7 +77,7 @@ public class ScanQRcodeActivity extends AppCompatActivity implements QRCodeView.
      */
     private void applyAddFriend(String friendId){
         String userId = new SpUtil(this, Constants.USER_SPUTIL).getKeyValue("userId");
-        ApiClient.sendMessage(userId, friendId, "请求添加好友", App.ContactNtf,App.Apply, new Callback<ResultDTO>() {
+        ApiClient.sendMessage(userId, friendId, "请求添加好友", Constants.ContactNtf,Constants.Apply, new Callback<ResultDTO>() {
             @Override
             public void onResponse(Call<ResultDTO> call, Response<ResultDTO> response) {
                 ResultDTO body = response.body();

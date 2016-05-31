@@ -63,7 +63,6 @@ public class GroupDetailActivity extends BaseActivity implements View.OnClickLis
     private Button mGroupChat;
     private Handler mHandler;
     private LoadingDialog mDialog;
-    private CustomToast customToast;
     private CustomProgressDialog progressDialog;
     private SpUtil userSpUtil;
     private String userId;
@@ -96,7 +95,6 @@ public class GroupDetailActivity extends BaseActivity implements View.OnClickLis
      * 初始化控件、布局、工具类
      */
     private void initView() {
-        customToast = CustomToast.createToast(this);
         progressDialog = CustomProgressDialog.createDialog(this);
         userSpUtil = new SpUtil(this,"userInfo");
 
@@ -200,7 +198,7 @@ public class GroupDetailActivity extends BaseActivity implements View.OnClickLis
        switch (v.getId()) {
             case R.id.join_group:
                 if(number.equals(maxNumber)){
-                    customToast.setMessage("群满员了，你可以加入其它群哦").show();
+                    CustomToast.showMsg(this,"群满员了，你可以加入其它群哦");
                     break;
                 }
                 joinGroup();
@@ -245,8 +243,8 @@ public class GroupDetailActivity extends BaseActivity implements View.OnClickLis
                                 RongIM.getInstance().startGroupChat(GroupDetailActivity.this, groupId, groupName);
                                 Intent intent = new Intent();
                                 //  intent.putExtra("result", DemoContext.getInstance().getGroupMap());
-                               GroupDetailActivity.this.setResult(Constants.GROUP_JOIN_REQUESTCODE, intent);
-                                customToast.setMessage("加群成功").show();
+                                GroupDetailActivity.this.setResult(Constants.GROUP_JOIN_REQUESTCODE, intent);
+                                CustomToast.showMsg(GroupDetailActivity.this,"加群成功");
                             }
                             @Override
                             public void onError(RongIMClient.ErrorCode errorCode) {
@@ -254,14 +252,14 @@ public class GroupDetailActivity extends BaseActivity implements View.OnClickLis
                         });
 
                 }else{
-                    customToast.setMessage(body.getMessage()).show();
+                    CustomToast.showMsg(GroupDetailActivity.this,body.getMessage());
                 }
                 progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<ResultDTO> call, Throwable t) {
-                customToast.setMessage("加群失败").show();
+                CustomToast.showMsg(GroupDetailActivity.this,"加群失败");
                 progressDialog.dismiss();
             }
         });
@@ -285,7 +283,7 @@ public class GroupDetailActivity extends BaseActivity implements View.OnClickLis
                                 //intent.putExtra("result", DemoContext.getInstance().getGroupMap());
                                 GroupDetailActivity.this.setResult(Constants.GROUP_QUIT_REQUESTCODE, intent);
                                 Log.e(TAG, "-----------quit success ----");
-                                customToast.setMessage("退群成功").show();
+                                CustomToast.showMsg(GroupDetailActivity.this,"退群成功");
                                 GroupDetailActivity.this.finish();
                             }
                             @Override
@@ -294,14 +292,14 @@ public class GroupDetailActivity extends BaseActivity implements View.OnClickLis
                         });
                     }
                 }else{
-                    customToast.setMessage(body.getMessage()).show();
+                    CustomToast.showMsg(GroupDetailActivity.this,body.getMessage());
                 }
                 progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<ResultDTO> call, Throwable t) {
-                customToast.setMessage("退群失败").show();
+                CustomToast.showMsg(GroupDetailActivity.this,"退群失败");
                 progressDialog.dismiss();
             }
         });

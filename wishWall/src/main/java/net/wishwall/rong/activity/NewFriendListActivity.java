@@ -14,7 +14,6 @@ import android.widget.ListView;
 
 import com.sea_monster.network.AbstractHttpRequest;
 
-import net.wishwall.App;
 import net.wishwall.Constants;
 import net.wishwall.R;
 import net.wishwall.domain.ApplyAddFriendListDTO;
@@ -52,7 +51,6 @@ public class NewFriendListActivity extends BaseActivity implements Handler.Callb
     private Handler mHandler;
     private SpUtil userSpUtil;
     private String userId;
-    private CustomToast customToast;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +60,6 @@ public class NewFriendListActivity extends BaseActivity implements Handler.Callb
     }
     protected void initView() {
         userSpUtil = new SpUtil(this,Constants.USER_SPUTIL);
-        customToast = CustomToast.createToast(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.conver_toolbar);
         setSupportActionBar(toolbar);
         final ActionBar ab = getSupportActionBar();
@@ -86,7 +83,7 @@ public class NewFriendListActivity extends BaseActivity implements Handler.Callb
                     adapter.notifyDataSetChanged();
                     adapter.setOnItemButtonClick(mOnItemButtonClick);
                 }else{
-                    customToast.setMessage(body.getMessage()).show();
+                    CustomToast.showMsg(NewFriendListActivity.this,body.getMessage());
                 }
             }
 
@@ -137,7 +134,7 @@ public class NewFriendListActivity extends BaseActivity implements Handler.Callb
                                         mHandler.sendMessage(mess);
                                         sendMessage(mResultList.get(position).getUserid());
                                     }else {
-                                        customToast.setMessage(body.getMessage()).show();
+                                        CustomToast.showMsg(getApplicationContext(),body.getMessage());
                                     }
                                 }
                                 @Override
@@ -166,16 +163,16 @@ public class NewFriendListActivity extends BaseActivity implements Handler.Callb
      * @param toUserId 对方id
      */
     private void sendMessage(String toUserId) {
-        ApiClient.sendMessage(userId, toUserId,"我们开始对话吧", App.ContactNtf, App.ADD,new Callback<ResultDTO>() {
+        ApiClient.sendMessage(userId, toUserId,"我们开始对话吧", Constants.ContactNtf, Constants.ADD,new Callback<ResultDTO>() {
             @Override
             public void onResponse(Call<ResultDTO> call, Response<ResultDTO> response) {
                 ResultDTO body = response.body();
                 if(body.getCode() == 200){
-                    customToast.setMessage("添加好友成功").show();
+                    CustomToast.showMsg(getApplicationContext(),"添加好友成功");
                     if(mDialog !=null) mDialog.dismiss();
                     mDialog.dismiss();
                 }else{
-                    customToast.setMessage("添加好友失败").show();
+                    CustomToast.showMsg(getApplicationContext(),"添加好友失败");
                     if(mDialog !=null) mDialog.dismiss();
                 }
             }

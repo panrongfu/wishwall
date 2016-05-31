@@ -33,15 +33,13 @@ import com.alibaba.sdk.android.oss.common.OSSLog;
 import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
 import com.alibaba.sdk.android.oss.common.auth.OSSStsTokenCredentialProvider;
 
-import net.wishwall.App;
 import net.wishwall.Constants;
 import net.wishwall.R;
 import net.wishwall.aliyunoss.ResuambleUploadSamples;
 import net.wishwall.domain.ResultDTO;
 import net.wishwall.domain.UploadTokenDTO;
 import net.wishwall.service.ApiClient;
-import net.wishwall.utils.ImageTools;
-import net.wishwall.utils.SaveBitmap2File;
+import net.wishwall.utils.CustomUtils;
 import net.wishwall.utils.SpUtil;
 import net.wishwall.views.CustomDialogFragment;
 import net.wishwall.views.CustomProgressDialog;
@@ -202,7 +200,7 @@ public class EditPersonDetailActivity extends BaseActivity
                 }
                 ft.addToBackStack(null);
                 // Create and show the dialog.
-                CustomDialogFragment newFragment = CustomDialogFragment.newInstance("dialog",R.layout.date_picker_dialog);
+                CustomDialogFragment newFragment = CustomDialogFragment.newInstance("dialog", CustomDialogFragment.Type.OKAY_CANCLE,R.layout.date_picker_dialog);
                 newFragment.setOnSelectFinishListener(new CustomDialogFragment.OnSelectFinishListener() {
                     @Override
                     public void finish(DatePicker dp) {
@@ -294,7 +292,7 @@ public class EditPersonDetailActivity extends BaseActivity
                 // 删除上一次截图的临时文件
                 String tempName = tempSpUtil.getKeyValue("tempName");
                 String path =Environment.getExternalStorageDirectory().getAbsolutePath();
-                ImageTools.deletePhotoAtPathAndName(path,tempName);
+                CustomUtils.deleteFileByName(EditPersonDetailActivity.this,path,tempName);
 
                 // 保存本次截图临时文件名字
                 fileName = String.valueOf(System.currentTimeMillis()) + ".jpg";
@@ -419,8 +417,8 @@ public class EditPersonDetailActivity extends BaseActivity
 			Bitmap bitmap = data;
             try {
                 String name = UUID.randomUUID().toString()+System.currentTimeMillis()+".jpg";  ;
-                String path = SaveBitmap2File.getSDPath()+ "/wishwall/";
-                SaveBitmap2File.saveFile(bitmap, path,name);// 保存图片到手机
+                String path = CustomUtils.getSDCradPath()+ "/wishwall/";
+                CustomUtils.saveBitmap2File(bitmap, path,name);// 保存图片到手机
                 change_image.setImageBitmap(bitmap);
                 uploadPath = path+name;
             } catch (Exception e) {
@@ -500,14 +498,14 @@ public class EditPersonDetailActivity extends BaseActivity
         conf.setMaxConcurrentRequest(5); // 最大并发请求书，默认5个
         conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
         OSSLog.enableLog();
-        oss = new OSSClient(getApplicationContext(), App.endpoint, credentialProvider, conf);
+        oss = new OSSClient(getApplicationContext(), Constants.endpoint, credentialProvider, conf);
         oss.updateCredentialProvider(new OSSStsTokenCredentialProvider(accessKeyId, accessKeySecret, securityToken));
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 String name = UUID.randomUUID().toString()+System.currentTimeMillis()+".jpg";
-                ResuambleUploadSamples resuambleUploadSamples = new ResuambleUploadSamples(oss,App.uploadBucket,name,path);
+                ResuambleUploadSamples resuambleUploadSamples = new ResuambleUploadSamples(oss,Constants.uploadBucket,name,path);
                 resuambleUploadSamples.setUpLoadFinishListener(new ResuambleUploadSamples.UpLoadFinishListener() {
                     @Override
                     public void finish(String path) {

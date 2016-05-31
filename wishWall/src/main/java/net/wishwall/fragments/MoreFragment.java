@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Process;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -24,7 +26,6 @@ import com.liulishuo.filedownloader.BaseDownloadTask;
 import com.liulishuo.filedownloader.FileDownloadListener;
 import com.liulishuo.filedownloader.FileDownloader;
 
-import net.wishwall.App;
 import net.wishwall.Constants;
 import net.wishwall.R;
 import net.wishwall.activities.AboutWishwallActivity;
@@ -32,6 +33,9 @@ import net.wishwall.activities.ActivityCollector;
 import net.wishwall.activities.FeedBackActivity;
 import net.wishwall.activities.MainActivity;
 import net.wishwall.activities.PersonDetailActivity;
+import net.wishwall.domain.VersionDTO;
+import net.wishwall.service.ApiClient;
+import net.wishwall.utils.CustomUtils;
 import net.wishwall.utils.SpUtil;
 import net.wishwall.views.CustomDialogFragment;
 import net.wishwall.views.CustomExitDialog;
@@ -40,6 +44,9 @@ import net.wishwall.views.CustomToast;
 import java.io.File;
 
 import io.rong.imkit.RongIM;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -59,7 +66,9 @@ public class MoreFragment extends Fragment implements  OnClickListener{
 	private CustomExitDialog exitDialog;
 	private SpUtil userSpUtil;
 	private MainActivity mainActivity;
-
+    private Handler updateHandler;
+    private static final int NEWSET = 0X01;
+    private static final int NO_NEWSET = 0X02;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -109,22 +118,27 @@ public class MoreFragment extends Fragment implements  OnClickListener{
 
 			//版本更新
 			case R.id.more_version_updates:
-				FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
+				final FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
 				android.app.Fragment prev = getActivity().getFragmentManager().findFragmentByTag("dialog");
 				if (prev != null) {
 					ft.remove(prev);
 				}
 				ft.addToBackStack(null);
-				// Create and show the dialog.
-				CustomDialogFragment newFragment = CustomDialogFragment.newInstance("已经是最新版本了",R.layout.version_update);
-				newFragment.show(ft, "dialog");
-				newFragment.setOnUpdateVersionListener(new CustomDialogFragment.OnUpdateVersionListener() {
-					@Override
-					public void update() {
-						versionUpdate();
-					}
-				});
-				break;
+                checkForUpdate();
+                updateHandler = new Handler(){
+                    @Override
+                    public void handleMessage(Message msg) {
+                        super.handleMessage(msg);
+                        if(msg.what == NEWSET){
+                            showDialogFragment("已经是最新版本了",ft, CustomDialogFragment.Type.OKAY);
+                        }else if(msg.what == NO_NEWSET){
+                            String updateInfo = String.valueOf(msg.obj);
+                            showDialogFragment(updateInfo,ft, CustomDialogFragment.Type.OKAY_CANCLE);
+                        }
+                    }
+                };
+
+            break;
 			//意见反馈
 			case R.id.more_idea_feedback:
 				Intent feedback =  new Intent(getActivity(), FeedBackActivity.class);
@@ -138,7 +152,54 @@ public class MoreFragment extends Fragment implements  OnClickListener{
 		}
 	}
 
-	/**
+    /**
+     * 本地的版本号与服务器上的版本号对比若不一样就更新
+     */
+    private void checkForUpdate() {
+        final int versionCode = CustomUtils.getVersionCode(getActivity());
+        ApiClient.checkForUpdate(new Callback<VersionDTO>() {
+            @Override
+            public void onResponse(Call<VersionDTO> call, Response<VersionDTO> response) {
+                VersionDTO body = response.body();
+                if(body.getCode() == 200){
+                    int newVersionCode = body.getResult().getVersionCode();
+                    if(versionCode == newVersionCode){
+                        Message msg = Message.obtain();
+                        msg.what=NEWSET;
+                        updateHandler.sendMessage(msg);
+                    }else if(versionCode != newVersionCode){
+                        Message msg = Message.obtain();
+                        msg.what = NO_NEWSET;
+                        msg.obj = body.getResult().getUpdateInfo();
+                        updateHandler.sendMessage(msg);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VersionDTO> call, Throwable t) {
+
+            }
+        });
+    }
+
+    /**
+     * 显示对话框
+     * @param ft
+     */
+    public void showDialogFragment(String msg,FragmentTransaction ft,CustomDialogFragment.Type mType){
+        // Create and show the dialog.
+        CustomDialogFragment newFragment = CustomDialogFragment.newInstance(msg, mType,R.layout.version_update);
+        newFragment.show(ft, "dialog");
+        newFragment.setOnUpdateVersionListener(new CustomDialogFragment.OnUpdateVersionListener() {
+            @Override
+            public void update() {
+                versionUpdate();
+            }
+        });
+    }
+
+    /**
 	 * 版本更新
 	 */
 	private void versionUpdate() {
@@ -154,29 +215,37 @@ public class MoreFragment extends Fragment implements  OnClickListener{
          notify.contentIntent =pIntent;
          manager.notify(0,notify);
 
+
         if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
             String savePath =  Environment.getExternalStorageDirectory()+"/wishwall/wishwall.apk";
-            FileDownloader.getImpl().create(App.downloadUrl).setPath(savePath).setListener(new FileDownloadListener() {
+            FileDownloader.getImpl().create(Constants.downloadUrl).setPath(savePath).setListener(new FileDownloadListener() {
+                 int totalSize =0;
                 @Override
                 protected void pending(BaseDownloadTask task, int soFarBytes, int totalBytes) {
-
+                    totalSize = totalBytes;
                 }
 
                 @Override
                 protected void progress(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+                    notify.contentView.setProgressBar(R.id.notify_progressBar,totalBytes,soFarBytes,false);
                     float index = soFarBytes*1.0f/totalBytes*100;
-                    notify.contentView.setTextViewText(R.id.notiy_title,index+"%");
-                    notify.contentView.setProgressBar(R.id.notify_progressBar,soFarBytes,totalBytes,false);
+                    notify.contentView.setTextViewText(R.id.notiy_title,(int)index+"%");
                     manager.notify(0,notify);
                 }
 
                 @Override
                 protected void completed(BaseDownloadTask task) {
+                    notify.contentView.setTextViewText(R.id.load_status,"下载完成");
+                    notify.contentView.setTextViewText(R.id.notiy_title,100+"%");
+                   // notify.contentView.setProgressBar(R.id.notify_progressBar,totalSize,totalSize,false);
+                    manager.notify(0,notify);
                     Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.setDataAndType(Uri.fromFile(new File(Environment
                                     .getExternalStorageDirectory()+"/wishwall/", "wishwall.apk")),
                             "application/vnd.android.package-archive");
                     startActivity(intent);
+                    Process.killProcess(Process.myPid());
                 }
 
                 @Override

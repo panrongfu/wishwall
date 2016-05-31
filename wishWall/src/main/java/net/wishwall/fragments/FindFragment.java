@@ -47,7 +47,7 @@ public class FindFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private SpUtil localSputil;
     private Type mType = Type.REFRESH;
     private  List<WishsDTO.ResultBean> wishList = new ArrayList<WishsDTO.ResultBean>();
-    private SpUtil userSputi;
+    private SpUtil userSputil;
     private static String userId;
     private String searchName;
     private LoadType mLoadType = LoadType.COMMON;
@@ -70,8 +70,8 @@ public class FindFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         localSputil = new SpUtil(getActivity(),"location");
-        userSputi = new SpUtil(getActivity(), Constants.USER_SPUTIL);
-        userId = userSputi.getKeyValue("userId");
+        userSputil = new SpUtil(getActivity(), Constants.USER_SPUTIL);
+        userId = userSputil.getKeyValue("userId");
     }
 
     @Override
@@ -127,8 +127,8 @@ public class FindFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mRefreshlayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_view);
         mRefreshlayout.setOnRefreshListener(this);
         mRecyclerView.addOnScrollListener(new LoadMoreScrollListener());
-        String cityName = localSputil.getKeyValue("cityName");
-        initData(mType,cityName);
+        String cityName = MainActivity.cityName;
+        initData(mType,cityName==null?Constants.DEFALUT_CITY:cityName);
     }
     /**
      * 初始化数据

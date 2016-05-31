@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import net.wishwall.App;
 import net.wishwall.Constants;
 import net.wishwall.R;
 import net.wishwall.domain.FriendIdsDTO;
@@ -320,7 +319,7 @@ public class PersonDetailActivity extends BaseActivity implements OnClickListene
      */
     private void applyAddFriend(){
         addFriendDialog.setMessage("请求中...").show();
-        ApiClient.sendMessage(userId, friendId,"请求添加好友", App.ContactNtf,App.Apply, new Callback<ResultDTO>() {
+        ApiClient.sendMessage(userId, friendId,"请求添加好友", Constants.ContactNtf,Constants.Apply, new Callback<ResultDTO>() {
             @Override
             public void onResponse(Call<ResultDTO> call, Response<ResultDTO> response) {
                 ResultDTO body = response.body();

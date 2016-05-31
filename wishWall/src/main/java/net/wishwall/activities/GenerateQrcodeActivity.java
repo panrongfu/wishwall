@@ -18,7 +18,7 @@ import com.squareup.picasso.Target;
 
 import net.wishwall.Constants;
 import net.wishwall.R;
-import net.wishwall.utils.DensityUtil;
+import net.wishwall.utils.CustomUtils;
 import net.wishwall.utils.SpUtil;
 import net.wishwall.views.CustomToast;
 import net.wishwall.views.RoundImageView;
@@ -110,7 +110,7 @@ public class GenerateQrcodeActivity extends AppCompatActivity {
         String userId = userSpUtil.getKeyValue("userId");
         QRCodeEncoder.encodeQRCode(
                 userId,
-                DensityUtil.dip2px(this, 145),
+                CustomUtils.dip2px(this, 145),
                 Color.parseColor("#000000"),
                 logoBitmap,
                 new QRCodeEncoder.Delegate() {
@@ -134,7 +134,7 @@ public class GenerateQrcodeActivity extends AppCompatActivity {
 
         QRCodeEncoder.encodeQRCode(
                 userId,
-                DensityUtil.dip2px(this, 145),
+                CustomUtils.dip2px(this, 145),
                 Color.parseColor("#000000"),
                 new QRCodeEncoder.Delegate() {
                     @Override
@@ -147,6 +147,5 @@ public class GenerateQrcodeActivity extends AppCompatActivity {
                         CustomToast.showMsg(GenerateQrcodeActivity.this,"创建失败");
                     }
                 });
-
     }
 }

@@ -42,7 +42,8 @@ import net.wishwall.rong.activity.ContactsActivity;
 import net.wishwall.rong.activity.CreateGroup;
 import net.wishwall.rong.activity.FriendListActivity;
 import net.wishwall.rong.activity.SelectGroupActivity;
-import net.wishwall.utils.DensityUtil;
+
+import net.wishwall.utils.CustomUtils;
 import net.wishwall.utils.SpUtil;
 import net.wishwall.views.CustomToast;
 
@@ -132,14 +133,14 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
         AHBottomNavigationItem item3 = new AHBottomNavigationItem("我的", R.mipmap.home, R.color.de_action_white);
         AHBottomNavigationItem item4 = new AHBottomNavigationItem("更多", R.mipmap.more, R.color.de_action_white);
 
-      // Add items
+       // Add items
         bottomNavigation.addItem(item1);
         bottomNavigation.addItem(item2);
         bottomNavigation.addItem(item3);
         bottomNavigation.addItem(item4);
 
         // Set background color
-     //   bottomNavigation.setDefaultBackgroundColor(Color.WHITE);
+        // bottomNavigation.setDefaultBackgroundColor(Color.WHITE);
         // Disable the translation inside the CoordinatorLayout
         bottomNavigation.setBehaviorTranslationEnabled(false);
 
@@ -153,58 +154,48 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
         // Force the titles to be displayed (against Material Design guidelines!)
         bottomNavigation.setForceTitlesDisplay(true);
 
+        // Set current item programmatically
+        bottomNavigation.setCurrentItem(1);
 
-        // Use colored navigation with circle reveal effect
-    //    bottomNavigation.setColored(true);
-    //    bottomNavigation.setBehaviorTranslationEnabled(false);
-    //      bottomNavigation.setBackgroundColor(Color.WHITE);
-    //
+        // Customize notification (title, background, typeface)
+        bottomNavigation.setNotificationBackgroundColor(Color.parseColor("#F63D2B"));
 
+        // Add or remove notification for each item
 
-    // Set current item programmatically
-    bottomNavigation.setCurrentItem(1);
-
-    // Customize notification (title, background, typeface)
-    bottomNavigation.setNotificationBackgroundColor(Color.parseColor("#F63D2B"));
-
-    // Add or remove notification for each item
-
-    bottomNavigation.setNotification(1, 0);
+        bottomNavigation.setNotification(0, 0);
   }
 
     /**
      * 初始化定位
      */
     private void initLocation() {
-        String cityName = localSpUtil.getKeyValue("cityName");
-        if(TextUtils.isEmpty(location)){
-            //初始化定位
-            mLocationClient = new AMapLocationClient(getApplicationContext());
-            //设置定位回调监听
-            mLocationClient.setLocationListener(this);
-            //声明mLocationOption对象
+        cityName = localSpUtil.getKeyValue("cityName");
+        //初始化定位
+        mLocationClient = new AMapLocationClient(getApplicationContext());
+        //设置定位回调监听
+        mLocationClient.setLocationListener(this);
+        //声明mLocationOption对象
 
-            //初始化定位参数
-            mLocationOption = new AMapLocationClientOption();
-            //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
-            mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-            //设置是否返回地址信息（默认返回地址信息）
-            mLocationOption.setNeedAddress(true);
-            //设置是否只定位一次,默认为false
-            mLocationOption.setOnceLocation(false);
-            //设置是否强制刷新WIFI，默认为强制刷新
-            mLocationOption.setWifiActiveScan(true);
-            //设置是否允许模拟位置,默认为false，不允许模拟位置
-            mLocationOption.setMockEnable(false);
-            //设置定位间隔,单位毫秒,默认为2000ms
-            mLocationOption.setInterval(2000);
-            //给定位客户端对象设置定位参数
-            mLocationClient.setLocationOption(mLocationOption);
-            //启动定位
-            mLocationClient.startLocation();
-        }else {
-            ab.setTitle(cityName);
-        }
+        //初始化定位参数
+        mLocationOption = new AMapLocationClientOption();
+        //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        //设置是否返回地址信息（默认返回地址信息）
+        mLocationOption.setNeedAddress(true);
+        //设置是否只定位一次,默认为false
+        mLocationOption.setOnceLocation(false);
+        //设置是否强制刷新WIFI，默认为强制刷新
+        mLocationOption.setWifiActiveScan(false);
+        //设置是否允许模拟位置,默认为false，不允许模拟位置
+        mLocationOption.setMockEnable(false);
+        //设置定位间隔,单位毫秒,默认为2000ms
+        mLocationOption.setInterval(2000);
+        //给定位客户端对象设置定位参数
+        mLocationClient.setLocationOption(mLocationOption);
+        //启动定位
+        mLocationClient.startLocation();
+
+        ab.setTitle(cityName==null?Constants.DEFALUT_CITY:cityName);
     }
 
     /**
@@ -257,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
                 location = gpsProvince +gpsCity+gpsArea+gpsStreet;
                 cityName = amapLocation.getCity();
                 localSpUtil.setKeyValue("cityName",cityName);
-                ab.setTitle(cityName);
+                ab.setTitle(cityName==null?Constants.DEFALUT_CITY:cityName);
                 if(mlocatinListener != null && isLocation){
                     mlocatinListener.finish(cityName);
                     isLocation = false;
@@ -269,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
                 ab.setTitle(Constants.DEFALUT_CITY);
                 if(mlocatinListener != null){
                     mlocatinListener.finish(Constants.DEFALUT_CITY);
-                    isLocation = false;
+                    isLocation = true;
                     mLocationClient.onDestroy();
                 }
             }
@@ -279,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
             ab.setTitle(Constants.DEFALUT_CITY);
             if(mlocatinListener != null){
                 mlocatinListener.finish(Constants.DEFALUT_CITY);
-                isLocation = false;
+                isLocation = true;
                 mLocationClient.onDestroy();
             }
         }
@@ -329,7 +320,6 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
                 mSearchEditText.setFocusableInTouchMode(true);
                 mSearchEditText.requestFocus();
 
-                CustomToast.showMsg(this,"宽:"+mCardView.getWidth()+"高:"+mCardView.getHeight());
                 mAnimator = ViewAnimationUtils.createCircularReveal(mCardView,mCardView.getWidth(), mCardView.getHeight()/2, 0, 3000);
                 mAnimator.setInterpolator(new AccelerateInterpolator());
                 mAnimator.setDuration(500);
@@ -337,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
                     @Override
                     public void onAnimationStart() {
                         ObjectAnimator aninimator = ObjectAnimator.ofFloat(mArrows, "translationX", mCardView.getWidth()/2,
-                                DensityUtil.px2dip(MainActivity.this,5));
+                                CustomUtils.px2dip(MainActivity.this,5));
                         aninimator.setInterpolator(new AccelerateInterpolator());
                         aninimator.setDuration(300);
                         aninimator.start();
@@ -412,7 +402,7 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
         }else if(fragment instanceof FindFragment){
             ab.setHomeAsUpIndicator(R.mipmap.xiangxia);
             ab.setDisplayHomeAsUpEnabled(true);
-            ab.setTitle(cityName);
+            ab.setTitle(cityName==null?Constants.DEFALUT_CITY:cityName);
             toolbarTitle.setText("发现");
         }else if(fragment instanceof MoreFragment){
             ab.setTitle("");

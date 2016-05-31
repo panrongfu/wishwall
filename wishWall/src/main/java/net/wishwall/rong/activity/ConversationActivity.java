@@ -395,10 +395,6 @@ public class ConversationActivity extends BaseActivity implements RongIMClient.R
     private void setGroupActionBar(String targetId) {
         if (targetId == null)
             return;
-
-//        if (DemoContext.getInstance() != null) {
-//            getSupportActionBar().setTitle(DemoContext.getInstance().getGroupNameById(targetId));
-//        }
     }
 
     /**

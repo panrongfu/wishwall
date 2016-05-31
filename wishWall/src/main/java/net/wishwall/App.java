@@ -3,7 +3,6 @@ package net.wishwall;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
 
 import com.liulishuo.filedownloader.FileDownloader;
 
@@ -26,16 +25,6 @@ import io.rong.imlib.ipc.RongExceptionHandler;
  * @email pan@ipushan.com
  */
 public class App extends Application {
-    //服务地址
-    public static final String uploadBucket = "wishwall";
-    public static final String endpoint = "http://oss-cn-shenzhen.aliyuncs.com";
-    public static final String baseUrl = "http://10.1.1.179:3000/";
-    public static final String downloadUrl ="http://10.1.1.179:4000/download/wishWall.apk";
-    public static final String ContactNtf = "RC:ContactNtf";
-    public static final String TxtMsg = "RC:TxtMsg";
-    public static final String packageName = "net.wishwall";
-    public static final String ADD="ADD";
-    public final static String Apply="APPLY";
 
     static  Context mContext;
     private App app = null;
@@ -45,7 +34,6 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.e("APPPPPPP","onCreate:>>>>>>>>>>>>>>>>>");
         ShareSDK.initSDK(this);
         ShareSDK.registerService(Socialization.class);
         FileDownloader.init(this);
@@ -61,27 +49,21 @@ public class App extends Application {
 
             /**
              * 融云SDK事件监听处理
-             *
              * 注册相关代码，只需要在主进程里做。
              */
             if (getApplicationInfo().packageName.equals(getCurProcessName(getApplicationContext()))) {
-
                 RongCloudEvent.init(this);
-
                 Thread.setDefaultUncaughtExceptionHandler(new RongExceptionHandler(this));
-
                 try {
                     RongIM.registerMessageType(AgreedFriendRequestMessage.class);
                     RongIM.registerMessageTemplate(new ContactNotificationMessageProvider());
                     RongIM.registerMessageTemplate(new RealTimeLocationMessageProvider());
                     //@ 消息模板展示
                     RongContext.getInstance().registerConversationTemplate(new NewDiscussionConversationProvider());
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
         }
         //获取Context
         mContext = getApplicationContext();

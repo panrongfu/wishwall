@@ -7,8 +7,6 @@ package net.wishwall;
  */
 public class Constants {
 
-    public static  String PACKAGENAME = "net.wishingwall";
-
     public static final String DEBUG = "--bob---";
     //新的好友
     public static final int FRIENDLIST_REQUESTCODE = 1001;
@@ -38,10 +36,20 @@ public class Constants {
     public static final String APP_USER_NAME = "DEMO_USER_NAME";
     public static final String APP_USER_PORTRAIT = "DEMO_USER_PORTRAIT";
 
-
     public static final String USER_SPUTIL = "userInfo";
     public static final String DEFAULT_PASSWORD = "123456";
-    public static String LIKE_TYPE="LIKE";
     public static final String DEFALUT_CITY="广州市";
     public static final String TOKEN_INVALID="TOKEN_INVALID";
+
+    //服务地址
+    public static final String uploadBucket = "wishwall";
+    public static final String endpoint = "http://oss-cn-shenzhen.aliyuncs.com";
+    public static final String baseUrl = "http://120.25.234.90:3000/";
+    public static final String downloadUrl ="http://120.25.234.90:80/download/wishWall.apk";
+    public static final String ContactNtf = "RC:ContactNtf";
+    public static final String TxtMsg = "RC:TxtMsg";
+    public static final String packageName = "net.wishwall";
+    public static final String ADD="ADD";
+    public static final String Apply="APPLY";
+    public static final String ErrorReport ="错误报告";
 }

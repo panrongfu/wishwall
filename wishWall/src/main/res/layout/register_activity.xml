@@ -47,7 +47,7 @@
             android:background="@android:color/transparent"
             android:drawableLeft="@mipmap/account"
             android:drawablePadding="10dp"
-            android:hint="手机号"
+            android:hint="手机号/邮箱"
             android:imeOptions="normal"
             android:singleLine="true"
             android:textColorHint="#b6b6b6"

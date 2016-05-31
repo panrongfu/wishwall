@@ -65,7 +65,6 @@ public class LoginActivity extends BaseActivity
 	private static final int MSG_AUTH_COMPLETE = 4;	
 
 	private Handler handler;
-	private CustomToast customToast;
 	private SpUtil userSpUtil;
 	private CustomProgressDialog progressDialog;
 
@@ -94,7 +93,6 @@ public class LoginActivity extends BaseActivity
 	 * 初始化工具类
 	 */
 	private void initUtils() {
-		customToast = CustomToast.createToast(this);
 		progressDialog = CustomProgressDialog.createDialog(this);
 
 	}
@@ -129,8 +127,8 @@ public class LoginActivity extends BaseActivity
 				overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
 				break;
 			case R.id.login_forget_password:
-//				Intent intent_forget = new Intent(LoginActivity.this,FindBackPassword.class);
-//				startActivity(intent_forget);
+				Intent setPassword = new Intent(this,SetNewPassword.class);
+				startActivity(setPassword);
 				overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
 				break;
 			case R.id.login_btn:
@@ -328,7 +326,7 @@ public class LoginActivity extends BaseActivity
 					LoginActivity.this.finish();
 
 				}else{
-					customToast.setMessage(body.getMessage()).show();
+					CustomToast.showMsg(LoginActivity.this,body.getMessage());
 					progressDialog.dismiss();
 				}
 			}

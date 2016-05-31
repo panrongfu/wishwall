@@ -29,7 +29,6 @@ import com.alibaba.sdk.android.oss.common.OSSLog;
 import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
 import com.alibaba.sdk.android.oss.common.auth.OSSStsTokenCredentialProvider;
 
-import net.wishwall.App;
 import net.wishwall.Constants;
 import net.wishwall.R;
 import net.wishwall.adapter.IssueWishAdpter;
@@ -37,8 +36,7 @@ import net.wishwall.aliyunoss.ResuambleUploadSamples;
 import net.wishwall.domain.ResultDTO;
 import net.wishwall.domain.UploadTokenDTO;
 import net.wishwall.service.ApiClient;
-import net.wishwall.utils.ImageTools;
-import net.wishwall.utils.SaveBitmap2File;
+import net.wishwall.utils.CustomUtils;
 import net.wishwall.utils.SpUtil;
 import net.wishwall.views.CustomProgressDialog;
 import net.wishwall.views.CustomToast;
@@ -154,8 +152,7 @@ public class IssueWishActivity extends BaseActivity
                 // 删除上一次截图的临时文件
                 String tempName = tempSpUtil.getKeyValue("tempName");
                 String path =Environment.getExternalStorageDirectory().getAbsolutePath();
-                ImageTools.deletePhotoAtPathAndName(path,tempName);
-
+                CustomUtils.deleteFileByName(getApplicationContext(),path,tempName);
                 // 保存本次截图临时文件名字
                 fileName = String.valueOf(System.currentTimeMillis()) + ".jpg";
                 tempSpUtil.setKeyValue("tempName",fileName);
@@ -316,8 +313,8 @@ public class IssueWishActivity extends BaseActivity
             Bitmap bitmap = data;
             try {
                 String name = UUID.randomUUID().toString()+System.currentTimeMillis()+".jpg";  ;
-                String path = SaveBitmap2File.getSDPath()+ "/wishwall/";
-                SaveBitmap2File.saveFile(bitmap, path,name);// 保存图片到手机
+                String path = CustomUtils.getSDCradPath()+ "/wishwall/";
+                CustomUtils.saveBitmap2File(bitmap, path,name);// 保存图片到手机
                 // change_image.setImageBitmap(bitmap);
                 String uploadPath = path+name;
                 mImagePath.add(uploadPath);
@@ -398,18 +395,17 @@ public class IssueWishActivity extends BaseActivity
         conf.setMaxConcurrentRequest(5); // 最大并发请求书，默认5个
         conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
         OSSLog.enableLog();
-        oss = new OSSClient(getApplicationContext(), App.endpoint, credentialProvider, conf);
+        oss = new OSSClient(getApplicationContext(), Constants.endpoint, credentialProvider, conf);
         oss.updateCredentialProvider(new OSSStsTokenCredentialProvider(accessKeyId, accessKeySecret, securityToken));
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 String name =  UUID.randomUUID().toString();
-                ResuambleUploadSamples resuamUpLoad = new ResuambleUploadSamples(oss,App.uploadBucket,name,mImagePath.get(uploadIndex));
+                ResuambleUploadSamples resuamUpLoad = new ResuambleUploadSamples(oss,Constants.uploadBucket,name,mImagePath.get(uploadIndex));
                 resuamUpLoad.setUpLoadFinishListener(new ResuambleUploadSamples.UpLoadFinishListener() {
                     @Override
                     public void finish(String path) {
-                        Log.e("finish", "finish:"+uploadIndex +">>>>>"+mImagePath.size());
                         ossImagePath.add(path);
                         Message msg = Message.obtain();
                         uploadIndex++;

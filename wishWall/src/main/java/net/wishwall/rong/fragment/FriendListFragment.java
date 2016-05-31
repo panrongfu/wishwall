@@ -59,7 +59,6 @@ public class FriendListFragment extends Fragment implements SwitchGroup.ItemHand
     private Conversation.ConversationType mConversationType;
     private String mTargetId;
     private SpUtil userSpUtil;
-    private CustomToast customToast;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -84,7 +83,6 @@ public class FriendListFragment extends Fragment implements SwitchGroup.ItemHand
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        customToast = CustomToast.createToast(getActivity());
         userSpUtil = new SpUtil(getActivity(), Constants.USER_SPUTIL);
         String userId = userSpUtil.getKeyValue("userId");
         if(userId.trim()== null)return;
@@ -98,7 +96,7 @@ public class FriendListFragment extends Fragment implements SwitchGroup.ItemHand
                     mFriendsListDTO = body.getResult();
                     getFriendInfo();
                 }else{
-                    customToast.setMessage(body.getMessage()).show();
+                    CustomToast.showMsg(getActivity(),body.getMessage());
                 }
             }
             @Override

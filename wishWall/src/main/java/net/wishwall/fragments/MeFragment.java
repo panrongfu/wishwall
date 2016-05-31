@@ -19,7 +19,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +36,6 @@ import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
 import com.alibaba.sdk.android.oss.common.auth.OSSStsTokenCredentialProvider;
 import com.squareup.picasso.Picasso;
 
-import net.wishwall.App;
 import net.wishwall.Constants;
 import net.wishwall.R;
 import net.wishwall.activities.ImageSelectPopupWindow;
@@ -54,8 +52,7 @@ import net.wishwall.domain.ResultDTO;
 import net.wishwall.domain.UploadTokenDTO;
 import net.wishwall.domain.WishsDTO;
 import net.wishwall.service.ApiClient;
-import net.wishwall.utils.ImageTools;
-import net.wishwall.utils.SaveBitmap2File;
+import net.wishwall.utils.CustomUtils;
 import net.wishwall.utils.SpUtil;
 import net.wishwall.views.CustomToast;
 
@@ -196,7 +193,7 @@ public class MeFragment extends Fragment implements View.OnClickListener,
                 // 删除上一次截图的临时文件
                 String tempName = tempSpUtil.getKeyValue("tempName");
                 String path = Environment.getExternalStorageDirectory().getAbsolutePath();
-                ImageTools.deletePhotoAtPathAndName(path,tempName);
+                CustomUtils.deleteFileByName(getActivity(),path,tempName);
 
                 // 保存本次截图临时文件名字
                 fileName = String.valueOf(System.currentTimeMillis()) + ".jpg";
@@ -320,7 +317,6 @@ public class MeFragment extends Fragment implements View.OnClickListener,
         morePopupWindow.setOnMorePopupItemClickListener(new MorePopupWindow.OnMorePopupItemClickListener() {
             @Override
             public void morePopupItemClick(int position) {
-                CustomToast.showMsg(getActivity(),">>>>>>>>"+position);
                 switch (position){
                     case 0:
                         imgPopupwindow.setAnimationStyle(R.style.popupwindow);
@@ -390,7 +386,6 @@ public class MeFragment extends Fragment implements View.OnClickListener,
             switch (requestCode){
                 case FROM_PHOTO:
                     String path = data.getStringExtra("path");
-                    Log.e("PHOTO", "onActivityResult: "+path );
                     cropImage(Uri.fromFile(new File(path)), 155, 155, CROP_PICTURE);
                     break;
                 case CROP:
@@ -448,8 +443,8 @@ public class MeFragment extends Fragment implements View.OnClickListener,
             Bitmap bitmap = data;
             try {
                 String name = UUID.randomUUID().toString()+System.currentTimeMillis()+".jpg";  ;
-                final String path = SaveBitmap2File.getSDPath()+ "/wishwall/";
-                SaveBitmap2File.saveFile(bitmap, path,name);// 保存图片到手机
+                final String path = CustomUtils.getSDCradPath()+ "/wishwall/";
+                CustomUtils.saveBitmap2File(bitmap, path,name);// 保存图片到手机
                 mImageView.setImageBitmap(bitmap);
                 final String uploadPath = path + name;
                 new Thread(new Runnable() {
@@ -485,14 +480,14 @@ public class MeFragment extends Fragment implements View.OnClickListener,
         conf.setMaxConcurrentRequest(5); // 最大并发请求书，默认5个
         conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
         OSSLog.enableLog();
-        oss = new OSSClient(getActivity(), App.endpoint, credentialProvider, conf);
+        oss = new OSSClient(getActivity(), Constants.endpoint, credentialProvider, conf);
         oss.updateCredentialProvider(new OSSStsTokenCredentialProvider(accessKeyId, accessKeySecret, securityToken));
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 String name = UUID.randomUUID().toString()+System.currentTimeMillis()+".jpg";
-                ResuambleUploadSamples resuambleUploadSamples = new ResuambleUploadSamples(oss,App.uploadBucket,name,path);
+                ResuambleUploadSamples resuambleUploadSamples = new ResuambleUploadSamples(oss,Constants.uploadBucket,name,path);
                 resuambleUploadSamples.setUpLoadFinishListener(new ResuambleUploadSamples.UpLoadFinishListener() {
                     @Override
                     public void finish(String url) {

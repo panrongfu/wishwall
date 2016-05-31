@@ -23,10 +23,15 @@ public class CustomDialogFragment extends DialogFragment {
     private DatePicker datePicker;
     private static int mResource;
     private OnUpdateVersionListener updateListener;
+    private static Type mType;
+    public enum Type{
+        OKAY,OKAY_CANCLE;
+    }
 
 
-    public static CustomDialogFragment newInstance(String message,int res){
+    public static CustomDialogFragment newInstance(String message,Type type,int res){
         mResource = res;
+        mType = type;
         CustomDialogFragment dialog = new CustomDialogFragment();
         Bundle b = new Bundle();
         b.putString("message", message);
@@ -50,11 +55,38 @@ public class CustomDialogFragment extends DialogFragment {
         }catch (Exception e){
 
         }
+        AlertDialog.Builder buider= null;
+        if(mType == Type.OKAY){
+            buider = createBuiderWithOkay(view);
+        }else if(mType == Type.OKAY_CANCLE){
+            buider = createBuiderWithOkayAndCancle(view);
+        }
+        buider.setView(view);
+        return buider.create();
+    }
+
+    /**
+     * 创建一个只有确定的dialog
+     * @param view
+     * @return
+     */
+    public AlertDialog.Builder createBuiderWithOkay(final View view){
+        AlertDialog.Builder buider = new AlertDialog.Builder(getActivity());
+        buider.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                    dismiss();
+            }
+        });
+        return  buider;
+    }
+    public AlertDialog.Builder createBuiderWithOkayAndCancle(final View view){
+
         AlertDialog.Builder buider = new AlertDialog.Builder(getActivity());
         buider.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-               dismiss();
+                dismiss();
             }
         }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
@@ -67,8 +99,8 @@ public class CustomDialogFragment extends DialogFragment {
                     updateListener.update();
                 }
             }
-        }).setView(view);
-        return buider.create();
+        });
+        return buider;
     }
 
     /**

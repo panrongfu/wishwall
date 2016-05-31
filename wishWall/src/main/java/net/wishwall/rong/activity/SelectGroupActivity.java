@@ -28,11 +28,10 @@ import net.wishwall.R;
 import net.wishwall.domain.GroupsDTO;
 import net.wishwall.rong.adapter.GroupListAdapter;
 import net.wishwall.service.ApiClient;
-import net.wishwall.utils.DensityUtil;
+import net.wishwall.utils.CustomUtils;
 
 import java.util.HashMap;
 import java.util.List;
-
 import io.codetail.animation.SupportAnimator;
 import io.codetail.animation.ViewAnimationUtils;
 import io.codetail.widget.RevealFrameLayout;
@@ -204,7 +203,7 @@ public class SelectGroupActivity extends AppCompatActivity
                     @Override
                     public void onAnimationStart() {
                         ObjectAnimator aninimator = ObjectAnimator.ofFloat(arrows, "translationX", cardView.getWidth()/2,
-                                DensityUtil.px2dip(SelectGroupActivity.this,5));
+                                CustomUtils.px2dip(SelectGroupActivity.this,5));
                         aninimator.setInterpolator(new AccelerateInterpolator());
                         aninimator.setDuration(300);
                         aninimator.start();

@@ -12,7 +12,7 @@ import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.ResumableUploadRequest;
 import com.alibaba.sdk.android.oss.model.ResumableUploadResult;
 
-import net.wishwall.utils.SaveBitmap2File;
+import net.wishwall.utils.CustomUtils;
 
 import java.io.File;
 
@@ -42,7 +42,6 @@ public class ResuambleUploadSamples {
         request.setProgressCallback(new OSSProgressCallback<ResumableUploadRequest>() {
             @Override
             public void onProgress(ResumableUploadRequest request, long currentSize, long totalSize) {
-                Log.d("resumableUpload", "currentSize: " + currentSize + " totalSize: " + totalSize);
 
             }
         });
@@ -50,9 +49,6 @@ public class ResuambleUploadSamples {
         OSSAsyncTask resumableTask = oss.asyncResumableUpload(request, new OSSCompletedCallback<ResumableUploadRequest, ResumableUploadResult>() {
             @Override
             public void onSuccess(ResumableUploadRequest request, ResumableUploadResult result) {
-                Log.d("resumableUpload", "success!");
-                Log.e("onSuccess", "onSuccess>>>>>>>>>>>>>>>>>>>>>>>>");
-                Log.e("getLocation",result.getLocation());
                 if(mListener !=null){
                     mListener.finish(result.getLocation());
                 }
@@ -60,7 +56,6 @@ public class ResuambleUploadSamples {
 
             @Override
             public void onFailure(ResumableUploadRequest request, ClientException clientExcepion, ServiceException serviceException) {
-                Log.e("onFailure", "onFailure>>>>>>>>>>>>>>>>>>>>>>>>");
                 if(mListener != null){
                     mListener.fail();
                 }
@@ -93,7 +88,7 @@ public class ResuambleUploadSamples {
         if (!recordDir.exists()) {
             recordDir.mkdirs();
         }
-        String path = SaveBitmap2File.getSDPath()+ "/wishwall/"+"personLogo.jpg";
+        String path = CustomUtils.getSDCradPath()+ "/wishwall/"+"personLogo.jpg";
       //  File logo = new File(path + "personLogo.jpg");
         // 创建断点上传请求，参数中给出断点记录文件的保存位置，需是一个文件夹的绝对路径
         ResumableUploadRequest request = new ResumableUploadRequest(testBucket, testObject, path, recordDirectory);

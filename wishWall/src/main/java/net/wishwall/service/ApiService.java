@@ -16,12 +16,17 @@ import net.wishwall.domain.ResultDTO;
 import net.wishwall.domain.UploadTokenDTO;
 import net.wishwall.domain.UserDTO;
 import net.wishwall.domain.UsersDTO;
+import net.wishwall.domain.VersionDTO;
 import net.wishwall.domain.WishsDTO;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 /**
  * @author panRongFu on 2016/4/8.
@@ -56,6 +61,18 @@ public interface ApiService {
             @Field("userName") String userName,
             @Field("userIcon") String userIcon,
             @Field("userSex") String userSex);
+
+    /**
+     * 设置新密码
+     * @param account
+     * @param password
+     * @return
+     */
+    @POST("/setNewPassword")
+    @FormUrlEncoded
+    Call<ResultDTO> setNewPassword(
+            @Field("account") String account,
+            @Field("password") String password);
     /**
      * 用户登录
      * @param username
@@ -179,7 +196,9 @@ public interface ApiService {
     @FormUrlEncoded
     Call<ResultDTO> createGroup(
             @Field("userId") String userId,
-            @Field("groupName") String groupName);
+            @Field("describe")String describe,
+            @Field("groupName") String groupName,
+            @Field("groupIcon") String groupIcon);
 
     /**
      * 获取所有群组
@@ -461,4 +480,26 @@ public interface ApiService {
     Call<ResultDTO> commWish(
             @Field("wishId") String wishId,
             @Field("commText") String commText);
+
+    /**
+     * 检查更新
+     * @param userId
+     * @return
+     */
+    @POST("/checkForUpdate")
+    @FormUrlEncoded
+    Call<VersionDTO> checkForUpdate(@Field("userId") String userId);
+
+    /**
+     *上传文件到服务器
+     * @param description
+     * @param file
+     * @return
+     */
+    @Multipart
+    @POST("/crash")
+    Call<ResultDTO> uploadFile(
+            @Part("crashReport") RequestBody description,
+            @Part MultipartBody.Part file);
+
 }

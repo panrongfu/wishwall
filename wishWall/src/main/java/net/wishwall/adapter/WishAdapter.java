@@ -67,6 +67,7 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
     private static int LIKE = 0X00;
     private static int COMM = 0X01;
     private static int UNLIKE = 0X11;
+    String LIKE_TYPE="LIKE";
     private boolean isLikeNow=false;
     private static WishHolder wishHolder;
     public static boolean hasWish = true;
@@ -250,17 +251,16 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
                 }
                 if(likeMap.containsValue(userId)){
                     holder.itemLike.setBackgroundResource(R.mipmap.like_gray);
-                    Constants.LIKE_TYPE="UNLIKE";
+                    LIKE_TYPE="UNLIKE";
                 }else{
                     holder.itemLike.setBackgroundResource(R.mipmap.like_blue);
-                    Constants.LIKE_TYPE="LIKE";
+                    LIKE_TYPE="LIKE";
                     isLikeNow =true;
                 }
 
                 final String wishId = mWishList.get(position).getWishid();
 
                 new Thread(new Runnable() {
-
                     @Override
                     public void run() {
                         //如果有用户点赞，获取点赞的id
@@ -285,12 +285,12 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
                                 likeId = mWishList.get(position).getWish_like().get(likePos).getLikeid();
                             }
                         }
-                        ApiClient.likeWish(likeId==null?null:likeId, wishId, Constants.LIKE_TYPE, new Callback<ResultDTO>() {
+                        ApiClient.likeWish(likeId==null?null:likeId, wishId, LIKE_TYPE, new Callback<ResultDTO>() {
                             @Override
                             public void onResponse(Call<ResultDTO> call, Response<ResultDTO> response) {
                                 ResultDTO body = response.body();
                                 if(body.getCode() == 200){
-                                    if(Constants.LIKE_TYPE.equals("LIKE")){
+                                    if(LIKE_TYPE.equals("LIKE")){
                                         likeNowId = body.getResult();
                                         //更新wishlist的数据，为了让用户马上看到点赞的效果
                                         WishsDTO.ResultBean.WishLikeBean likeBean = new WishsDTO.ResultBean.WishLikeBean();
@@ -298,8 +298,7 @@ public class WishAdapter extends RecyclerView.Adapter<WishAdapter.WishHolder>{
                                         likeBean.setNickname(nickName);
                                         mWishList.get(position).getWish_like().add(likeBean);
 
-                                    }else if(Constants.LIKE_TYPE.equals("UNLIKE")){
-
+                                    }else if(LIKE_TYPE.equals("UNLIKE")){
                                         //遍历map通过value找出key
                                         int likePos=0;
                                         for(int key :likeMap.keySet()){

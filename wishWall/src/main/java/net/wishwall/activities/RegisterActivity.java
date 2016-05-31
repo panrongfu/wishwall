@@ -48,7 +48,6 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 	private String againPassWord;
 	private String validate;
 	private String seesion;
-	private CustomToast customToast;
 	private CustomProgressDialog progressDialog;
 
 
@@ -63,7 +62,6 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 	 * 初始化工具类、变量
 	 */
 	private void initUtils() {
-		customToast = CustomToast.createToast(this);
 		progressDialog = CustomProgressDialog.createDialog(this);
 	}
 	/**
@@ -203,10 +201,10 @@ public class RegisterActivity extends BaseActivity implements OnClickListener{
 			public void onResponse(Call<RegisterDTO> call, Response<RegisterDTO> response) {
 				RegisterDTO body = response.body();
 				if(body.getCode() == 200 ){
-					customToast.setMessage(getResources().getString(R.string.register_success)).show();
+					CustomToast.showMsg(RegisterActivity.this,getResources().getString(R.string.register_success));
                     RegisterActivity.this.finish();
 				}else {
-					customToast.setMessage(body.getMessage()).show();
+					CustomToast.showMsg(RegisterActivity.this,body.getMessage());
 				}
                 progressDialog.dismiss();
 			}

@@ -21,6 +21,7 @@ import net.wishwall.domain.ResultDTO;
 import net.wishwall.domain.UploadTokenDTO;
 import net.wishwall.domain.UserDTO;
 import net.wishwall.domain.UsersDTO;
+import net.wishwall.domain.VersionDTO;
 import net.wishwall.domain.WishsDTO;
 
 import org.json.JSONObject;
@@ -30,8 +31,10 @@ import java.nio.charset.Charset;
 
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okio.Buffer;
@@ -92,7 +95,7 @@ public class ApiClient {
 
     static Retrofit retrofit = new Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl(App.baseUrl)
+            .baseUrl(Constants.baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
@@ -118,6 +121,17 @@ public class ApiClient {
      */
     public static void defaultRegister(String userId,String usrName,String userIcon,String userSex,Callback<RegisterDTO> callback){
         Call<RegisterDTO> call = apiService.defaultRegister(userId,usrName,userIcon,userSex);
+        call.enqueue(callback);
+    }
+
+    /**
+     * 设置新密码
+     * @param account
+     * @param password
+     * @param callback
+     */
+    public static void setNewPassword(String account,String password,Callback<ResultDTO> callback){
+        Call<ResultDTO> call = apiService.setNewPassword(account, password);
         call.enqueue(callback);
     }
 
@@ -233,8 +247,8 @@ public class ApiClient {
      * @param groupName
      * @param callback
      */
-    public static void createGroup(String userid, String groupName,Callback<ResultDTO> callback){
-        Call<ResultDTO> call = apiService.createGroup(userid, groupName);
+    public static void createGroup(String userid, String describe, String groupName,String groupIcon,Callback<ResultDTO> callback){
+        Call<ResultDTO> call = apiService.createGroup(userid, describe,groupName,groupIcon);
         call.enqueue(callback);
     }
 
@@ -537,6 +551,26 @@ public class ApiClient {
      */
     public static void commWish(String wishId,String commText,Callback<ResultDTO> callback){
         Call<ResultDTO> call = apiService.commWish(wishId, commText);
+        call.enqueue(callback);
+    }
+
+    /**
+     * 检查更新
+     * @param callback
+     */
+    public static void checkForUpdate(Callback<VersionDTO> callback){
+        Call<VersionDTO> call = apiService.checkForUpdate(null);
+        call.enqueue(callback);
+    }
+
+    /**
+     * 上传文件
+     * @param description
+     * @param body
+     * @param callback
+     */
+    public static void uploadFile(RequestBody description, MultipartBody.Part body,Callback<ResultDTO> callback ){
+        Call<ResultDTO> call = apiService.uploadFile(description,body);
         call.enqueue(callback);
     }
 }

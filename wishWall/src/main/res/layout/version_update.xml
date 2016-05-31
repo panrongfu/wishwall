@@ -4,11 +4,12 @@
     android:layout_height="match_parent">
     <TextView
         android:id="@+id/custom_dialog_content"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:textColor="@color/gray_deep"
         android:textSize="20dp"
         android:text="已经是最新版本了"
         android:padding="10dp"
+        android:singleLine="false"
         android:layout_height="wrap_content" />
 
 </LinearLayout>

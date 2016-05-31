@@ -16,8 +16,8 @@ import android.widget.TextView;
 
 import net.wishwall.R;
 import net.wishwall.domain.MorePopupItemBean;
-import net.wishwall.utils.DensityUtil;
-import net.wishwall.utils.ScreenWidthHeight;
+
+import net.wishwall.utils.CustomUtils;
 import net.wishwall.views.CustomToast;
 
 import java.util.ArrayList;
@@ -114,8 +114,8 @@ public class MorePopupWindow extends PopupWindow {
         PopupWindow popWindow = new PopupWindow(contentView, contentView.getMeasuredWidth(), contentView.getMeasuredHeight(), true);
         int height = popWindow.getHeight();
         int width = popWindow.getWidth();
-        int srceenWidth = ScreenWidthHeight.getWidth(mContext);
-        int srceenHeight = ScreenWidthHeight.getHeight(mContext);
+        int srceenWidth = CustomUtils.getScreenWidth(mContext);
+        int srceenHeight = CustomUtils.getScreenHeight(mContext);
 
         //显示弹窗的位置
         showAsDropDown(view, -(srceenWidth-view.getRight()+width/2), 0);
