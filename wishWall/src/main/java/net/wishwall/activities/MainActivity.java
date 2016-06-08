@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
     private static  boolean isLocation=true;
     private static int currentIndex;
     public static View mainActiviyView;
+    public static MainActivity mainActivity;
 
     RevealFrameLayout mRevealFrameLayout;
     private SupportAnimator mAnimator;
@@ -100,10 +101,12 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         mainActiviyView = LayoutInflater.from(this).inflate(R.layout.main_activity,null);
+        mainActivity=this;
         initToolbar();
         initViewUI();
         initLocation();
         connectRongCloud();
+
   }
 
     private void initToolbar(){
@@ -163,6 +166,7 @@ public class MainActivity extends AppCompatActivity implements AHBottomNavigatio
         // Add or remove notification for each item
 
         bottomNavigation.setNotification(0, 0);
+
   }
 
     /**

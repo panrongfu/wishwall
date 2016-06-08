@@ -66,7 +66,6 @@ public class PersonDetailActivity extends BaseActivity implements OnClickListene
     private String EDIT="编辑";
     private String ADD="添加";
     private String CHAT="聊天";
-    private CustomProgressDialog progressDialog;
     private CustomProgressDialog addFriendDialog;
 
 
@@ -78,8 +77,7 @@ public class PersonDetailActivity extends BaseActivity implements OnClickListene
     }
 
     private void initViewUI() {
-        progressDialog = CustomProgressDialog.createDialog(this);
-      //  addFriendDialog = CustomProgressDialog.createDialog(this);
+        addFriendDialog = CustomProgressDialog.createDialog(this);
         userSpUtil = new SpUtil(this, Constants.USER_SPUTIL);
         back = (TextView)findViewById(R.id.person_detail_back);
         edit = (TextView)findViewById(R.id.person_detail_edit);
@@ -151,13 +149,16 @@ public class PersonDetailActivity extends BaseActivity implements OnClickListene
             edit.setText(EDIT);
             findUserById(userId);
         }
+
+        if(userId.equals(friendId)){
+            edit.setText(EDIT);
+        }
     }
 
     /**
      * 根据用户id获取用户信息
      */
-    private  void findUserById(String userId){
-        progressDialog.setMessage("加载中...").show();
+    private void findUserById(String userId){
         ApiClient.findUserById(userId, new Callback<UserDTO>() {
             @Override
             public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
@@ -190,12 +191,10 @@ public class PersonDetailActivity extends BaseActivity implements OnClickListene
                 }else{
                     CustomToast.showMsg(PersonDetailActivity.this,"信息加载失败");
                 }
-                progressDialog.dismiss();
             }
             @Override
             public void onFailure(Call<UserDTO> call, Throwable t) {
                 t.printStackTrace();
-                progressDialog.dismiss();
             }
         });
     }
@@ -211,13 +210,12 @@ public class PersonDetailActivity extends BaseActivity implements OnClickListene
                 FriendIdsDTO body = response.body();
                 if(body.getCode() == 200){
                     isFriend(body.getResult());
-                    findUserById(friendId);
                 }
+                findUserById(friendId);
             }
             @Override
             public void onFailure(Call<FriendIdsDTO> call, Throwable t) {
                 t.printStackTrace();
-                progressDialog.dismiss();
             }
         });
     }
@@ -226,19 +224,15 @@ public class PersonDetailActivity extends BaseActivity implements OnClickListene
      * 判断是否与该用户是朋友关系
      */
     private void isFriend(List<FriendIdsDTO.ResultBean> list) {
-        if(list !=null){
+        if(list !=null && list.size() !=0){
             for(FriendIdsDTO.ResultBean fr : list){
                 if(friendId.equals(fr.getFriendid())){
                     edit.setText(CHAT);
                     break;
-                }else {
-                    edit.setText(ADD);
                 }
             }
-        }
-
-        if(userId.equals(friendId)){
-            edit.setText(EDIT);
+        }else if(list.size() == 0){
+            edit.setText(ADD);
         }
     }
 

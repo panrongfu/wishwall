@@ -45,9 +45,14 @@ public class ScanQRcodeActivity extends AppCompatActivity implements QRCodeView.
     }
 
     private void intViewUI() {
-        mQRCodeView = (ZXingView) findViewById(R.id.zxingview);
-        mQRCodeView.setResultHandler(this);
-        mQRCodeView.startSpot();
+
+        try {
+            mQRCodeView = (ZXingView) findViewById(R.id.zxingview);
+            mQRCodeView.setResultHandler(this);
+            mQRCodeView.startSpot();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

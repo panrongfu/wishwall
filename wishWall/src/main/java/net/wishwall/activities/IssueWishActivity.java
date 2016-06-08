@@ -226,7 +226,15 @@ public class IssueWishActivity extends BaseActivity
                 ResultDTO body = response.body();
                 if(body.getCode() == 200){
                     wishId = body.getResult();
-                    preUpLoad();
+                    if(mImagePath !=null && mImagePath.size() == 0){
+                        progressDialog.dismiss();
+                        if(mListener !=null){
+                            mListener.finish();
+                        }
+                        IssueWishActivity.this.finish();
+                    }else{
+                        preUpLoad();
+                    }
                 }
             }
             @Override

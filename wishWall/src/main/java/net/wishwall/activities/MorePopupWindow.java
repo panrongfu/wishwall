@@ -16,9 +16,7 @@ import android.widget.TextView;
 
 import net.wishwall.R;
 import net.wishwall.domain.MorePopupItemBean;
-
 import net.wishwall.utils.CustomUtils;
-import net.wishwall.views.CustomToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,7 +117,6 @@ public class MorePopupWindow extends PopupWindow {
 
         //显示弹窗的位置
         showAsDropDown(view, -(srceenWidth-view.getRight()+width/2), 0);
-        CustomToast.showMsg(mContext,"+view.getRight()"+view.getRight());
     }
 
     public void setOnMorePopupItemClickListener(OnMorePopupItemClickListener l){

@@ -97,8 +97,19 @@
                     android:text="@string/more_version_updates"
                     android:textColor="@color/gray_deep"
                     android:textSize="15sp" />
+                <ImageView
+                    android:id="@+id/id_new_version"
+                    android:layout_toLeftOf="@+id/forward"
+                    android:layout_marginRight="25dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:visibility="invisible"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/new_version"
+                    />
 
                 <TextView
+                    android:id="@+id/forward"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"

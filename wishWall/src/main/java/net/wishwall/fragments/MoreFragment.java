@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.RemoteViews;
 import android.widget.TextView;
@@ -66,9 +67,37 @@ public class MoreFragment extends Fragment implements  OnClickListener{
 	private CustomExitDialog exitDialog;
 	private SpUtil userSpUtil;
 	private MainActivity mainActivity;
-    private Handler updateHandler;
+
+    private ImageView newVersion;
     private static final int NEWSET = 0X01;
     private static final int NO_NEWSET = 0X02;
+    private FragmentTransaction ft;
+    private android.app.Fragment prev;
+    /**
+     * 是否点击检查更新
+     */
+    private boolean checkUpdate= false;
+    private Handler updateHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if(msg.what == NEWSET){//已经是最新版本了，隐藏new图标
+                newVersion.setVisibility(View.INVISIBLE);
+                if(checkUpdate){
+                    showDialogFragment("已经是最新版本了",ft, CustomDialogFragment.Type.OKAY);
+                }
+
+            }else if(msg.what == NO_NEWSET){//不是最新版本，显示new图标
+                newVersion.setVisibility(View.VISIBLE);
+                if(checkUpdate){
+                    String updateInfo = String.valueOf(msg.obj);
+                    showDialogFragment(updateInfo,ft, CustomDialogFragment.Type.OKAY_CANCLE);
+                }
+            }
+        }
+    };
+
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -88,17 +117,21 @@ public class MoreFragment extends Fragment implements  OnClickListener{
 	 */
 	private void initViewUI(View view) {
         userSpUtil = new SpUtil(getActivity(), Constants.USER_SPUTIL);
+        newVersion = (ImageView) view.findViewById(R.id.id_new_version);
 		personDetail = (RelativeLayout) view.findViewById(R.id.more_person_info);
 		aboutwishwall = (RelativeLayout) view.findViewById(R.id.more_about_wishwall);
 		versionUpdates = (RelativeLayout) view.findViewById(R.id.more_version_updates);
 		ideaFeedback = (RelativeLayout)view.findViewById(R.id.more_idea_feedback);
 		exitwishwall = (TextView)view.findViewById(R.id.more_exit_wishwall);
+        ft = getActivity().getFragmentManager().beginTransaction();
+        prev = getActivity().getFragmentManager().findFragmentByTag("dialog");
 		
 		personDetail.setOnClickListener(this);
 		aboutwishwall.setOnClickListener(this);
 		versionUpdates.setOnClickListener(this);
 		ideaFeedback.setOnClickListener(this);
-		exitwishwall.setOnClickListener(this);						
+		exitwishwall.setOnClickListener(this);
+        checkForUpdate();
 	}
 
 	@Override
@@ -118,25 +151,12 @@ public class MoreFragment extends Fragment implements  OnClickListener{
 
 			//版本更新
 			case R.id.more_version_updates:
-				final FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
-				android.app.Fragment prev = getActivity().getFragmentManager().findFragmentByTag("dialog");
+                checkUpdate=true;
 				if (prev != null) {
 					ft.remove(prev);
 				}
 				ft.addToBackStack(null);
                 checkForUpdate();
-                updateHandler = new Handler(){
-                    @Override
-                    public void handleMessage(Message msg) {
-                        super.handleMessage(msg);
-                        if(msg.what == NEWSET){
-                            showDialogFragment("已经是最新版本了",ft, CustomDialogFragment.Type.OKAY);
-                        }else if(msg.what == NO_NEWSET){
-                            String updateInfo = String.valueOf(msg.obj);
-                            showDialogFragment(updateInfo,ft, CustomDialogFragment.Type.OKAY_CANCLE);
-                        }
-                    }
-                };
 
             break;
 			//意见反馈

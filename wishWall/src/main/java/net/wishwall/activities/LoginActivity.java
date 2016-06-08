@@ -73,13 +73,13 @@ public class LoginActivity extends BaseActivity
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
         userSpUtil = new SpUtil(this, Constants.USER_SPUTIL);
-//        boolean isLogin = userSpUtil.getBooleanCode("login");
-//        if(isLogin){
-//            Intent intent =  new Intent(this,MainActivity.class);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(intent);
-//			this.finish();
-//        }
+        boolean isLogin = userSpUtil.getBooleanCode("login");
+        if(isLogin){
+            Intent intent =  new Intent(this,MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+			this.finish();
+        }
 		setContentView(R.layout.login_activity);
 		initView();
 	}
@@ -227,17 +227,14 @@ public class LoginActivity extends BaseActivity
     public boolean handleMessage(Message msg) {
 
         switch(msg.what) {
-            case MSG_AUTH_CANCEL: {
+            case MSG_AUTH_CANCEL:
                 //取消授权
-                CustomToast.showMsg(this,"取消授权>>>>>>>>>>>>>>>>>>>>>>>>");
-            } break;
-            case MSG_AUTH_ERROR: {
+             	break;
+            case MSG_AUTH_ERROR:
                 //授权失败
-                CustomToast.showMsg(this,"授权失败>>>>>>>>>>>>>>>>>>>>>>>>");
-            } break;
-            case MSG_AUTH_COMPLETE: {
+            	break;
+            case MSG_AUTH_COMPLETE:
                 //授权成功
-                CustomToast.showMsg(this,"授权成功>>>>>>>>>>>>>>>>>>>>>>>>");
                 Object[] objs = (Object[]) msg.obj;
                 String platformName = (String) objs[0];;
                 Platform platform = ShareSDK.getPlatform(platformName);
@@ -257,14 +254,11 @@ public class LoginActivity extends BaseActivity
                             startLogin(userName,Constants.DEFAULT_PASSWORD);
                         }
                     }
-
                     @Override
                     public void onFailure(Call<RegisterDTO> call, Throwable t) {
-
                     }
                 });
-                CustomToast.showMsg(this,userToken+userGender+userIcon+userId+userName);
-            } break;
+				break;
         }
         return false;
 

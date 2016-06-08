@@ -5,6 +5,7 @@ import android.content.Intent;
 import net.wishwall.App;
 import net.wishwall.Constants;
 import net.wishwall.activities.LoginActivity;
+import net.wishwall.activities.MainActivity;
 import net.wishwall.domain.AllChatroomsDTO;
 import net.wishwall.domain.ApplyAddFriendListDTO;
 import net.wishwall.domain.CenterPicDTO;
@@ -23,6 +24,7 @@ import net.wishwall.domain.UserDTO;
 import net.wishwall.domain.UsersDTO;
 import net.wishwall.domain.VersionDTO;
 import net.wishwall.domain.WishsDTO;
+import net.wishwall.utils.SpUtil;
 
 import org.json.JSONObject;
 
@@ -80,10 +82,12 @@ public class ApiClient {
                 String message = object.getString("message");
                 int code = Integer.parseInt(object.getString("code"));
                 if(message.equals(Constants.TOKEN_INVALID)&& code == 400){
+                    //把登录状态改为未登录
+                    new SpUtil(App.getContext(),Constants.USER_SPUTIL).putBooleanCode("login",false);
                     Intent intent =new Intent(App.getContext(), LoginActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     App.getContext().startActivity(intent);
-                    return null;
+                    MainActivity.mainActivity.finish();
                 }
             }catch (Exception e){
                 e.printStackTrace();

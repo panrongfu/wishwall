@@ -118,7 +118,7 @@ public class NewFriendListActivity extends BaseActivity implements Handler.Callb
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            String friendid = mResultList.get(position).getUserid();
+                            final String friendid = mResultList.get(position).getUserid();
                             ApiClient.addFriend(userId, friendid, new Callback<ResultDTO>() {
                                 @Override
                                 public void onResponse(Call<ResultDTO> call, Response<ResultDTO> response) {
@@ -132,7 +132,7 @@ public class NewFriendListActivity extends BaseActivity implements Handler.Callb
                                         mess.obj = mResultList;
                                         mess.what = 1;
                                         mHandler.sendMessage(mess);
-                                        sendMessage(mResultList.get(position).getUserid());
+                                        sendMessage(friendid);
                                     }else {
                                         CustomToast.showMsg(getApplicationContext(),body.getMessage());
                                     }
@@ -160,10 +160,10 @@ public class NewFriendListActivity extends BaseActivity implements Handler.Callb
     /**
      * 添加好友成功后，向对方发送一条消息
      *
-     * @param toUserId 对方id
+     * @param friendid 对方id
      */
-    private void sendMessage(String toUserId) {
-        ApiClient.sendMessage(userId, toUserId,"我们开始对话吧", Constants.ContactNtf, Constants.ADD,new Callback<ResultDTO>() {
+    private void sendMessage(String friendid) {
+        ApiClient.sendMessage(userId, friendid,"我们开始对话吧", Constants.ContactNtf, Constants.ADD,new Callback<ResultDTO>() {
             @Override
             public void onResponse(Call<ResultDTO> call, Response<ResultDTO> response) {
                 ResultDTO body = response.body();
